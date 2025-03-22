@@ -1,0 +1,116 @@
+import React, { useState, useEffect } from 'react';
+import { Container, Table, Button } from 'react-bootstrap';
+import { useDrag, useDrop, DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+const ITEM_TYPE = 'ROW';
+const COLUMN_TYPE = 'COLUMN';
+
+const VideoList = () => {
+  const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [columns, setColumns] = useState(['Category Of Instruments','Poster', 'Links', 'Actions']);
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
+  const fetchVideos = async () => {
+    try {
+      const response = await axios.get('https://baaja-backend-2.onrender.com/api/video');
+      setData(response.data);
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+    }
+  };
+
+  const handleDelete = async (videoId) => {
+    try {
+      await axios.delete(`https://baaja-backend-2.onrender.com/api/video/${videoId}`);
+      setData(data.filter((item) => item.videoId !== videoId));
+    } catch (error) {
+      console.error('Error deleting video:', error);
+    }
+  };
+
+  const handleEditClick = (videoId) => {
+    navigate(`/add-video/${videoId}`); // Corrected to match the route
+  };
+
+  const DraggableRow = ({ item, index }) => {
+    const [, drag] = useDrag(() => ({
+      type: ITEM_TYPE,
+      item: { index },
+    }));
+
+    const [, drop] = useDrop(() => ({
+      accept: ITEM_TYPE,
+      hover: (draggedItem) => {
+        if (draggedItem.index !== index) {
+          const updatedData = [...data];
+          const [movedRow] = updatedData.splice(draggedItem.index, 1);
+          updatedData.splice(index, 0, movedRow);
+          setData(updatedData);
+          draggedItem.index = index;
+        }
+      },
+    }));
+
+    return (
+      <tr ref={(node) => drag(drop(node))} style={{ cursor: 'move' }}>
+        <td className="text-center align-middle">{item.video}</td>
+        <td className="text-center"> <div className="image-container">
+            <img
+              src={`https://baaja-backend-2.onrender.com/api/${item.photo}`}
+              alt={item.video}
+              accept=''
+              className=""
+              width="50px"
+              height="50px"
+            />
+          </div></td>
+        <td className="text-center">
+          <Button href={item.link} target="_blank" variant="primary" className='mt-2'>
+            Video Link
+          </Button>
+        </td>
+        <td className="text-center">
+          <Button variant="warning" className='mt-2'  onClick={() => handleEditClick(item.videoId)}>
+            <FontAwesomeIcon icon={faEdit} className='text-light' />
+          </Button>
+          <Button variant="danger" className="ms-2 mt-2" onClick={() => handleDelete(item.videoId)}>
+            <FontAwesomeIcon icon={faTrash} className='text-light' />
+          </Button>
+        </td>
+      </tr>
+    );
+  };
+
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <Container>
+        <h2 className="text-center my-4">Video Lists</h2>
+        <Table bordered hover>
+          <thead className="bg-primary text-white">
+            <tr>
+              {columns.map((col, index) => (
+                <th key={index} className="text-center">{col}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item, index) => (
+              <DraggableRow key={item._id} index={index} item={item} />
+            ))}
+          </tbody>
+        </Table>
+      </Container>
+    </DndProvider>
+  );
+};
+
+export default VideoList;

@@ -1,0 +1,31 @@
+.hover-effect {
+    color: #fff;
+    margin: 7px 7px 10px 7px;
+    padding: 8px 6px; 
+    box-sizing: border-box; 
+    transition: all 0.3s ease; 
+    font-size: 18px;
+  }
+  
+  .hover-effect:hover {
+    border-radius: 5px;
+    background-color: #fff;
+    color: blue;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+  .active-link{
+    color: #fff;
+    margin: 7px 7px 10px 7px;
+    padding: 8px 6px; 
+    box-sizing: border-box; 
+    transition: all 0.3s ease; 
+    font-size: 18px;
+  }
+  .active{
+    color: #fff;
+    margin: 7px 7px 10px 7px;
+    padding: 8px 6px; 
+    box-sizing: border-box; 
+    transition: all 0.3s ease; 
+    font-size: 18px;
+  }
