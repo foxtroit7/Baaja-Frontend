@@ -8,7 +8,7 @@ import {
   Button,
   InputGroup,
 } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faBroom, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";

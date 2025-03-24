@@ -1,6 +1,6 @@
 import './App.css';
 import Layout from './components/layout/Layout';
-import {  BrowserRouter as Router, Routes, Route, Navigate  } from 'react-router-dom';
+import {  BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Catagory from './components/catagory/Catagory';
 import CatagoryForm from './components/catagory/CatagoryForm';
 import Banner from './components/bannner/Banner';

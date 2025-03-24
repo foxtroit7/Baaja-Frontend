@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChartSimple } from "@fortawesome/free-solid-svg-icons";
 import Tennis from "../../assets/poster.jpg";
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 
 const PushNotifications = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [notifications, setNotifications] = useState([
+  const [notifications] = useState([
     {
       id: 1,
       title: "Huge Offer in this weeding Season",

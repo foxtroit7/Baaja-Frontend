@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ITEM_TYPE = 'ROW';
-const COLUMN_TYPE = 'COLUMN';
 
 const VideoList = () => {
   const navigate = useNavigate();
@@ -55,6 +54,7 @@ const VideoList = () => {
           const [movedRow] = updatedData.splice(draggedItem.index, 1);
           updatedData.splice(index, 0, movedRow);
           setData(updatedData);
+          setColumns();
           draggedItem.index = index;
         }
       },

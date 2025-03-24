@@ -6,8 +6,7 @@ import { faTruck, faMoneyBill, faTruckRampBox, faCheckCircle, faTools, faUser } 
 
 const UserProfile = () => {
   const { booking_id } = useParams();
-  const [loading, setLoading] = useState(true);  
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true); 
   const [booking, setBooking] = useState(null);
  console.log(booking_id);
  useEffect(() => {
@@ -46,7 +45,6 @@ const UserProfile = () => {
       setBooking(data.booking);
     } catch (error) {
       console.error("Error fetching booking data:", error);
-      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -77,13 +75,6 @@ const UserProfile = () => {
     color: '#333',
   };
 
-  const tableHeaderStyle = {
-    fontFamily: 'Roboto, sans-serif',
-    fontWeight: 500,
-    backgroundColor: '#007bff',
-    color: 'white',
-    textAlign: 'center',
-  };
 
   const iconStyle = {
     fontSize: '1.5rem',

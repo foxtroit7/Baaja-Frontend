@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Table, Container, Dropdown, Form, InputGroup, Button, Collapse, Spinner } from "react-bootstrap";
-import { Link , useParams} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faFilter, faBroom, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 const CustomerList = () => {
-  const { user_id } = useParams();
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filtersVisible, setFiltersVisible] = useState(false);

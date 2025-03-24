@@ -9,9 +9,9 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faBroom, faDownload, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faBroom, faDownload} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import html2pdf from "html2pdf.js";
+// import html2pdf from "html2pdf.js";
 
 const ArtistPayment = () => {
   const data = [
@@ -128,14 +128,14 @@ const ArtistPayment = () => {
   };
 
   const downloadPDF = () => {
-    const element = document.getElementById("table-section");
-    const options = {
-      margin: 1,
-      filename: "Transaction_Table.pdf",
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "landscape" },
-    };
-    html2pdf().set(options).from(element).save();
+    // const element = document.getElementById("table-section");
+    // const options = {
+    //   margin: 1,
+    //   filename: "Transaction_Table.pdf",
+    //   html2canvas: { scale: 2 },
+    //   jsPDF: { unit: "in", format: "letter", orientation: "landscape" },
+    // };
+    // html2pdf().set(options).from(element).save();
   };
 
   return (

@@ -29,7 +29,7 @@ const ArtistProfile = () => {
         }
 
         const response = await fetch(
-            `https://baaja-backend-2.onrender.com/api/artist-id/details/${user_id}`,
+            `https://baaja-backend-2.onrender.com/api/artists_details/${user_id}`,
             {
                 method: "GET",
                 headers: {

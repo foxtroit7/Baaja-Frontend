@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import '../css/sidebar.css';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faDrum, faSignsPost, faVideo, faBox, faTableColumns, faBell, faMoneyBill, faQuestion, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faDrum, faSignsPost, faVideo, faBox, faTableColumns, faBell, faMoneyBill, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
   return (

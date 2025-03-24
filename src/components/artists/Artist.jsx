@@ -29,7 +29,7 @@ const Artist = () => {
             }
     
             const response = await axios.get(
-                "https://baaja-backend-2.onrender.com/api/artist/details",
+                "https://baaja-backend-2.onrender.com/api/artists_details",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`, // ✅ Pass token in the headers

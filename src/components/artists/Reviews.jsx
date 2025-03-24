@@ -12,12 +12,7 @@ const Reviews = ({ user_id }) => {
   const [newReview, setNewReview] = useState("");
   const [newName, setNewName] = useState("");
 
-  // Fetch reviews when the component mounts
-  useEffect(() => {
-    if (user_id) {
-      fetchReviews();
-    }
-  }, [user_id]);
+
 
   const fetchReviews = () => {
     if (user_id) {
@@ -30,6 +25,12 @@ const Reviews = ({ user_id }) => {
         .catch((error) => console.error("Error fetching reviews:", error));
     }
   };
+    // Fetch reviews when the component mounts
+    useEffect(() => {
+      if (user_id) {
+        fetchReviews();
+      }
+    }, [user_id]);
 
   const handleCardClick = (review) => {
     setCurrentReview(review);

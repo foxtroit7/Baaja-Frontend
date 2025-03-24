@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button, Container, Row, Col, Card } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserSlash } from "@fortawesome/free-solid-svg-icons";
+import { Button, Container, Row, Col, Card } from "react-bootstrap";
 import Person from "../../assets/person.jpeg";
 
 const NewArtist = () => {

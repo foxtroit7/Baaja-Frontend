@@ -18,10 +18,6 @@ const NotificationPage = () => {
     { id: 6, message: 'payment Id AQWE34RT45 is Accepted', type: 'Alert', status: null, timestamp: '2025-02-14 13:00 PM' },
   ]);
 
-  const [isApproved, setIsApproved] = useState({
-    changeDesc: false,
-    addClip: false,
-  });
 
   const [showModal, setShowModal] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
@@ -34,8 +30,7 @@ const NotificationPage = () => {
       )
     );
 
-    if (id === 1) setIsApproved((prev) => ({ ...prev, changeDesc: true }));
-    if (id === 2) setIsApproved((prev) => ({ ...prev, addClip: true }));
+
 
     toast.success(`Request has been accepted.`, {
       position: "top-right",

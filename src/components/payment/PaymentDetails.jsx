@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import html2pdf from "html2pdf.js";
+// import html2pdf from "html2pdf.js";
 
 const PaymentDetails = () => {
   const { transactionId } = useParams();
@@ -51,15 +51,15 @@ const PaymentDetails = () => {
   }
 
   const downloadPDF = () => {
-    const element = document.getElementById("payment-details");
-    const options = {
-      margin: 1,
-      filename: `Transaction-${transaction.transactionId}.pdf`,
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-    };
+    // const element = document.getElementById("payment-details");
+    // const options = {
+    //   margin: 1,
+    //   filename: `Transaction-${transaction.transactionId}.pdf`,
+    //   html2canvas: { scale: 2 },
+    //   jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    // };
 
-    html2pdf().set(options).from(element).save();
+    // html2pdf().set(options).from(element).save();
   };
 
   return (
