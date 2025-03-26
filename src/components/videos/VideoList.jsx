@@ -20,24 +20,24 @@ const VideoList = () => {
 
   const fetchVideos = async () => {
     try {
-      const response = await axios.get('https://baaja-backend-2.onrender.com/api/video');
+      const response = await axios.get('http://15.206.194.89:5000/api/video');
       setData(response.data);
     } catch (error) {
       console.error('Error fetching videos:', error);
     }
   };
 
-  const handleDelete = async (videoId) => {
+  const handleDelete = async (video_id) => {
     try {
-      await axios.delete(`https://baaja-backend-2.onrender.com/api/video/${videoId}`);
-      setData(data.filter((item) => item.videoId !== videoId));
+      await axios.delete(`http://15.206.194.89:5000/api/video/${video_id}`);
+      setData(data.filter((item) => item.video_id !== video_id));
     } catch (error) {
       console.error('Error deleting video:', error);
     }
   };
 
-  const handleEditClick = (videoId) => {
-    navigate(`/add-video/${videoId}`); // Corrected to match the route
+  const handleEditClick = (video_id) => {
+    navigate(`/add-video/${video_id}`); // Corrected to match the route
   };
 
   const DraggableRow = ({ item, index }) => {
@@ -65,7 +65,7 @@ const VideoList = () => {
         <td className="text-center align-middle">{item.video}</td>
         <td className="text-center"> <div className="image-container">
             <img
-              src={`https://baaja-backend-2.onrender.com/api/${item.photo}`}
+              src={`http://15.206.194.89:5000/${item.photo}`}
               alt={item.video}
               accept=''
               className=""
@@ -79,10 +79,10 @@ const VideoList = () => {
           </Button>
         </td>
         <td className="text-center">
-          <Button variant="warning" className='mt-2'  onClick={() => handleEditClick(item.videoId)}>
+          <Button variant="warning" className='mt-2'  onClick={() => handleEditClick(item.video_id)}>
             <FontAwesomeIcon icon={faEdit} className='text-light' />
           </Button>
-          <Button variant="danger" className="ms-2 mt-2" onClick={() => handleDelete(item.videoId)}>
+          <Button variant="danger" className="ms-2 mt-2" onClick={() => handleDelete(item.video_id)}>
             <FontAwesomeIcon icon={faTrash} className='text-light' />
           </Button>
         </td>

@@ -7,16 +7,16 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const CategoryForm = () => {
   const navigate = useNavigate();
-  const { categoryId } = useParams(); // Get the category ID from the URL
+  const { category_id } = useParams(); // Get the category ID from the URL
   const [category, setCategory] = useState('');
   const [photo, setPhoto] = useState(null); // File input
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    if (categoryId) {
+    if (category_id) {
       // Fetch category data when editing
-      axios.get(`https://baaja-backend-2.onrender.com/api/category/${categoryId}`)
+      axios.get(`http://15.206.194.89:5000/api/category/${category_id}`)
         .then(response => {
           setCategory(response.data.category);
         })
@@ -25,7 +25,7 @@ const CategoryForm = () => {
           setErrorMessage('Failed to load category data.');
         });
     }
-  }, [categoryId]);
+  }, [category_id]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -38,9 +38,9 @@ const CategoryForm = () => {
 
     try {
       let response;
-      if (categoryId) {
+      if (category_id) {
         // If there's an id, it's an edit, so use PUT
-        response = await axios.put(`https://baaja-backend-2.onrender.com/api/category/${categoryId}`, formData, {
+        response = await axios.put(`http://15.206.194.89:5000/api/category/${category_id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -51,7 +51,7 @@ const CategoryForm = () => {
         });
       } else {
         // If no id, it's an add, so use POST
-        response = await axios.post('https://baaja-backend-2.onrender.com/api/category', formData, {
+        response = await axios.post('http://15.206.194.89:5000/api/category', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -81,7 +81,7 @@ const CategoryForm = () => {
       <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh', fontFamily: 'Roboto, sans-serif' }}>
         <div className="p-4 rounded shadow-lg" style={{ width: '100%', maxWidth: '600px', backgroundColor: '#f8f9fa' }}>
           <h2 className="mb-4 text-center" style={{ fontWeight: 600, color: '#343a40' }}>
-            {categoryId ? 'Edit Category' : 'Add New Category'}
+            {category_id ? 'Edit Category' : 'Add New Category'}
           </h2>
 
           {successMessage && <Alert variant="success">{successMessage}</Alert>}
@@ -109,7 +109,7 @@ const CategoryForm = () => {
               <Form.Control
                 type="file"
                 onChange={(e) => setPhoto(e.target.files[0])} // Update photo state with the selected file
-                required={!categoryId} // Required only for new category creation
+                required={!category_id} // Required only for new category creation
                 style={{
                   fontWeight: 400,
                   fontSize: '1rem',
@@ -128,7 +128,7 @@ const CategoryForm = () => {
                 fontSize: '1rem',
               }}
             >
-              {categoryId ? 'Update Category' : 'Add Category'}
+              {category_id ? 'Update Category' : 'Add Category'}
             </Button>
           </Form>
         </div>

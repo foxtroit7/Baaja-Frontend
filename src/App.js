@@ -48,15 +48,15 @@ function App() {
     <Route path= "/" element={<Dashboard/>} />
     <Route path= "/category" element={<Catagory/>} />
     <Route path="/add-category" element={<CatagoryForm/>} /> 
-    <Route path="/add-category/:categoryId" element={<CatagoryForm/>} /> 
+    <Route path="/edit-category/:category_id" element={<CatagoryForm/>} /> 
     <Route path="/banner" element={<Banner/>}/>
     <Route path="/add-banner" element={<BannerForm/>}/>
-    <Route path="/add-banner/:bannerId" element={<BannerForm/>}/>
+    <Route path="/edit-banner/:banner_id" element={<BannerForm/>}/>
     <Route path="/bookings" element={<UserList/>}/>
     <Route path="/artists" element={<Artist />}/>
     <Route path='/videos' element={<Video />} />
     <Route path='/add-video' element={<VideoForm />} />
-    <Route path='/add-video/:videoId' element={<VideoForm />} />
+    <Route path='/add-video/:video_id' element={<VideoForm />} />
     <Route path='/videolist' element={<VideoList />} />
     <Route path="/user-profile/:booking_id" element={<UserProfile />} />
     <Route path="/artist-profile/:user_id" element={<ArtistProfile />} />

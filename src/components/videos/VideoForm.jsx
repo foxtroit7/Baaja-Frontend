@@ -6,17 +6,17 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const VideoForm = () => {
   const navigate = useNavigate();
-  const { videoId } = useParams(); 
+  const { video_id } = useParams(); 
   const [videoName, setVideoName] = useState('');
   const [videoLink, setVideoLink] = useState('');
   const [photo, setPhoto] = useState(null); 
   const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(videoId ? true : false); 
+  const [fetching, setFetching] = useState(video_id ? true : false); 
 
 
   useEffect(() => {
-    if (videoId) {
-      fetch(`https://baaja-backend-2.onrender.com/api/video/${videoId}`)
+    if (video_id) {
+      fetch(`http://15.206.194.89:5000/api/video/${video_id}`)
         .then((res) => {
           if (!res.ok) throw new Error('Failed to fetch video');
           return res.json();
@@ -33,18 +33,18 @@ const VideoForm = () => {
           setFetching(false); 
         });
     }
-  }, [videoId]);
+  }, [video_id]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!videoName || !videoLink || (!photo && !videoId)) {
+    if (!videoName || !videoLink || (!photo && !video_id)) {
       toast.error('Please fill in all required fields.');
       return;
     }
     setLoading(true);
     try {
-      const method = videoId ? 'PUT' : 'POST';
-      const url = videoId ? `https://baaja-backend-2.onrender.com/api/video/${videoId}` : `https://baaja-backend-2.onrender.com/api/video`;
+      const method = video_id ? 'PUT' : 'POST';
+      const url = video_id ? `http://15.206.194.89:5000/api/video/${video_id}` : `http://15.206.194.89:5000/api/video`;
 
       const formData = new FormData();
       formData.append('video', videoName);
@@ -60,7 +60,7 @@ const VideoForm = () => {
 
       const result = await response.json();
       if (response.ok) {
-        toast.success(videoId ? 'Video Updated Successfully' : 'Video Created Successfully');
+        toast.success(video_id ? 'Video Updated Successfully' : 'Video Created Successfully');
         setVideoName('');
         setVideoLink('');
         setPhoto(null);
@@ -80,7 +80,7 @@ const VideoForm = () => {
       <ToastContainer />
       <div className="p-4 rounded shadow-lg" style={{ width: '100%', maxWidth: '600px', backgroundColor: '#f8f9fa' }}>
         <h2 className="mb-4 text-center" style={{ fontWeight: 600, color: '#343a40' }}>
-          {videoId ? 'Edit Video' : 'Add New Video'}
+          {video_id ? 'Edit Video' : 'Add New Video'}
         </h2>
 
         {fetching ? (
@@ -108,7 +108,7 @@ const VideoForm = () => {
               <Form.Control
                 type="file"
                 onChange={(e) => setPhoto(e.target.files[0])} 
-                required={!videoId} 
+                required={!video_id} 
                 style={{
                   fontWeight: 400,
                   fontSize: '1rem',
@@ -130,7 +130,7 @@ const VideoForm = () => {
             </Form.Group>
 
             <Button variant="primary" type="submit" style={{ width: '100%', padding: '10px', fontWeight: 600, fontSize: '1rem' }} disabled={loading}>
-              {loading ? (videoId ? 'Updating...' : 'Adding...') : videoId ? 'Update Video' : 'Add Video'}
+              {loading ? (video_id ? 'Updating...' : 'Adding...') : video_id ? 'Update Video' : 'Add Video'}
             </Button>
           </Form>
         )}

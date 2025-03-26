@@ -33,7 +33,7 @@ const BannerRow = ({ item, index, moveRow, onDelete }) => {
       <td className="text-center align-middle" style={{ fontWeight: '500' }}>{item.category}</td>
       <td className="text-center">
         <img
-         src={`https://baaja-backend-2.onrender.com/api/${item.photo}`}
+         src={`http://15.206.194.89:5000/${item.photo}`}
           alt={item.category}
           className="rounded-circle shadow"
           style={{
@@ -52,13 +52,13 @@ const BannerRow = ({ item, index, moveRow, onDelete }) => {
           {/* Delete Button */}
           <button 
             className='me-2 bg-danger border-0 ps-2 pe-2 pb-1 pt-1 rounded' 
-            onClick={() => onDelete(item.bannerId)} // Call delete function
+            onClick={() => onDelete(item.banner_id)} // Call delete function
           >
             <FontAwesomeIcon icon={faTrash} className='text-light' />
           </button>
           
           {/* Edit Button */}
-          <button className='me-2 bg-warning border-0 ps-2 pe-2 pb-1 pt-1 rounded' onClick={() => navigate(`/add-banner/${item.bannerId}`)}>
+          <button className='me-2 bg-warning border-0 ps-2 pe-2 pb-1 pt-1 rounded' onClick={() => navigate(`/edit-banner/${item.banner_id}`)}>
             <FontAwesomeIcon icon={faEdit} className='text-light' />
           </button>
         </div>
@@ -78,7 +78,7 @@ const BannerList = () => {
   }, []);
 
   const fetchBanners = () => {
-    axios.get('https://baaja-backend-2.onrender.com/api/banners') 
+    axios.get('http://15.206.194.89:5000/api/banners') 
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -90,11 +90,11 @@ const BannerList = () => {
   };
 
   // DELETE API Call
-  const handleDelete = async (bannerId) => {
+  const handleDelete = async (banner_id) => {
     
       try {
-        await axios.delete(`https://baaja-backend-2.onrender.com/api/banners/${bannerId}`);
-        setData(data.filter((banner) => banner.bannerId !== bannerId)); // Remove deleted banner from state
+        await axios.delete(`http://15.206.194.89:5000/api/banners/${banner_id}`);
+        setData(data.filter((banner) => banner.banner_id !== banner_id)); // Remove deleted banner from state
          toast.error(`Banner Deleted Successfully`, {
               position: "top-right",
               autoClose: 3000,
@@ -145,7 +145,7 @@ const BannerList = () => {
               </thead>
               <tbody>
                 {data.map((item, index) => (
-                  <BannerRow key={item.bannerId} index={index} item={item} moveRow={moveRow} onDelete={handleDelete} />
+                  <BannerRow key={item.banner_id} index={index} item={item} moveRow={moveRow} onDelete={handleDelete} />
                 ))}
               </tbody>
             </Table>

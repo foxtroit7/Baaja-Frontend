@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const BannerForm = () => {
   const navigate = useNavigate();
-  const { bannerId } = useParams(); 
+  const { banner_id } = useParams(); 
   const [formData, setFormData] = useState({
     type: "",
     category: "",
@@ -19,19 +19,32 @@ const BannerForm = () => {
   });
 
   useEffect(() => {
-    if (bannerId) {
+    if (banner_id) {
       fetchBannerData();
     }
-  }, [bannerId]);
+  }, [banner_id]);
 
   const fetchBannerData = async () => {
     try {
-      const response = await axios.get(`https://baaja-backend-2.onrender.com/api/banners/${bannerId}`);
-      setFormData(response.data); 
+      const response = await axios.get(`http://15.206.194.89:5000/api/banners/${banner_id}`);
+      
+      console.log("Fetched data:", response.data); // ✅ Debugging log
+  
+      // Ensure fetched data is properly set in state
+      setFormData({
+        type: response.data.type || "",
+        category: response.data.category || "",
+        description: response.data.description || "",
+        photo: response.data.photo || "",  // Storing previous image URL, not as a file
+        socialMediaLink: response.data.socialMediaLink || "",
+        startTime: response.data.startTime ? response.data.startTime.split("T")[0] : "", // Ensure date format
+        endTime: response.data.endTime ? response.data.endTime.split("T")[0] : "",     // Ensure date format
+      });
     } catch (error) {
       console.error("Error fetching banner:", error);
     }
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,13 +59,13 @@ const BannerForm = () => {
     e.preventDefault();
 
     try {
-      if (bannerId) {
+      if (banner_id) {
         const formDataToSend = new FormData();
         for (const key in formData) {
           formDataToSend.append(key, formData[key]);
         }
 
-        await axios.put(`https://baaja-backend-2.onrender.com/api/banners/${bannerId}`, formDataToSend, {
+        await axios.put(`http://15.206.194.89:5000/api/banners/${banner_id}`, formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         toast.success("Banner Updated Successfully", { autoClose: 3000 });
@@ -63,7 +76,7 @@ const BannerForm = () => {
           formDataToSend.append(key, formData[key]);
         }
 
-        await axios.post("https://baaja-backend-2.onrender.com/api/banners", formDataToSend, {
+        await axios.post("http://15.206.194.89:5000/api/banners", formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         toast.success("Banner Created Successfully", { autoClose: 3000 });
@@ -83,7 +96,7 @@ const BannerForm = () => {
       <ToastContainer />
       <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
         <div className="p-4 rounded shadow-lg" style={{ width: "100%", maxWidth: "700px", backgroundColor: "#f8f9fa" }}>
-          <h2 className="mb-4 text-center">{bannerId ? "Edit Banner" : "Add New Banner"}</h2>
+          <h2 className="mb-4 text-center">{banner_id ? "Edit Banner" : "Add New Banner"}</h2>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Banner Type</Form.Label>
@@ -123,7 +136,7 @@ const BannerForm = () => {
               </Row>
             </Form.Group>
             <Button variant="primary" type="submit" className="w-100">
-              {bannerId ? "Update Banner" : "Add Banner"}
+              {banner_id ? "Update Banner" : "Add Banner"}
             </Button>
           </Form>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import { Container, Table } from 'react-bootstrap';
 import { useDrag, useDrop } from 'react-dnd';
@@ -22,7 +22,7 @@ const CategoryTable = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('https://baaja-backend-2.onrender.com/api/category');
+      const response = await axios.get('http://15.206.194.89:5000/api/category');
       setData(response.data);
       setLoading(false);
     } catch (err) {
@@ -31,17 +31,17 @@ const CategoryTable = () => {
     }
   };
 
-  const deleteCategory = async (categoryId) => {
+  const deleteCategory = async (category_id) => {
     try {
-      await axios.delete(`https://baaja-backend-2.onrender.com/api/category/${categoryId}`);
-      setData(data.filter((item) => item.categoryId !== categoryId));
+      await axios.delete(`http://15.206.194.89:5000/api/category/${category_id}`);
+      setData(data.filter((item) => item.category_id !== category_id));
     } catch (err) {
       console.error('Error deleting category:', err);
     }
   };
 
-  const handleEditClick = (categoryId) => {
-    navigate(`/add-category/${categoryId}`);
+  const handleEditClick = (category_id) => {
+    navigate(`/edit-category/${category_id}`);
   };
 
   const moveRow = (fromIndex, toIndex) => {
@@ -75,7 +75,7 @@ const CategoryTable = () => {
         <td className="text-center">
           <div className="image-container">
             <img
-              src={`https://baaja-backend-2.onrender.com/api/${item.photo}`}
+              src={`http://15.206.194.89:5000/${item.photo}`}
               alt={item.category}
               className="category-image"
             />
@@ -83,10 +83,10 @@ const CategoryTable = () => {
         </td>
         <td className="text-center">
           <div className="action-buttons mt-2 align-middle d-flex justify-content-center align-items-center">
-            <button className="btn btn-danger me-2" onClick={() => deleteCategory(item.categoryId)}>
+            <button className="btn btn-danger me-2" onClick={() => deleteCategory(item.category_id)}>
               <FontAwesomeIcon icon={faTrash} />
             </button>
-            <button className="btn btn-warning text-light" onClick={() => handleEditClick(item.categoryId)}>
+            <button className="btn btn-warning text-light" onClick={() => handleEditClick(item.category_id)}>
               <FontAwesomeIcon icon={faEdit} />
             </button>
           </div>

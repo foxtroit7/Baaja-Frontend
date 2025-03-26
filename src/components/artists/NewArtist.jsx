@@ -27,10 +27,10 @@ const NewArtist = () => {
         },
       ],
       videos: [
-        { title: "Learning Flute", videoId: "https://www.youtube.com/embed/mGC-S7n_HkE?si=e_JnQ4RLSl5mGKJj" },
-        { title: "Best Flute Music", videoId: "https://www.youtube.com/embed/Cnfj6QCGLyA?si=QpaKcjXeyAvjZsYm" },
-        { title: "Instrumental Song", videoId: "https://www.youtube.com/embed/73vpHngEQpA?si=-u5wTeNORaamRfbo" },
-        { title: "Flute Event", videoId: "https://www.youtube.com/embed/bLpHR0xL_Xo?si=wl_idfeczT0WPv1E" },
+        { title: "Learning Flute", video_id: "https://www.youtube.com/embed/mGC-S7n_HkE?si=e_JnQ4RLSl5mGKJj" },
+        { title: "Best Flute Music", video_id: "https://www.youtube.com/embed/Cnfj6QCGLyA?si=QpaKcjXeyAvjZsYm" },
+        { title: "Instrumental Song", video_id: "https://www.youtube.com/embed/73vpHngEQpA?si=-u5wTeNORaamRfbo" },
+        { title: "Flute Event", video_id: "https://www.youtube.com/embed/bLpHR0xL_Xo?si=wl_idfeczT0WPv1E" },
       ],
     },
   ];
@@ -156,7 +156,7 @@ const NewArtist = () => {
                     </Card.Title>
                     <div className="ratio ratio-16x9 mt-3">
                       <iframe
-                        src={video.videoId}
+                        src={video.video_id}
                         title={video.title}
                         style={{ borderRadius: "12px" }}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -164,7 +164,7 @@ const NewArtist = () => {
                       ></iframe>
                     </div>
                     <Button
-                      href={video.videoId}
+                      href={video.video_id}
                       target="_blank"
                       variant="primary"
                       style={{
