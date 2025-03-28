@@ -81,7 +81,7 @@ const Artist = () => {
     const toggleTopBaaja = async (artist) => {
         try {
             const url = artist.top_baaja 
-                ? `http://localhost:5000/api/artist/top_baaja/reject/${artist.user_id}`
+                ? `http://15.206.194.89:5000/api/artist/top_baaja/reject/${artist.user_id}`
                 : `http://15.206.194.89:5000/api/artist/top_baaja/approve/${artist.user_id}`;
 
             await axios.put(url, {}, {

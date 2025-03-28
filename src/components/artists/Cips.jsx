@@ -148,7 +148,7 @@ const Cips = ({ user_id }) => {
                 </Card.Title>
                 <div className="ratio ratio-16x9 mt-3">
                   <video
-                    src={`http://localhost:5000/${clip.video}`}
+                    src={`http://15.206.194.89:5000/${clip.video}`}
                     controls
                     style={{ borderRadius: "12px", width: "100%" }}
                     onClick={() => handleShowModal(clip)}
