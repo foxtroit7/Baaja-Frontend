@@ -22,7 +22,7 @@ const Booking = ({ artist_id }) => {
         }
   
         const response = await fetch(
-          `https://baaja-backend-2.onrender.com/api/artist-bookings/${artist_id}`,
+          `http://15.206.194.89:5000/api/artist-bookings/${artist_id}`,
           {
             method: "GET",
             headers: {

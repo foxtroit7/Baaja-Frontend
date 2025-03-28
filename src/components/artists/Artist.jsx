@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Table, Tab, Tabs, Badge, Dropdown, Form, InputGroup, Button } from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Tabs, Badge, Dropdown, Form, InputGroup, Button, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faBroom } from '@fortawesome/free-solid-svg-icons';
@@ -14,7 +14,8 @@ const Artist = () => {
     const [filterTopPerformers, setFilterTopPerformers] = useState(false);
     const [sortOrder, setSortOrder] = useState('default');
     const [activeTab, setActiveTab] = useState('All');
-
+    const [showModal, setShowModal] = useState(false);
+    const [selectedArtist, setSelectedArtist] = useState(null);
     useEffect(() => {
         fetchArtists();
     }, []);
@@ -29,7 +30,7 @@ const Artist = () => {
             }
     
             const response = await axios.get(
-                "https://baaja-backend-2.onrender.com/api/artists_details",
+                "http://15.206.194.89:5000/api/artists_details",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`, // ✅ Pass token in the headers
@@ -77,7 +78,26 @@ const Artist = () => {
         }
         return sorted;
     };
+    const toggleTopBaaja = async (artist) => {
+        try {
+            const url = artist.top_baaja 
+                ? `http://localhost:5000/api/artist/top_baaja/reject/${artist.user_id}`
+                : `http://15.206.194.89:5000/api/artist/top_baaja/approve/${artist.user_id}`;
 
+            await axios.put(url, {}, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+            });
+
+            setData(prevData =>
+                prevData.map(item =>
+                    item.user_id === artist.user_id ? { ...item, top_baaja: !artist.top_baaja } : item
+                )
+            );
+            setShowModal(false);
+        } catch (error) {
+            console.error("Error updating top_baaja:", error);
+        }
+    };
     return (
         <Container style={{ marginTop: '30px', fontFamily: 'Roboto, sans-serif' }}>
             <Row className="mb-4">
@@ -137,7 +157,7 @@ const Artist = () => {
             </Row>
             <Row>
                 <Col>
-                    <Tabs
+                    {/* <Tabs
                         activeKey={activeTab}
                         onSelect={(key) => setActiveTab(key)}
                         className="mb-4"
@@ -162,14 +182,42 @@ const Artist = () => {
                                 </Tab>
                             );
                         })}
-                    </Tabs>
+                    </Tabs> */}
+                       <Tabs activeKey={activeTab} onSelect={(key) => setActiveTab(key)} className="mb-4" justify>
+                                            <Tab eventKey="All" title={`All (${data.length})`} >
+                                                <ArtistTable data={data} setSelectedArtist={setSelectedArtist} setShowModal={setShowModal} />
+                                            </Tab>
+                                            {predefinedCategories.map((category) => (
+                                                <Tab eventKey={category} title={`${category} (${data.filter(item => item.category_type === category).length})`} key={category}>
+                                                    <ArtistTable data={data.filter(item => item.category_type === category)} setSelectedArtist={setSelectedArtist} setShowModal={setShowModal} />
+                                                </Tab>
+                                            ))}
+                                        </Tabs>
                 </Col>
             </Row>
+        
+     {/* Modal for Confirmation */}
+     <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{selectedArtist?.top_baaja ? "Remove from Baaja List" : "Approve as Top Baaja"}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {selectedArtist?.top_baaja 
+                        ? "Are you sure you want to remove this artist from the Baaja list?"
+                        : "Do you want to add this artist as a Top Baaja?"}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
+                    <Button variant={selectedArtist?.top_baaja ? "danger" : "success"} onClick={() => toggleTopBaaja(selectedArtist)}>
+                        {selectedArtist?.top_baaja ? "Remove" : "Approve"}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 };
 
-const ArtistTable = ({ data, handleStatusChange }) => (
+const ArtistTable = ({ data, handleStatusChange, setSelectedArtist, setShowModal }) => (
     <Table bordered hover className="text-center table-striped">
         <thead style={{ color: '#ffffff' }}>
             <tr>
@@ -181,6 +229,7 @@ const ArtistTable = ({ data, handleStatusChange }) => (
                 <th>Category Image</th>
                 <th>Status</th>
                 <th>Rating</th>
+                <th>Top Baaja</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -207,6 +256,14 @@ const ArtistTable = ({ data, handleStatusChange }) => (
                             </Dropdown>
                         </td>
                         <td className='text-warning h5'>{'★'.repeat(Math.floor(item.rating))}{'☆'.repeat(5 - Math.floor(item.rating))}</td>
+                        <td>
+                            <Button variant={item.top_baaja ? "success" : "secondary"} size="sm" onClick={() => {
+                                setSelectedArtist(item);
+                                setShowModal(true);
+                            }}>
+                                {item.top_baaja ? "Top Baaja" : "Not in Baaja"}
+                            </Button>
+                        </td>
                         <td><Link to={`/artist-profile/${item.user_id}`} className="btn btn-outline-primary btn-sm">View</Link></td>
                     </tr>
                 ))

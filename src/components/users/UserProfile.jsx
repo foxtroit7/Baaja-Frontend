@@ -24,7 +24,7 @@ const UserProfile = () => {
         throw new Error("Authentication token is missing");
       }
 
-      const url = `https://baaja-backend-2.onrender.com/api/bookings/${booking_id}`;
+      const url = `http://15.206.194.89:5000/api/bookings/${booking_id}`;
       console.log("Fetching from URL:", url); // Debug URL
 
       const response = await fetch(url, {

@@ -30,7 +30,7 @@ const handleSubmit = async (event) => {
 
   try {
     const response = await fetch(
-      `https://baaja-backend-2.onrender.com/api/artist/clips/${user_id}`,
+      `http://15.206.194.89:5000/api/artist/clips/${user_id}`,
       {
         method: "POST",
         body: formData,

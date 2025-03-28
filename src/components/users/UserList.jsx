@@ -33,7 +33,7 @@ const UserList = () => {
         }
   
         const response = await axios.get(
-          "https://baaja-backend-2.onrender.com/api/all-bookings",
+          "http://15.206.194.89:5000/api/all-bookings",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ const UserList = () => {
       }
   
       await axios.delete(
-        `https://baaja-backend-2.onrender.com/api/bookings/delete/${booking_id}`,
+        `http://15.206.194.89:5000/api/bookings/delete/${booking_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Pass the token here

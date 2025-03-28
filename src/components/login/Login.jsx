@@ -13,7 +13,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await fetch('https://baaja-backend-2.onrender.com/api/admin-login', {
+      const response = await fetch('http://15.206.194.89:5000/api/admin-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

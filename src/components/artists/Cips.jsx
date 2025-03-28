@@ -24,7 +24,7 @@ const Cips = ({ user_id }) => {
 
       try {
         const response = await axios.get(
-          `https://baaja-backend-2.onrender.com/api/artist/clips/${user_id}`,
+          `http://15.206.194.89:5000/api/artist/clips/${user_id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ const Cips = ({ user_id }) => {
 
     try {
       await axios.put(
-        `https://baaja-backend-2.onrender.com/api/artist/clips/${user_id}/${selectedClip._id}`,
+        `http://15.206.194.89:5000/api/artist/clips/${user_id}/${selectedClip._id}`,
         updatedClip,
         {
           headers: {
@@ -88,7 +88,7 @@ const Cips = ({ user_id }) => {
 
     try {
       await axios.delete(
-        `https://baaja-backend-2.onrender.com/api/artist/clips/${user_id}/${selectedClip._id}`,
+        `http://15.206.194.89:5000/api/artist/clips/${user_id}/${selectedClip._id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

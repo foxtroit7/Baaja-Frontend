@@ -24,12 +24,12 @@ const ArtistProfile = () => {
 
         if (!token) {
             toast.error("Unauthorized! Please log in again.");
-            setLoading(false); // Ensure loading state updates even when token is missing
+            setLoading(false);
             return;
         }
 
         const response = await fetch(
-            `https://baaja-backend-2.onrender.com/api/artists_details/${user_id}`,
+            `http://15.206.194.89:5000/api/artists_details?artist_id=${user_id}`,
             {
                 method: "GET",
                 headers: {
@@ -45,14 +45,21 @@ const ArtistProfile = () => {
         }
 
         const data = await response.json();
-        setArtist(data);
+
+        if (Array.isArray(data) && data.length > 0) {
+            setArtist(data[0]); // ✅ Extract first object from array
+        } else {
+            setArtist(null); // ✅ Handle case when no artist is found
+        }
     } catch (error) {
         console.error("Error fetching artist:", error);
         toast.error(error.message || "Failed to load artist details.");
+        setArtist(null);
     } finally {
-        setLoading(false); // ✅ Ensure loading state resets after fetch
+        setLoading(false);
     }
 };
+
 
   
   useEffect(() => {
@@ -122,91 +129,88 @@ const ArtistProfile = () => {
       <ToastContainer />
       
       {/* Profile Section */}
-      <div className="text-center mb-4 p-4 rounded shadow" style={{ backgroundColor: '#f8f9fa' }}>
-        <div className="d-flex justify-content-end mt-2">
-          <Button
-            variant="outline-primary"
-            style={{ padding: '5px 10px', borderRadius: '50%', fontSize: '1.2rem' }}
-            onClick={() => setShowModal(true)}
-          >
-            <FontAwesomeIcon icon={faEdit} />
-          </Button>
-        </div>
-        
-        <img
-        src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
-          alt={artist.name}
-          className="rounded-circle mb-3"
-          style={{ width: '120px', height: '120px', objectFit: 'cover', border: '3px solid #007bff' }}
-        />
-
-        <h3 className="fw-bold">Owner Name: {artist.name}</h3>
-        <h5 className="text-primary">Category: {artist.category_type}</h5>
-        <h6 className="text-muted">{artist.location}</h6>
-        <h5>
-  Rating: {
-    artist.rating >= 1 ? '⭐' : '☆'}
-    {artist.rating >= 2 ? '⭐' : '☆'}
-    {artist.rating >= 3 ? '⭐' : '☆'}
-    {artist.rating >= 4 ? '⭐' : '☆'}
-    {artist.rating >= 4.5 ? '⭐' : artist.rating >= 4 ? '⯪' : '☆'}
-</h5>
-
-        <h5 className="text-dark">Experience: {artist.experience}</h5>
-        <h5 className="text-secondary fw-bold">About:</h5>
-        <p className="text-muted">{artist.description}</p>
-
-        <Button variant="danger" size="md" className="mb-2">
-          <FontAwesomeIcon icon={faUserSlash} className="pe-2" />
-          Suspend Account
+{artist ? (
+  <>
+    <div className="text-center mb-4 p-4 rounded shadow" style={{ backgroundColor: '#f8f9fa' }}>
+      <div className="d-flex justify-content-end mt-2">
+        <Button
+          variant="outline-primary"
+          style={{ padding: '5px 10px', borderRadius: '50%', fontSize: '1.2rem' }}
+          onClick={() => setShowModal(true)}
+        >
+          <FontAwesomeIcon icon={faEdit} />
         </Button>
-       <div>
-       <Button
+      </div>
+
+      <img
+        src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
+        alt={artist.owner_name}
+        className="rounded-circle mb-3"
+        style={{ width: '120px', height: '120px', objectFit: 'cover', border: '3px solid #007bff' }}
+      />
+      <h3 className="fw-bold">Owner Name: {artist.owner_name}</h3>
+      <h5 className="text-primary">Category: {artist.category_type}</h5>
+      <h6 className="text-muted">{artist.location}</h6>
+
+      <h5>
+        Rating: {Array.from({ length: 5 }, (_, i) => (i < artist.rating ? "⭐" : "☆")).join("")}
+      </h5>
+
+      <h5 className="text-dark">Experience: {artist.experience}</h5>
+      <h5 className="text-secondary fw-bold">About:</h5>
+      <p className="text-muted">{artist.description}</p>
+
+      <Button variant="danger" size="md" className="mb-2">
+        <FontAwesomeIcon icon={faUserSlash} className="pe-2" />
+        Suspend Account
+      </Button>
+
+      <div>
+        <Button
           className="btn btn-primary btn-sm mt-3"
-          style={{
-            padding: '8px 16px',
-            fontWeight: 500,
-            fontSize: '0.9rem',
-          }}
+          style={{ padding: '8px 16px', fontWeight: 500, fontSize: '0.9rem' }}
           onClick={changeDesc}
         >
           Change Description
         </Button>
-       </div>
-
       </div>
+    </div>
 
-      {/* Statistics Cards */}
-      <Row className="g-4 mt-4 mb-4">
-        <Col md={4}>
-          <Card className="text-center shadow-lg rounded-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
-            <Card.Body>
-              <FontAwesomeIcon icon={faTruck} className="fs-3 text-primary mb-3" />
-              <Card.Title>Total Bookings</Card.Title>
-              <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>{artist.total_bookings}</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={4}>
-          <Card className="text-center shadow-lg rounded-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
-            <Card.Body>
-              <FontAwesomeIcon icon={faMoneyBill} className="fs-3 text-success mb-3" />
-              <Card.Title>Total Money Earned</Card.Title>
-              <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>${artist.total_money}</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={4}>
-          <Card className="text-center shadow-lg rounded-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
-            <Card.Body>
-              <FontAwesomeIcon icon={faTruckFast} className="fs-3 text-warning mb-3" />
-              <Card.Title>Recent Order</Card.Title>
-              <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>{artist.recent_order}</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-   
+    {/* Statistics Cards */}
+    <Row className="g-4 mt-4 mb-4">
+      <Col md={4}>
+        <Card className="text-center shadow-lg rounded-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
+          <Card.Body>
+            <FontAwesomeIcon icon={faTruck} className="fs-3 text-primary mb-3" />
+            <Card.Title>Total Bookings</Card.Title>
+            <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>{artist.total_bookings}</Card.Text>
+          </Card.Body>
+        </Card>
+      </Col>
+      <Col md={4}>
+        <Card className="text-center shadow-lg rounded-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
+          <Card.Body>
+            <FontAwesomeIcon icon={faMoneyBill} className="fs-3 text-success mb-3" />
+            <Card.Title>Total Money Earned</Card.Title>
+            <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>${artist.total_money}</Card.Text>
+          </Card.Body>
+        </Card>
+      </Col>
+      <Col md={4}>
+        <Card className="text-center shadow-lg rounded-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
+          <Card.Body>
+            <FontAwesomeIcon icon={faTruckFast} className="fs-3 text-warning mb-3" />
+            <Card.Title>Recent Order</Card.Title>
+            <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>{artist.recent_order}</Card.Text>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
+  </>
+) : (
+  <p className="text-center text-danger">No artist found.</p> // ✅ Show message if no artist is found
+)}
+
       <ApppointmentScheduler />
       <Clips user_id={user_id}/>
       <Booking artist_id={user_id} />

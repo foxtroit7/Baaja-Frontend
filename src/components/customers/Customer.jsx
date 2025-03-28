@@ -14,7 +14,7 @@ const Customer = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await fetch(`https://baaja-backend-2.onrender.com/api/user-bookings/${user_id}`);
+        const response = await fetch(`http://15.206.194.89:5000/api/user-bookings/${user_id}`);
         if (!response.ok) throw new Error("Failed to fetch bookings");
 
         const data = await response.json();
@@ -33,7 +33,7 @@ console.log("user_id",user_id)
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`https://baaja-backend-2.onrender.com/api/user/details/${user_id}`); // Use dynamic id
+        const response = await fetch(`http://15.206.194.89:5000/api/user/details/${user_id}`); // Use dynamic id
         if (!response.ok) throw new Error('User not found');
         const data = await response.json();
         setUser(data);

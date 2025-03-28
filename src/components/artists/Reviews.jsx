@@ -16,7 +16,7 @@ const Reviews = ({ user_id }) => {
 
   const fetchReviews = () => {
     if (user_id) {
-      fetch(`https://baaja-backend-2.onrender.com/api/artist/reviews/${user_id}`)
+      fetch(`http://15.206.194.89:5000/api/artist/reviews/${user_id}`)
         .then((res) => res.json())
         .then((data) => {
       
@@ -44,7 +44,7 @@ const Reviews = ({ user_id }) => {
     if (!currentReview) return;
     try {
       const response = await fetch(
-        `https://baaja-backend-2.onrender.com/api/artist/reviews/${user_id}/${currentReview._id}`,
+        `http://15.206.194.89:5000/api/artist/reviews/${user_id}/${currentReview._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -68,7 +68,7 @@ const Reviews = ({ user_id }) => {
     if (!currentReview) return;
     try {
       const response = await fetch(
-        `https://baaja-backend-2.onrender.com/api/artist/reviews/${user_id}/${currentReview._id}`,
+        `http://15.206.194.89:5000/api/artist/reviews/${user_id}/${currentReview._id}`,
         { method: "DELETE" }
       );
       if (response.ok) {
@@ -88,7 +88,7 @@ const Reviews = ({ user_id }) => {
 
     try {
       const response = await fetch(
-        `https://baaja-backend-2.onrender.com/api/artist/reviews/${user_id}`,
+        `http://15.206.194.89:5000/api/artist/reviews/${user_id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

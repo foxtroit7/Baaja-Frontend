@@ -16,29 +16,37 @@ const CustomerList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Fetch users from API
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("https://baaja-backend-2.onrender.com/api/user/details");
+        const response = await fetch("http://15.206.194.89:5000/api/user/details");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
         const result = await response.json();
-        setData(result);
+        
+        // Ensure we store the loggedInUsers array
+        setData(result.loggedInUsers || []); 
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchUsers();
   }, []);
-
+  
+  useEffect(() => {
+    // Simulating API call
+    fetch("http://15.206.194.89:5000/api/user/details") // Replace with actual API endpoint
+      .then((response) => response.json())
+      .then((data) => setData(data.loggedInUsers)) // Access the loggedInUsers array
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
   const handleDelete = async (user_id) => {
     try {
-      const response = await axios.delete(`https://baaja-backend-2.onrender.com/api/user/details/${user_id}`);
+      const response = await axios.delete(`http://15.206.194.89:5000/api/user/details/${user_id}`);
   
       if (response.status === 200) {
         setData((prevData) => prevData.filter((user) => user.user_id !== user_id));
@@ -167,8 +175,6 @@ const CustomerList = () => {
                 <th className="text-center">User ID</th>
                 <th className="text-center">Name</th>
                 <th className="text-center">Phone</th>
-                <th className="text-center">Total Bookings</th>
-                <th className="text-center">Registration Date</th>
                 <th className="text-center">Location</th>
                 <th className="text-center">Status</th>
                 <th className="text-center">Actions</th>
@@ -180,20 +186,27 @@ const CustomerList = () => {
                   <td className="text-center">{customer.user_id}</td>
                   <td className="text-center">{customer.name}</td>
                   <td className="text-center">{customer.phone_number}</td>
-                  <td className="text-center">{customer.total_bookings}</td>
-                  <td className="text-center">{customer.registration_date}</td>
                   <td className="text-center">{customer.location}</td>
                   <td className="text-center">
-                    <Dropdown>
-                      <Dropdown.Toggle variant={customer.status === "Active" ? "success" : "danger"} size="sm">
-                        {customer.status}
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleStatusChange(customer.user_id, customer.status === "Active" ? "Suspend" : "Active")}>
-                          Change to {customer.status === "Active" ? "Suspend" : "Active"}
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                  <Dropdown>
+  <Dropdown.Toggle
+    variant={customer.status ? "success" : "danger"}
+    size="sm"
+  >
+    {customer.status ? "Active" : "Suspended"}
+  </Dropdown.Toggle>
+
+  <Dropdown.Menu>
+    <Dropdown.Item
+      onClick={() =>
+        handleStatusChange(customer.user_id, customer.status ? false : true)
+      }
+    >
+      Change to {customer.status ? "Suspend" : "Active"}
+    </Dropdown.Item>
+  </Dropdown.Menu>
+</Dropdown>
+
                   </td>
                   <td className="text-center">
                     <Link to={`/customer-profile/${customer.user_id}`} className="btn btn-primary text-light btn-md">
