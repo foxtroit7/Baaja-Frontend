@@ -47,13 +47,9 @@ console.log("user_id",user_id)
 
     if (user_id) fetchUserData(); // Fetch only if ID exists
   }, [user_id]);
-
-
   if (!user) {
     return <h2 className="text-center mt-5">User not found {user_id}</h2>;
   }
-
-
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
