@@ -226,7 +226,6 @@ const ArtistTable = ({ data, handleStatusChange, setSelectedArtist, setShowModal
                 <th>Total Bookings</th>
                 <th>Location</th>
                 <th>Category Type</th>
-                <th>Category Image</th>
                 <th>Status</th>
                 <th>Rating</th>
                 <th>Top Baaja</th>
@@ -242,7 +241,7 @@ const ArtistTable = ({ data, handleStatusChange, setSelectedArtist, setShowModal
                         <td>{item.total_bookings}</td>
                         <td>{item.location}</td>
                         <td style={{ fontWeight: '500', color: '#007bff' }}>{item.category_type}</td>
-                        <td><img src={item.photo} alt="" className="rounded-circle shadow-sm" style={{ width: '50px', height: '50px', objectFit: 'cover', border: '3px solid #007bff' }} /></td>
+
                         <td>
                             <Dropdown>
                                 <Dropdown.Toggle variant={item.status === 'Active' ? 'success' : item.status === 'Suspend' ? 'danger' : 'warning'} size="sm">

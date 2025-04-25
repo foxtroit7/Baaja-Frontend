@@ -28,6 +28,8 @@ import Login from './components/login/Login';
 import Signup from './components/login/Signup';
 import PushNotifications from './components/description/PushNotification';
 import Faq from './components/faq/Faq';
+import Help from './components/help-center/Help';
+import Purpose from './components/purpose/Purpose';
 function App() {
   return (
    <>
@@ -67,6 +69,8 @@ function App() {
     <Route path= '/users' element={<CustomerList />} /> 
     <Route path= '/push' element={<PushNotifications />} /> 
     <Route path= '/faq' element={<Faq />} /> 
+    <Route path= '/help' element= {<Help />} />
+    <Route path='/purpose' element={<Purpose />} />
 </Route>
   </Routes>
   </Router>

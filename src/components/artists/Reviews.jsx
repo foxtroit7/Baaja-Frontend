@@ -11,12 +11,12 @@ const Reviews = ({ user_id }) => {
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState("");
   const [newName, setNewName] = useState("");
-
-
+  const [newRating, setNewRating] = useState("");
+console.log(user_id);
 
   const fetchReviews = () => {
     if (user_id) {
-      fetch(`http://15.206.194.89:5000/api/artist/reviews/${user_id}`)
+      fetch(`http://localhost:5000/api/artist/reviews/${user_id}`)
         .then((res) => res.json())
         .then((data) => {
       
@@ -82,9 +82,9 @@ const Reviews = ({ user_id }) => {
 
   // Add new review API call
   const addReview = async () => {
-    if (!newReview || !newName) return;
+    if (!newReview || !newName || !newRating) return;
 
-    const newReviewData = { review: newReview, name: newName };
+    const newReviewData = { review: newReview, name: newName, rating: newRating };
 
     try {
       const response = await fetch(
@@ -104,6 +104,7 @@ const Reviews = ({ user_id }) => {
 
         setNewReview("");
         setNewName("");
+        setNewRating("");
         setShowAddReviewModal(false);
       }
     } catch (error) {
@@ -218,6 +219,15 @@ const Reviews = ({ user_id }) => {
               placeholder="Enter your review"
               value={newReview}
               onChange={(e) => setNewReview(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Rating</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter your rating"
+              value={newRating}
+              onChange={(e) => setNewRating(e.target.value)}
             />
           </Form.Group>
         </Modal.Body>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Container, Row, Col, Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruck, faMoneyBill, faTruckFast, faUserSlash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faTruck, faMoneyBill, faUserSlash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { toast, ToastContainer } from 'react-toastify';
 import ApppointmentScheduler from './ApppointmentScheduler';
 import Clips from './Cips'
@@ -178,7 +178,7 @@ const ArtistProfile = () => {
 
     {/* Statistics Cards */}
     <Row className="g-4 mt-4 mb-4">
-      <Col md={4}>
+      <Col md={6}>
         <Card className="text-center shadow-lg rounded-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
           <Card.Body>
             <FontAwesomeIcon icon={faTruck} className="fs-3 text-primary mb-3" />
@@ -187,21 +187,12 @@ const ArtistProfile = () => {
           </Card.Body>
         </Card>
       </Col>
-      <Col md={4}>
+      <Col md={6}>
         <Card className="text-center shadow-lg rounded-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
           <Card.Body>
             <FontAwesomeIcon icon={faMoneyBill} className="fs-3 text-success mb-3" />
-            <Card.Title>Total Money Earned</Card.Title>
-            <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>${artist.total_money}</Card.Text>
-          </Card.Body>
-        </Card>
-      </Col>
-      <Col md={4}>
-        <Card className="text-center shadow-lg rounded-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
-          <Card.Body>
-            <FontAwesomeIcon icon={faTruckFast} className="fs-3 text-warning mb-3" />
-            <Card.Title>Recent Order</Card.Title>
-            <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>{artist.recent_order}</Card.Text>
+            <Card.Title>Total Money</Card.Title>
+            <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>{artist.total_money}</Card.Text>
           </Card.Body>
         </Card>
       </Col>
@@ -213,7 +204,7 @@ const ArtistProfile = () => {
 
       <ApppointmentScheduler />
       <Clips user_id={user_id}/>
-      <Booking artist_id={user_id} />
+      <Booking artist_id={user_id}  />
       <Reviews user_id={user_id} />
       <Modal
           show={showModal}

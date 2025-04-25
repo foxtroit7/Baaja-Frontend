@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon
  } from '@fortawesome/react-fontawesome';
- import { faEye, faEdit } from '@fortawesome/free-solid-svg-icons';
+ import { faEye} from '@fortawesome/free-solid-svg-icons';
  import { Link } from 'react-router-dom';
 const Booking = ({ artist_id }) => {
   const [bookings, setBookings] = useState([]);
@@ -135,14 +135,9 @@ const Booking = ({ artist_id }) => {
                     <td>{booking.booking_id}</td>
                     <td className="fw-bold text-success">Completed</td>
                     <td>
-                <Link to="/bookings">
+                <Link to={`/user-profile/${booking.booking_id}`}>
                   <Button variant="primary" size="md" className="me-2">
                     <FontAwesomeIcon icon={faEye} />
-                  </Button>
-                </Link>
-                <Link >
-                  <Button variant="warning" size="md">
-                    <FontAwesomeIcon icon={faEdit} className='text-light' />
                   </Button>
                 </Link>
               </td>
