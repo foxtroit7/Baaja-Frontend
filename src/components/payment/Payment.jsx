@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Table,
@@ -7,203 +7,98 @@ import {
   Col,
   Button,
   InputGroup,
+  Badge,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faBroom, faDownload} from "@fortawesome/free-solid-svg-icons";
-import { Link} from "react-router-dom";
-// import html2pdf from "html2pdf.js";
+import { faSearch, faBroom } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Payment = () => {
-  const data = [
-    {
-      transactionId: "TXN001",
-      name: "John Doe",
-      booking_id: "BID123",
-      amount: 200,
-      status: "Paid",
-      date: "2025-01-08",
-    },
-    {
-      transactionId: "TXN002",
-      name: "Alice Johnson",
-      booking_id: "BID124",
-      amount: 150,
-      status: "Pending",
-      date: "2025-01-07",
-    },
-    {
-      transactionId: "TXN003",
-      name: "Alice Johnson",
-      booking_id: "BID124",
-      amount: 150,
-      status: "Refunded",
-      date: "2025-01-07",
-    },
-  ];
-
+  const [payments, setPayments] = useState([]);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [dateFilter, setDateFilter] = useState(""); 
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:5000/api/payments", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setPayments(res.data.all_verified_payments);
+      } catch (err) {
+        console.error("Error fetching payments:", err);
+      }
+    };
+    fetchPayments();
+  }, []);
 
   const handleSearchChange = (e) => setSearch(e.target.value);
   const handleStatusChange = (e) => setStatusFilter(e.target.value);
-  const handleDateFilterChange = (e) => setDateFilter(e.target.value);
-
-  const isWithinDateRange = (itemDate) => {
-    if (!startDate || !endDate) return true;
-    const date = new Date(itemDate);
-    return date >= new Date(startDate) && date <= new Date(endDate);
-  };
 
   const getFilteredData = () => {
-    const today = new Date();
-    const filteredData = data
+    return payments
       .filter(
         (item) =>
-          item.transactionId.toLowerCase().includes(search.toLowerCase()) ||
-          item.name.toLowerCase().includes(search.toLowerCase()) ||
-          item.booking_id.toLowerCase().includes(search.toLowerCase())
+          item.booking_id?.toLowerCase().includes(search.toLowerCase()) ||
+          item.artist_id?.toLowerCase().includes(search.toLowerCase()) ||
+          item.user_id?.toLowerCase().includes(search.toLowerCase())
       )
-      .filter((item) => (statusFilter ? item.status === statusFilter : true));
+      .filter((item) =>
+        statusFilter ? item.payment_status === statusFilter : true
+      );
+  };
 
-    if (dateFilter === "Today") {
-      return filteredData.filter(
-        (item) => new Date(item.date).toDateString() === today.toDateString()
-      );
-    } else if (dateFilter === "Weekly") {
-      const oneWeekAgo = new Date(today);
-      oneWeekAgo.setDate(today.getDate() - 7);
-      return filteredData.filter(
-        (item) => new Date(item.date) >= oneWeekAgo && new Date(item.date) <= today
-      );
-    } else if (dateFilter === "Monthly") {
-      const oneMonthAgo = new Date(today);
-      oneMonthAgo.setMonth(today.getMonth() - 1);
-      return filteredData.filter(
-        (item) => new Date(item.date) >= oneMonthAgo && new Date(item.date) <= today
-      );
-    } else if (startDate && endDate) {
-      return filteredData.filter((item) => isWithinDateRange(item.date));
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "completed":
+        return <Badge bg="success">completed</Badge>;
+      case "partial":
+        return <Badge bg="warning" text="dark">partial</Badge>;
+      default:
+        return <Badge bg="secondary">{status}</Badge>;
     }
-    return filteredData;
-  };
-
-  const renderTableRows = (filteredData) => {
-    return filteredData.map((item) => (
-      <tr
-        key={item.transactionId}
-        
-        style={{ cursor: "pointer" }}
-      >
-        <td>
-          <Link
-                to={`/payment-details/${item.transactionId}`}
-                style={{ textDecoration: "none", color: "inherit" }}
-                className="text-primary fw-bold"
-              >
-                {item.transactionId}
-              </Link></td>
-        <td>{item.name}</td>
-        <td>{item.booking_id}</td>
-        <td>${item.amount}</td>
-        <td>{item.date}</td>
-        <td
-          style={{
-            fontWeight: "bold",
-            color:
-              item.status === "Paid"
-                ? "#28a745"
-                : item.status === "Pending"
-                  ? "#ffc107"
-                  : "#dc3545",
-          }}
-        >
-          {item.status}
-        </td>
-      </tr>
-    ));
-  };
-
-  const downloadPDF = () => {
-    // const element = document.getElementById("table-section");
-    // const options = {
-    //   margin: 1,
-    //   filename: "Transaction_Table.pdf",
-    //   html2canvas: { scale: 2 },
-    //   jsPDF: { unit: "in", format: "letter", orientation: "landscape" },
-    // };
-    // html2pdf().set(options).from(element).save();
   };
 
   return (
     <Container>
       <div className="d-flex justify-content-between align-items-center mb-4 mt-4">
         <h3 className="mb-3">All User Transactions</h3>
-        <Link to='/artist-payments'>
-        <Button variant="primary">
-        All Artists Transactions
-        </Button>
-        </Link>
+        {/* <Link to="/artist-payments">
+          <Button variant="primary">All Artists Transactions</Button>
+        </Link> */}
       </div>
+
       <Form className="mb-4">
         <Row>
           <Col md={2}>
             <Form.Select value={statusFilter} onChange={handleStatusChange}>
               <option value="">All Status</option>
-              <option value="Paid">Paid</option>
-              <option value="Pending">Pending</option>
-              <option value="Refunded">Refunded</option>
+              <option value="partial">partial</option>
+              <option value="completed">completed</option>
             </Form.Select>
           </Col>
-          <Col md={2}>
-            <Form.Select value={dateFilter} onChange={handleDateFilterChange}>
-              <option value="">All Dates</option>
-              <option value="Today">Today</option>
-              <option value="Weekly">Last 7 Days</option>
-              <option value="Monthly">Last 30 Days</option>
-            </Form.Select>
-          </Col>
-          <Col md={1}>
-            <InputGroup style={{ width: '45px' }}>
-              <Form.Control
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-            </InputGroup>
-          </Col>
-          <Col md={1}>
-            <InputGroup style={{ width: '45px' }}>
 
-              <Form.Control
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </InputGroup>
-          </Col>
-          <Col md={1} className="d-flex justify-content-end">
+          <Col md={1}>
             <Button
               variant="danger"
               onClick={() => {
                 setSearch("");
                 setStatusFilter("");
-                setDateFilter("");
-                setStartDate("");
-                setEndDate("");
               }}
             >
               <FontAwesomeIcon icon={faBroom} />
             </Button>
           </Col>
 
-          <Col md={4}>
+          <Col md={5}>
             <InputGroup>
               <Form.Control
                 type="text"
-                placeholder="Search"
+                placeholder="Search Booking ID, Artist ID, User ID"
                 value={search}
                 onChange={handleSearchChange}
               />
@@ -212,26 +107,37 @@ const Payment = () => {
               </InputGroup.Text>
             </InputGroup>
           </Col>
-          <Col md={1}>
-            <Button variant="primary" className="ms-2" onClick={downloadPDF}>
-              <FontAwesomeIcon icon={faDownload} />
-            </Button>
-          </Col>
         </Row>
       </Form>
-      <div id="table-section" className="table-responsive">
-        <Table bordered hover>
-          <thead>
+
+      <div className="table-responsive">
+        <Table bordered hover striped className="text-center align-middle">
+          <thead className="">
             <tr>
-              <th>Transaction Id</th>
-              <th>User Name</th>
-              <th>Booking Id</th>
-              <th>Amount</th>
-              <th>Date</th>
-              <th>Status</th>
+              <th className="py-3">Razorpay Order ID</th>
+              <th className="py-3">Payment Status</th>
+              <th className="py-3">Total Price</th>
+              <th className="py-3">Advance Paid</th>
+              <th className="py-3">pending Amount</th>
+              <th className="py-3">Booking ID</th>
+              <th className="py-3">Artist ID</th>
+              <th className="py-3">User ID</th>
             </tr>
           </thead>
-          <tbody>{renderTableRows(getFilteredData())}</tbody>
+          <tbody>
+            {getFilteredData().map((item, index) => (
+              <tr key={index}>
+                <td className="fw-bold text-primary">{item.razorpay_order_id}</td>
+                <td>{getStatusBadge(item.payment_status)}</td>
+                <td>₹{item.total_price}</td>
+                <td>₹{item.advance_price}</td>
+                <td>₹{item.pending_price}</td>
+                <td>{item.booking_id}</td>
+                <td>{item.artist_id}</td>
+                <td>{item.user_id}</td>
+              </tr>
+            ))}
+          </tbody>
         </Table>
       </div>
     </Container>

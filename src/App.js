@@ -30,6 +30,10 @@ import PushNotifications from './components/description/PushNotification';
 import Faq from './components/faq/Faq';
 import Help from './components/help-center/Help';
 import Purpose from './components/purpose/Purpose';
+import Featured from './components/featured/Featured';
+import Poster from './components/artists/Potser';
+import CategoryArtist from './components/artists/CategoryArtist';
+import CategoryArtistAdd from './components/artists/CategoryArtistAdd';
 function App() {
   return (
    <>
@@ -71,6 +75,10 @@ function App() {
     <Route path= '/faq' element={<Faq />} /> 
     <Route path= '/help' element= {<Help />} />
     <Route path='/purpose' element={<Purpose />} />
+    <Route path='/featured' element={<Featured />} />
+    <Route path='/posters' element={<Poster />} />
+    <Route path='/category-artist' element={<CategoryArtist />} />
+    <Route path='/category-artist-add' element={<CategoryArtistAdd />} />
 </Route>
   </Routes>
   </Router>

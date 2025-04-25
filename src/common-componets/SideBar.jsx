@@ -70,7 +70,7 @@ const Sidebar = () => {
         <div className="flex-column mt-4">
 
           {renderDropdown('Dashboard', faTableColumns, '/dashboard')}
-          {renderDropdown('Artists', faUser,[ {label: 'Artists',path: '/artists'}, {label: 'Featured Artists',path: '/featured'}])}
+          {renderDropdown('Artists', faUser,[ {label: 'Artists',path: '/artists'}, {label: 'Featured Artists',path: '/featured'}, {label: 'Upload Posters',path: '/posters'}, {label: 'Category Artists',path: '/category-artist'}])}
           {renderDropdown('Category', faDrum, '/category')}
           {renderDropdown('Banners', faSignsPost, [
             { label: 'Banners', path: '/banner' },

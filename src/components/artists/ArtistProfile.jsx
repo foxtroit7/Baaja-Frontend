@@ -143,10 +143,13 @@ const ArtistProfile = () => {
       </div>
 
       <img
-        src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
+         src={`http://15.206.194.89:5000/${artist.poster}`}
         alt={artist.owner_name}
-        className="rounded-circle mb-3"
-        style={{ width: '120px', height: '120px', objectFit: 'cover', border: '3px solid #007bff' }}
+        className=" mb-3"
+        width={120}
+        height={140}
+        rounded
+        style={{ objectFit: 'cover', border: '2px solid #007bff' }}
       />
       <h3 className="fw-bold">Owner Name: {artist.owner_name}</h3>
       <h5 className="text-primary">Category: {artist.category_type}</h5>
@@ -193,6 +196,24 @@ const ArtistProfile = () => {
             <FontAwesomeIcon icon={faMoneyBill} className="fs-3 text-success mb-3" />
             <Card.Title>Total Money</Card.Title>
             <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>{artist.total_money}</Card.Text>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
+    <Row>
+    <Col md={12}>
+        <Card className="text-center shadow-lg rounded-3 mb-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
+          <Card.Body>
+            <FontAwesomeIcon icon={faTruck} className="fs-3 text-primary mb-3" />
+            <Card.Title>required Services</Card.Title>
+            <div>
+  {artist.required_services.map((service, index) => (
+    <span key={index} className="badge bg-primary me-2 mb-2">
+      {service}
+    </span>
+  ))}
+</div>
+
           </Card.Body>
         </Card>
       </Col>

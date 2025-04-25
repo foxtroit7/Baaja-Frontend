@@ -16,7 +16,7 @@ console.log(user_id);
 
   const fetchReviews = () => {
     if (user_id) {
-      fetch(`http://localhost:5000/api/artist/reviews/${user_id}`)
+      fetch(`http://15.206.194.89:5000/api/artist/reviews/${user_id}`)
         .then((res) => res.json())
         .then((data) => {
       
