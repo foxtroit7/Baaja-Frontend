@@ -24,7 +24,7 @@ const Cips = ({ user_id }) => {
 
       try {
         const response = await axios.get(
-          `http://loclahost:5000/api/artist/clips/${user_id}`,
+          `http://15.206.194.89:5000/api/artist/clips/${user_id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

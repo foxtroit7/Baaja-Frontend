@@ -12,7 +12,7 @@ const AddClip = () => {
 const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
-console.log(user_id,'uuuuser_id add')
+// console.log(user_id,'uuuuser_id add')
 const handleSubmit = async (event) => {
   event.preventDefault();
 

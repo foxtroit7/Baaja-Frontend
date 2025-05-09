@@ -1,45 +1,49 @@
-import React, { useState } from "react";
-import { Button, Container, Row, Col, Card } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import {Container} from "react-bootstrap";
+import axios from "axios";
 import Person from "../../assets/person.jpeg";
-
+import { useParams} from 'react-router-dom';
+import Clips from './Cips'
 const NewArtist = () => {
-  // States for expanded descriptions
+  const { user_id } = useParams();
   const [expandedId, setExpandedId] = useState(null);
+  const [users, setUsers] = useState([]);
 
-  // Toggle Read More/Read Less
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+
+        const res = await axios.get(
+          `http://15.206.194.89:5000/api/pending_artists_details?user_id=${user_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setUsers(res.data);
+      } catch (error) {
+        console.error("Error fetching artists:", error);
+      }
+    };
+
+    fetchData();
+  }, [user_id]);
+
   const toggleReadMore = (id) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
-  const users = [
-    {
-      id: "1",
-      name: "John Doe",
-      profilePicture: Person,
-      phone: "123-456-7890",
-      categoryOrdered: "Singer",
-      items: [
-        {
-          id: "a1",
-          title: "Performance Details",
-          desc:
-            "The sitar’s captivating tones and deep cultural roots make it a symbol of Indian heritage and artistry. The sitar is a classical string instrument widely associated with Indian music, known for its distinctive, resonant sound. A sitar player, often referred to as a sitarist, uses a combination of plucking techniques and intricate fingerwork to create melodic and rhythmic patterns.",
-        },
-      ],
-      videos: [
-        { title: "Learning Flute", video_id: "https://www.youtube.com/embed/mGC-S7n_HkE?si=e_JnQ4RLSl5mGKJj" },
-        { title: "Best Flute Music", video_id: "https://www.youtube.com/embed/Cnfj6QCGLyA?si=QpaKcjXeyAvjZsYm" },
-        { title: "Instrumental Song", video_id: "https://www.youtube.com/embed/73vpHngEQpA?si=-u5wTeNORaamRfbo" },
-        { title: "Flute Event", video_id: "https://www.youtube.com/embed/bLpHR0xL_Xo?si=wl_idfeczT0WPv1E" },
-      ],
-    },
-  ];
-
   return (
+    <>
     <Container>
       {users.map((user) => (
         <div
-          key={user.id}
+          key={user._id}
           className="text-center mb-4 p-4 rounded shadow"
           style={{
             backgroundColor: "#f8f9fa",
@@ -47,7 +51,7 @@ const NewArtist = () => {
           }}
         >
           <img
-            src={user.profilePicture}
+            src={user.profilePicture || Person}
             alt={user.name}
             className="rounded-circle mb-3"
             style={{
@@ -58,63 +62,39 @@ const NewArtist = () => {
             }}
           />
 
-          <h3 className="fw-bold">Owner Name: {user.name}</h3>
-          <h5
-            className="text-primary"
-            style={{
-              fontWeight: 600,
-              fontSize: "1.1rem",
-            }}
-          >
-            Category Of Artist: {user.categoryOrdered}
+          <h3 className="fw-bold">Owner Name: {user.owner_name}</h3>
+          <h4 className="fw-bold">Artist Id: {user.user_id}</h4>
+          <h4 className="fw-bold">Profile Name: {user.profile_name}</h4>
+          <h5 className="text-primary" style={{ fontWeight: 600, fontSize: "1.1rem" }}>
+            Category Of Artist: {user.category_type}
           </h5>
-          <p
-            className="text-muted"
-            style={{
-              fontWeight: 300,
-              fontSize: "1rem",
-              margin: "0 0 15px",
-            }}
-          >
+          <h6>Location: {user.location}</h6>
+          
+          <p className="text-muted" style={{ fontWeight: 300, fontSize: "1rem" }}>
             {user.phone}
           </p>
 
-          <h5 className="text-secondary fw-bold">About:</h5>
+          <h5 className="text-secondary fw-bold">About: {user.description}</h5>
           <div>
-            {user.items.map((item) => {
+            {user.items?.map((item) => {
               const isExpanded = expandedId === item.id;
-              const previewText =
-                item.desc.length > 300 ? `${item.desc.slice(0, 300)}...` : item.desc;
+              const previewText = item.desc.length > 300 ? `${item.desc.slice(0, 300)}...` : item.desc;
 
               return (
                 <div
                   key={item.id}
                   className="mb-3 p-3 rounded"
-                  style={{
-                    border: "1px solid #dee2e6",
-                    backgroundColor: "#ffffff",
-                  }}
+                  style={{ border: "1px solid #dee2e6", backgroundColor: "#ffffff" }}
                 >
                   <h5 className="fw-bold text-dark">{item.title}</h5>
-                  <p
-                    className="text-muted"
-                    style={{
-                      fontWeight: 400,
-                      fontSize: "1rem",
-                      lineHeight: 1.6,
-                    }}
-                  >
+                  <p className="text-muted" style={{ fontWeight: 400, fontSize: "1rem", lineHeight: 1.6 }}>
                     {isExpanded ? item.desc : previewText}
                   </p>
                   {item.desc.length > 100 && (
                     <h5
                       className="text-decoration-none fw-bolder fs-6 text-primary"
                       onClick={() => toggleReadMore(item.id)}
-                      style={{
-                        cursor: "pointer",
-                        fontSize: "0.9rem",
-                        textAlign: "right",
-                      }}
+                      style={{ cursor: "pointer", fontSize: "0.9rem", textAlign: "right" }}
                     >
                       {isExpanded ? "Read Less" : "Read More"}
                     </h5>
@@ -124,68 +104,12 @@ const NewArtist = () => {
             })}
           </div>
 
-          {/* Videos Section */}
-          <Row className="mt-4">
-            {user.videos.map((video, index) => (
-              <Col key={index} md={3} className="mb-4">
-                <Card
-                  className="shadow-sm"
-                  style={{
-                    transition: "transform 0.2s",
-                    fontFamily: "'Roboto', sans-serif",
-                    borderRadius: "12px",
-                    overflow: "hidden",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "scale(1.05)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "scale(1)";
-                  }}
-                >
-                  <Card.Body>
-                    <Card.Title
-                      style={{
-                        fontWeight: "bold",
-                        fontSize: "1.2rem",
-                        color: "#343a40",
-                        textAlign: "center",
-                      }}
-                    >
-                      {video.title}
-                    </Card.Title>
-                    <div className="ratio ratio-16x9 mt-3">
-                      <iframe
-                        src={video.video_id}
-                        title={video.title}
-                        style={{ borderRadius: "12px" }}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    </div>
-                    <Button
-                      href={video.video_id}
-                      target="_blank"
-                      variant="primary"
-                      style={{
-                        marginTop: "15px",
-                        width: "100%",
-                        backgroundColor: "#28a745",
-                        border: "none",
-                        fontWeight: "bold",
-                        borderRadius: "8px",
-                      }}
-                    >
-                      Watch on YouTube
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
         </div>
       ))}
+       <Clips user_id={user_id}/>
     </Container>
+
+    </>
   );
 };
 

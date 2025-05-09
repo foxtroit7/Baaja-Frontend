@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Card, Form } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUsers,
@@ -9,125 +9,153 @@ import {
   faStopCircle,
   faBarsProgress,
 } from "@fortawesome/free-solid-svg-icons";
-import Approved from "./Approved";
 
 const Dashboard = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [timeFilter, setTimeFilter] = useState("Today");
+  const [timeFilter, setTimeFilter] = useState("All");
   const [monthFilter, setMonthFilter] = useState("All");
+  const [data, setData] = useState(null);
 
-  // Sample dynamic data for the cards
-  const initialData = {
-    totalUsers: 400,
-    totalArtists: 80,
-    cancelledBookings: 80,
-    activeBookings: 400,
-    totalRevenue: 800,
-    pendingBookings: 400,
+  // Fetch data from API
+  const fetchData = async (filter = "All", start = "", end = "") => {
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+
+    if (!token) {
+      console.error("No token found. User might be logged out.");
+      return;
+    }
+
+    let url = "http://15.206.194.89:5000/api/dashboard-stats";
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, // Include Bearer token in Authorization header
+    };
+
+    if (filter !== "All") {
+      if (["today", "week", "month"].includes(filter.toLowerCase())) {
+        url += `?range=${filter.toLowerCase()}`;
+      } else {
+        // Handle month names
+        const monthMap = {
+          January: 0,
+          February: 1,
+          March: 2,
+          April: 3,
+          May: 4,
+          June: 5,
+          July: 6,
+          August: 7,
+          September: 8,
+          October: 9,
+          November: 10,
+          December: 11,
+        };
+        const monthIndex = monthMap[filter];
+        if (monthIndex !== undefined) {
+          const now = new Date();
+          const year = now.getFullYear();
+          const startOfMonth = new Date(year, monthIndex, 1);
+          const endOfMonth = new Date(year, monthIndex + 1, 0);
+          const start = startOfMonth.toISOString().split("T")[0];
+          const end = endOfMonth.toISOString().split("T")[0];
+          url += `?range=custom&startDate=${start}&endDate=${end}`;
+        }
+      }
+    } else if (start && end) {
+      url += `?range=custom&startDate=${start}&endDate=${end}`;
+    }
+
+    try {
+      const response = await fetch(url, { headers });
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
-  const [data, setData] = useState(initialData);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  // Handle the filter changes
   const handleTimeFilterChange = (e) => {
     const selectedFilter = e.target.value;
     setTimeFilter(selectedFilter);
     setMonthFilter("All"); // Reset month filter when time filter is used
-    updateData(selectedFilter, startDate, endDate);
+    setStartDate("");
+    setEndDate("");
+    fetchData(selectedFilter);
   };
 
   const handleMonthFilterChange = (e) => {
     const selectedMonth = e.target.value;
     setMonthFilter(selectedMonth);
     setTimeFilter("All"); // Reset time filter when month filter is used
-    updateData(selectedMonth, startDate, endDate);
+    setStartDate("");
+    setEndDate("");
+    fetchData(selectedMonth);
   };
 
   const handleDateChange = (e) => {
     const { name, value } = e.target;
-    if (name === "startDate") setStartDate(value);
-    if (name === "endDate") setEndDate(value);
-    setTimeFilter("All"); // Reset other filters when custom dates are used
+  
+    // Update the corresponding date state
+    if (name === "startDate") {
+      setStartDate(value);
+    } else if (name === "endDate") {
+      setEndDate(value);
+  
+      // Only fetch data when both dates are selected
+      if (startDate && value) {
+        fetchData("custom", startDate, value);
+      }
+    }
+  
+    // Reset other filters when custom dates are used
+    setTimeFilter("All");
     setMonthFilter("All");
+  };
+  
+  
+  
+
+  useEffect(() => {
     if (startDate && endDate) {
-      updateData("Custom", value, endDate);
+      setTimeFilter("All");
+      setMonthFilter("All");
+      fetchData("custom", startDate, endDate);
     }
+  }, [startDate, endDate]);
+
+  const handleReset = () => {
+    setStartDate("");
+    setEndDate("");
+    setTimeFilter("All");
+    setMonthFilter("All");
+    fetchData();
   };
 
-  // Function to update the data dynamically (mocked here with adjustments)
-  const updateData = (filter, start, end) => {
-    let updatedData = { ...initialData };
-
-    if (filter === "Today") {
-      updatedData = {
-        totalUsers: 50,
-        totalArtists: 10,
-        cancelledBookings: 5,
-        activeBookings: 30,
-        totalRevenue: 200,
-        pendingBookings: 15,
-      };
-    } else if (filter === "Current Week") {
-      updatedData = {
-        totalUsers: 150,
-        totalArtists: 25,
-        cancelledBookings: 10,
-        activeBookings: 80,
-        totalRevenue: 500,
-        pendingBookings: 40,
-      };
-    } else if (filter === "Current Month") {
-      updatedData = {
-        totalUsers: 300,
-        totalArtists: 50,
-        cancelledBookings: 20,
-        activeBookings: 200,
-        totalRevenue: 1000,
-        pendingBookings: 80,
-      };
-    } else if (filter === "January") {
-      updatedData = {
-        totalUsers: 100,
-        totalArtists: 15,
-        cancelledBookings: 8,
-        activeBookings: 50,
-        totalRevenue: 400,
-        pendingBookings: 20,
-      };
-    } else if (filter === "Custom") {
-      // Simulate data for custom date ranges
-      updatedData = {
-        totalUsers: Math.floor(Math.random() * 300) + 50,
-        totalArtists: Math.floor(Math.random() * 50) + 10,
-        cancelledBookings: Math.floor(Math.random() * 20) + 5,
-        activeBookings: Math.floor(Math.random() * 200) + 50,
-        totalRevenue: Math.floor(Math.random() * 1500) + 200,
-        pendingBookings: Math.floor(Math.random() * 100) + 10,
-      };
-    }
-
-    setData(updatedData);
-  };
+  if (!data) return <div>Loading...</div>;
 
   return (
-    <>
     <Container>
       <h3 className="text-center my-4">Dashboard</h3>
 
       {/* Filters Section */}
       <Row className="mb-4 align-items-center">
-        <Col md={4}>
+        <Col md={2}>
           <Form.Group controlId="timeFilter">
             <Form.Label>Time Filter:</Form.Label>
             <Form.Select value={timeFilter} onChange={handleTimeFilterChange}>
-              <option value="Today">Today</option>
-              <option value="Current Week">Current Week</option>
-              <option value="Current Month">Current Month</option>
+              <option value="All">All</option>
+              <option value="today">Today</option>
+              <option value="week">Current Week</option>
+              <option value="month">Current Month</option>
             </Form.Select>
           </Form.Group>
         </Col>
-        <Col md={4}>
+        <Col md={2}>
           <Form.Group controlId="monthFilter">
             <Form.Label>Month Filter:</Form.Label>
             <Form.Select value={monthFilter} onChange={handleMonthFilterChange}>
@@ -147,22 +175,28 @@ const Dashboard = () => {
             </Form.Select>
           </Form.Group>
         </Col>
-        <Col md={4}>
+        <Col md={6}>
           <Form.Group controlId="customDateRange" className="d-flex gap-2">
-            <Form.Label className="mb-0 me-2">Custom Date:</Form.Label>
+            <Form.Label className="mt-2">Date</Form.Label>
             <Form.Control
-              type="date"
-              name="startDate"
-              value={startDate}
-              onChange={handleDateChange}
-            />
-            <Form.Control
-              type="date"
-              name="endDate"
-              value={endDate}
-              onChange={handleDateChange}
-            />
+  type="date"
+  name="startDate"
+  value={startDate}
+  onChange={handleDateChange}
+/>
+<Form.Control
+  type="date"
+  name="endDate"
+  value={endDate}
+  onChange={handleDateChange}
+/>
+
           </Form.Group>
+        </Col>
+        <Col md={2}>
+          <Button variant="secondary" onClick={handleReset} className="w-100">
+            Reset
+          </Button>
         </Col>
       </Row>
 
@@ -231,7 +265,7 @@ const Dashboard = () => {
               />
               <Card.Title>Total Revenue</Card.Title>
               <Card.Text className="fs-5 fw-bold">
-                ${data.totalRevenue}
+                {data.totalRevenue}
               </Card.Text>
             </Card.Body>
           </Card>
@@ -252,8 +286,6 @@ const Dashboard = () => {
         </Col>
       </Row>
     </Container>
-    <Approved />
-    </>
   );
 };
 

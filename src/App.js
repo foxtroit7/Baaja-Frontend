@@ -34,6 +34,7 @@ import Featured from './components/featured/Featured';
 import Poster from './components/artists/Potser';
 import CategoryArtist from './components/artists/CategoryArtist';
 import CategoryArtistAdd from './components/artists/CategoryArtistAdd';
+import Approved from './components/artists/Approved';
 function App() {
   return (
    <>
@@ -46,7 +47,7 @@ function App() {
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path= "/login" element={<Login/>} />
     <Route path= "/user-form/:uuid/:booking_id" element={<UserForm/>} />
-    <Route path= "/new-artist" element={<NewArtist/>} />
+    <Route path= "/pending_artists_details/:user_id" element={<NewArtist/>} />
     <Route path= "/artist-payments" element={<Artistpayment/>} />
     <Route path= "/payment" element={<Payment/>} />
     <Route path= "/artist-payment-details/:transactionId" element={<ArtistPaymentDetails/>} />
@@ -79,6 +80,7 @@ function App() {
     <Route path='/posters' element={<Poster />} />
     <Route path='/category-artist' element={<CategoryArtist />} />
     <Route path='/category-artist-add' element={<CategoryArtistAdd />} />
+    <Route path='/approved' element={<Approved/>} />
 </Route>
   </Routes>
   </Router>

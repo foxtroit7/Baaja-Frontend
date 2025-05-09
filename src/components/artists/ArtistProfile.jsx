@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Card, Container, Row, Col, Button, Modal } from 'react-bootstrap';
+import { useParams} from 'react-router-dom';
+import { Card, Container, Row, Col} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruck, faMoneyBill, faUserSlash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faTruck, faMoneyBill} from '@fortawesome/free-solid-svg-icons';
 import { toast, ToastContainer } from 'react-toastify';
 import ApppointmentScheduler from './ApppointmentScheduler';
 import Clips from './Cips'
@@ -10,12 +10,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import Reviews from './Reviews';
 import Booking from './Booking';
 const ArtistProfile = () => {
-  const navigate = useNavigate();
   const { user_id } = useParams();
-  const [showModal, setShowModal] = useState(false);
   const [artist, setArtist] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isApproved, setIsApproved] = useState(false);
+  const [paymentData, setPaymentData] = useState(null);
   const fetchArtist = async (user_id, setArtist, setLoading) => {
     setLoading(true);
 
@@ -59,12 +57,30 @@ const ArtistProfile = () => {
         setLoading(false);
     }
 };
+const fetchPaymentData = async (user_id) => {
+  try {
+    const response = await fetch(`http://15.206.194.89:5000/api/artist/payment/${user_id}`);
+    const data = await response.json();
+
+    if (response.ok) {
+      setPaymentData(data.artistPayments);
+    } else {
+      setPaymentData(null);
+      console.error("Error fetching payment data:", data.message);
+    }
+  } catch (err) {
+    console.error("Error:", err);
+    setPaymentData(null);
+  }
+};
 
 
   
   useEffect(() => {
     setLoading(true);
     fetchArtist(user_id, setArtist, setLoading);
+
+    fetchPaymentData(user_id);
   }, [user_id]);
   if (loading) {
     return <h2 className="text-center mt-5">Loading artist details...</h2>;
@@ -73,57 +89,8 @@ const ArtistProfile = () => {
   if (!artist) {
     return <h2 className="text-center mt-5">Artist not found</h2>;
   }
-  const changeDesc = () => {
-    if (isApproved) {
-      toast.success('Access granted! You can now change the description.', {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      navigate('/change-desc');
-    } else {
-      toast.error('Access denied! You cannot change the description.', {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-  };
-  const handleAcceptRequest = () => {
-    setIsApproved(true);
-    setShowModal(false);
-    toast.success('Request approved! You can change the description.', {
-      position: "top-center",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
 
-  const handleCancelRequest = () => {
-    setIsApproved(false);
-    setShowModal(false);
-    toast.warn('Request canceled! Access denied.', {
-      position: "top-center",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
+
   return (
     <Container className="mt-4">
       <ToastContainer />
@@ -132,15 +99,7 @@ const ArtistProfile = () => {
 {artist ? (
   <>
     <div className="text-center mb-4 p-4 rounded shadow" style={{ backgroundColor: '#f8f9fa' }}>
-      <div className="d-flex justify-content-end mt-2">
-        <Button
-          variant="outline-primary"
-          style={{ padding: '5px 10px', borderRadius: '50%', fontSize: '1.2rem' }}
-          onClick={() => setShowModal(true)}
-        >
-          <FontAwesomeIcon icon={faEdit} />
-        </Button>
-      </div>
+  
 
       <img
          src={`http://15.206.194.89:5000/${artist.poster}`}
@@ -163,19 +122,7 @@ const ArtistProfile = () => {
       <h5 className="text-secondary fw-bold">About:</h5>
       <p className="text-muted">{artist.description}</p>
 
-      <Button variant="danger" size="md" className="mb-2">
-        <FontAwesomeIcon icon={faUserSlash} className="pe-2" />
-        Suspend Account
-      </Button>
-
       <div>
-        <Button
-          className="btn btn-primary btn-sm mt-3"
-          style={{ padding: '8px 16px', fontWeight: 500, fontSize: '0.9rem' }}
-          onClick={changeDesc}
-        >
-          Change Description
-        </Button>
       </div>
     </div>
 
@@ -201,7 +148,7 @@ const ArtistProfile = () => {
       </Col>
     </Row>
     <Row>
-    <Col md={12}>
+    {/* <Col md={12}>
         <Card className="text-center shadow-lg rounded-3 mb-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
           <Card.Body>
             <FontAwesomeIcon icon={faTruck} className="fs-3 text-primary mb-3" />
@@ -216,100 +163,55 @@ const ArtistProfile = () => {
 
           </Card.Body>
         </Card>
-      </Col>
+      </Col> */}
+      <Row>
+  <Col md={6}>
+    <Card className="text-center shadow-lg rounded-3 mb-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
+      <Card.Body>
+        <FontAwesomeIcon icon={faTruck} className="fs-3 text-primary mb-3" />
+        <Card.Title>Required Services</Card.Title>
+        <div>
+          {artist.required_services.map((service, index) => (
+            <span key={index} className="badge bg-primary me-2 mb-2">{service}</span>
+          ))}
+        </div>
+      </Card.Body>
+    </Card>
+  </Col>
+
+  <Col md={6}>
+    <Card className="text-center shadow-lg rounded-3 mb-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
+      <Card.Body>
+        <FontAwesomeIcon icon={faMoneyBill} className="fs-3 text-success mb-3" />
+        <Card.Title>Booking Charges of Artist</Card.Title>
+        {paymentData ? (
+          <div className="text-start">
+            <p>First Day: ₹{paymentData.first_day_booking}</p>
+            <p>Second Day: ₹{paymentData.second_day_booking}</p>
+            <p>Third Day: ₹{paymentData.third_day_booking}</p>
+            <p>Fourth Day: ₹{paymentData.fourth_day_booking}</p>
+            <p>Fifth Day: ₹{paymentData.fifth_day_booking}</p>
+            <p>Sixth Day: ₹{paymentData.sixth_day_booking}</p>
+            <p>Seventh Day: ₹{paymentData.seventh_day_booking}</p>
+          </div>
+        ) : (
+          <p className="text-muted">No booking charges available.</p>
+        )}
+      </Card.Body>
+    </Card>
+  </Col>
+</Row>
+
     </Row>
   </>
 ) : (
   <p className="text-center text-danger">No artist found.</p> // ✅ Show message if no artist is found
 )}
 
-      <ApppointmentScheduler />
+      <ApppointmentScheduler artist_id={user_id} />
       <Clips user_id={user_id}/>
       <Booking artist_id={user_id}  />
       <Reviews user_id={user_id} />
-      <Modal
-          show={showModal}
-          onHide={() => setShowModal(false)}
-          centered
-          className="modal-dialog-centered"
-          style={{
-            fontFamily: "'Roboto', sans-serif",
-            borderRadius: '4px',
-            boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
-          }}
-        >
-          <Modal.Header
-            closeButton
-            style={{
-
-              color: '#007bff',
-
-              borderRadius: '10px 10px 0 0',
-            }}
-          >
-            <Modal.Title
-              style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-              }}
-              className='text-center'
-            >
-              Request to Change Description
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body
-            style={{
-              padding: '20px',
-              fontSize: '1.1rem',
-              color: '#495057',
-              textAlign: 'center',
-              backgroundColor: '#f8f9fa',
-            }}
-          >
-            <p>Do you want to approve this request to change the description?</p>
-          </Modal.Body>
-          <Modal.Footer
-            style={{
-              backgroundColor: '#f8f9fa',
-              borderTop: '2px solid #dee2e6',
-              justifyContent: 'center',
-            }}
-          >
-            <Button
-              variant="light"
-              onClick={handleCancelRequest}
-              style={{
-                backgroundColor: '#dc3545',
-                color: '#fff',
-                fontWeight: 'bold',
-                borderRadius: '30px',
-                padding: '10px 20px',
-                fontSize: '1rem',
-                boxShadow: '0rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
-                border: 'none',
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="success"
-              onClick={handleAcceptRequest}
-              style={{
-                backgroundColor: '#28a745',
-                color: '#fff',
-                fontWeight: 'bold',
-                borderRadius: '30px',
-                padding: '10px 20px',
-                fontSize: '1rem',
-                boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
-                border: 'none',
-                marginLeft: '10px',
-              }}
-            >
-              Accept
-            </Button>
-          </Modal.Footer>
-        </Modal>
     </Container>
   );
 };
