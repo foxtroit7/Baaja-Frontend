@@ -85,7 +85,7 @@ const NotificationPage = () => {
         <FontAwesomeIcon icon={faBell} className="me-2" />
         Admin Notifications
       </h3>
- <div className='d-flex justify-content-end align-items-end'><Link to='/push'><Button>Push Notifications</Button></Link></div>
+ {/* <div className='d-flex justify-content-end align-items-end'><Link to='/push'><Button>Push Notifications</Button></Link></div> */}
       <Tab.Container defaultActiveKey="all">
         <Nav variant="tabs" className="mb-4 justify-content-center" style={{ fontSize: '1.1rem' }}>
           <Nav.Item>
