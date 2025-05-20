@@ -9,6 +9,8 @@ const Faq = () => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({ question: "", answer: "" });
   const [editId, setEditId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   const fetchFaqs = async () => {
     try {
@@ -57,12 +59,15 @@ const Faq = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const confirmDelete = async () => {
     try {
-      await axios.delete(`http://15.206.194.89:5000/api/faq/${id}`);
+      await axios.delete(`http://15.206.194.89:5000/api/faq/${deleteId}`);
       fetchFaqs();
     } catch (error) {
       console.error("Error deleting FAQ", error);
+    } finally {
+      setShowDeleteModal(false);
+      setDeleteId(null);
     }
   };
 
@@ -80,16 +85,21 @@ const Faq = () => {
               <Accordion.Body> 
                 <p className="text-start fw-medium">{faq.answer}</p>
                 <div className="d-flex justify-content-end">
-                <FontAwesomeIcon
-                  icon={faEdit}
-                  className="text-primary mx-2"
-                  onClick={() => handleShowModal(faq)}
-                />
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  className="text-danger mx-2"
-                  onClick={() => handleDelete(faq._id)}
-                />
+                  <FontAwesomeIcon
+                    icon={faEdit}
+                    className="text-primary mx-2"
+                    onClick={() => handleShowModal(faq)}
+                    style={{ cursor: "pointer" }}
+                  />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className="text-danger mx-2"
+                    onClick={() => {
+                      setDeleteId(faq._id);
+                      setShowDeleteModal(true);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  />
                 </div>
               </Accordion.Body>
             </Accordion.Item>
@@ -129,6 +139,24 @@ const Faq = () => {
             </Button>
           </Form>
         </Modal.Body>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete this FAQ? This action cannot be undone.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={confirmDelete}>
+            Delete
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );

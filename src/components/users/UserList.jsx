@@ -40,7 +40,7 @@ const UserList = () => {
         }
 
         const response = await axios.get(
-          "http://15.206.194.89:5000/api/all-bookings",
+          "http://localhost:5000/api/all-bookings",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -112,8 +112,7 @@ const UserList = () => {
       )
       .filter((item) =>
         filters.search
-          ? item.user_name?.toLowerCase().includes(filters.search.toLowerCase()) ||
-            item.artist_name?.toLowerCase().includes(filters.search.toLowerCase())
+          ? item.booking_id?.toLowerCase().includes(filters.search.toLowerCase())
           : true
       )
       .filter((item) => {
@@ -186,12 +185,12 @@ const UserList = () => {
                 <FontAwesomeIcon icon={faEye} />
               </Button>
             </Link>
-            <Button
+            {/* <Button
               variant="danger"
               onClick={() => handleDeleteBooking(item.booking_id)}
             >
               <FontAwesomeIcon icon={faTrash} />
-            </Button>
+            </Button> */}
           </div>
         </td>
       </tr>
@@ -212,7 +211,7 @@ const UserList = () => {
               </InputGroup.Text>
               <Form.Control
                 type="text"
-                placeholder="Search by User or Artist"
+                placeholder="Search by Booking Id"
                 name="search"
                 value={filters.search}
                 onChange={handleFilterChange}
@@ -299,7 +298,7 @@ const UserList = () => {
               <th style={{ padding: "15px" }}>Status</th>
               <th style={{ padding: "15px" }}>Booking Time</th>
               <th style={{ padding: "15px" }}>Payment Status</th>
-              <th style={{ padding: "15px" }}>Actions</th>
+              <th style={{ padding: "15px" }}>View</th>
             </tr>
           </thead>
           <tbody>{renderTableRows(currentItems)}</tbody>
@@ -313,6 +312,7 @@ const UserList = () => {
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className="me-1"
+           size="sm" 
         >
           &lt;
         </Button>
@@ -334,6 +334,7 @@ const UserList = () => {
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className="me-1 ms-1"
+           size="sm" 
         >
           &gt;
         </Button>

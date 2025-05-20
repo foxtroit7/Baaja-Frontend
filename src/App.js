@@ -26,7 +26,7 @@ import ArtistPaymentDetails from './components/payment/ArtistPaymentDetails';
 import NewArtist from './components/artists/NewArtist';
 import Login from './components/login/Login';
 import Signup from './components/login/Signup';
-// import PushNotifications from './components/description/PushNotification';
+import PushNotifications from './components/description/PushNotification';
 import Faq from './components/faq/Faq';
 import Help from './components/help-center/Help';
 import Purpose from './components/purpose/Purpose';
@@ -72,7 +72,7 @@ function App() {
     <Route path="/des" element={<Description />}/>
     <Route path="/customer-profile/:user_id" element={<Customers />} />
     <Route path= '/users' element={<CustomerList />} /> 
-    {/* <Route path= '/push' element={<PushNotifications />} />  */}
+    <Route path= '/push' element={<PushNotifications />} /> 
     <Route path= '/faq' element={<Faq />} /> 
     <Route path= '/help' element= {<Help />} />
     <Route path='/purpose' element={<Purpose />} />

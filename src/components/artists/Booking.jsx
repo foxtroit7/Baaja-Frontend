@@ -73,6 +73,7 @@ const Booking = ({ artist_id }) => {
         ) : error ? (
           <div className="text-center text-danger">{error}</div>
         ) : (
+          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
           <Table
             responsive
             hover
@@ -152,6 +153,7 @@ const Booking = ({ artist_id }) => {
               )}
             </tbody>
           </Table>
+          </div>
         )}
       </div>
     </div>

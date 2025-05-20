@@ -1,49 +1,48 @@
 import React, { useEffect, useState } from "react";
-import {Container} from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import axios from "axios";
 import Person from "../../assets/person.jpeg";
-import { useParams} from 'react-router-dom';
-import Clips from './Cips'
+import { useParams } from 'react-router-dom';
+import Clips from './Cips';
+
 const NewArtist = () => {
   const { user_id } = useParams();
   const [expandedId, setExpandedId] = useState(null);
-  const [users, setUsers] = useState([]);
-
+  const [user, setUser] = useState(null);
 
   const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(
+        `http://15.206.194.89:5000/api/pending_artists_details?user_id=${user_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-        const res = await axios.get(
-          `http://15.206.194.89:5000/api/pending_artists_details?user_id=${user_id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+      console.log("API Response:", res.data);
+      setUser(res.data[0]); // assuming only one user is returned
+    } catch (error) {
+      console.error("Error fetching artist:", error);
+    }
+  };
 
-        setUsers(res.data);
-      } catch (error) {
-        console.error("Error fetching artists:", error);
-      }
-    };
+  fetchData();
+}, [user_id]);
 
-    fetchData();
-  }, [user_id]);
 
   const toggleReadMore = (id) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
   return (
-    <>
     <Container>
-      {users.map((user) => (
+      {user && (
         <div
-          key={user._id}
           className="text-center mb-4 p-4 rounded shadow"
           style={{
             backgroundColor: "#f8f9fa",
@@ -69,12 +68,13 @@ const NewArtist = () => {
             Category Of Artist: {user.category_type}
           </h5>
           <h6>Location: {user.location}</h6>
-          
+
           <p className="text-muted" style={{ fontWeight: 300, fontSize: "1rem" }}>
             {user.phone}
           </p>
 
           <h5 className="text-secondary fw-bold">About: {user.description}</h5>
+
           <div>
             {user.items?.map((item) => {
               const isExpanded = expandedId === item.id;
@@ -103,13 +103,11 @@ const NewArtist = () => {
               );
             })}
           </div>
-
         </div>
-      ))}
-       <Clips user_id={user_id}/>
-    </Container>
+      )}
 
-    </>
+      <Clips user_id={user_id} />
+    </Container>
   );
 };
 

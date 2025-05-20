@@ -1,341 +1,228 @@
-import React, { useState } from 'react';
-import { Card, Button, Badge, Tab, Nav, Modal, Form } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { faEye, faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faTimesCircle, faBell, faStopwatch, faEye } from '@fortawesome/free-solid-svg-icons';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { EmailShareButton, WhatsappShareButton, EmailIcon, WhatsappIcon } from 'react-share';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+const AdminArtistUpdates = () => {
+  const [updates, setUpdates] = useState([]);
+  const [activeTab, setActiveTab] = useState('pending');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-const NotificationPage = () => {
-
-  const [notifications, setNotifications] = useState([
-    { id: 1, message: 'Change Description Request for Artist Id ABCD1234', type: 'Request', status: null, timestamp: '2025-02-14 10:30 AM' },
-    { id: 2, message: 'Request to add new clip of Artist Id ABCD1234', type: 'Request', status: null, timestamp: '2025-02-14 11:00 PM' },
-    { id: 3, message: 'Approve request of a new Artist', type: 'Request', status: null, timestamp: '2025-02-14 11:30 AM' },
-    { id: 4, message: 'payment Id AQWE34RT45 is cancelled', type: 'Alert', status: null, timestamp: '2025-02-14 12:00 PM' },
-    { id: 5, message: 'payment Id AQWE34RT45 is Refunded', type: 'Alert', status: null, timestamp: '2025-02-14 12:30 AM' },
-    { id: 6, message: 'payment Id AQWE34RT45 is Accepted', type: 'Alert', status: null, timestamp: '2025-02-14 13:00 PM' },
-  ]);
-
-
-  const [showModal, setShowModal] = useState(false);
-  const [cancelReason, setCancelReason] = useState('');
-  const [selectedNotifId, setSelectedNotifId] = useState(null);
-
-  const handleAccept = (id) => {
-    setNotifications((prev) =>
-      prev.map((notif) =>
-        notif.id === id ? { ...notif, status: 'Accepted' } : notif
-      )
-    );
-
-
-
-    toast.success(`Request has been accepted.`, {
-      position: "top-right",
-      autoClose: 3000,
-    });
-  };
-
-  const handleCancel = (id) => {
-    setSelectedNotifId(id);
-    setShowModal(true);
-  };
-
-  const handleSubmitCancel = () => {
-    if (!cancelReason.trim()) {
-      toast.error("Please provide a reason for cancellation.", {
-        position: "top-right",
-        autoClose: 3000,
-      });
-      return;
+  const fetchUpdates = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get('http://15.206.194.89:5000/api/admin/pending-updates');
+      setUpdates(response.data);
+    } catch (error) {
+      console.error('Error fetching updates:', error);
     }
+    setLoading(false);
+  };
 
-    setNotifications((prev) =>
-      prev.map((notif) =>
-        notif.id === selectedNotifId ? { ...notif, status: 'Cancelled', reason: cancelReason } : notif
-      )
+const handleApprove = async (id) => {
+  try {
+    await axios.post(
+      `http://15.206.194.89:5000/api/admin-pending-updates-approve/${id}`
     );
-    setShowModal(false);
-    setCancelReason('');
-    toast.error(`Request has been cancelled.`, {
-      position: "top-right",
-      autoClose: 3000,
+    alert("Update approved successfully!");
+    fetchUpdates(); // This will re-fetch the list to reflect the approved status
+  } catch (error) {
+    console.error("Error approving update:", error);
+    alert("Failed to approve update.");
+  }
+};
+
+const handleReject = async (id) => {
+  const adminRemarks = prompt('Enter rejection reason:');
+  if (!adminRemarks || adminRemarks.trim() === '') {
+    alert('Rejection reason is required.');
+    return;
+  }
+
+  try {
+    const res = await axios.post(`http://localhost:5000/api/admin-pending-updates-reject/${id}`, {
+      admin_remarks: adminRemarks,
     });
-  };
 
-  const countNotificationsByType = (type) => {
-    return notifications.filter((notif) => notif.type === type).length;
-  };
+    alert(res.data.message || 'Update rejected successfully.');
+    fetchUpdates(); // Refresh the list
+  } catch (error) {
+    console.error('Error rejecting update:', error);
+    alert('Failed to reject update.');
+  }
+};
 
-  return (
+  const handleViewProfile = (userId) => {
+    navigate(`/artist-profile/${userId}`);
+  };
+  const renderUpdateCard = (update) => (
     <div
-      className="notification-page-container p-5"
+      key={update._id}
       style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        backgroundColor: '#f8f9fa',
-        borderRadius: '15px',
-        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
+        backgroundColor: '#fff',
+        border: '1px solid #e0e0e0',
+        borderRadius: '12px',
+        padding: '1.5rem',
+        marginBottom: '1.5rem',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+        position: 'relative',
+        transition: 'transform 0.3s ease',
       }}
     >
-      <ToastContainer />
-      <h3 className="mb-4 text-center">
-        <FontAwesomeIcon icon={faBell} className="me-2" />
-        Admin Notifications
-      </h3>
- {/* <div className='d-flex justify-content-end align-items-end'><Link to='/push'><Button>Push Notifications</Button></Link></div> */}
-      <Tab.Container defaultActiveKey="all">
-        <Nav variant="tabs" className="mb-4 justify-content-center" style={{ fontSize: '1.1rem' }}>
-          <Nav.Item>
-            <Nav.Link eventKey="all">
-              All Notifications ({notifications.length})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="requests">
-              Requests ({countNotificationsByType('Request')})
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="alerts">
-              Alerts ({countNotificationsByType('Alert')})
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
-        <Tab.Content>
-          <Tab.Pane eventKey="all">
-            {notifications.map((notif) => (
-              <Card
-                key={notif.id}
-                className={`shadow-sm mb-4 border-0 rounded-3 ${notif.status ? (notif.status === 'Accepted' ? 'bg-success' : 'bg-danger') : 'bg-white'}`}
-                style={{ transition: 'background-color 0.3s ease' }}
-              >
-                <Card.Body>
-                  {/* Timestamp Badge */}
-                  <div className='d-flex justify-content-end mb-3'>
-                    <Badge bg="primary">
-                      <FontAwesomeIcon icon={faStopwatch} /> {notif.timestamp}
-                    </Badge>
-                  </div>
-                  <div className="">
-                    <div className="d-flex flex-column flex-grow-1">
-                      <h5 className="mb-2 text-dark" style={{ fontWeight: '600' }}>
-                        {notif.message}
-                      </h5>
-                    </div>
+    <p>
+  Artist <span class="badge bg-warning">{update.update_type}</span> Data
+</p>
 
-                    <div className="d-flex gap-3 justify-content-end align-items-center">
-                      <Badge bg={notif.type === 'Request' ? 'primary' : 'warning'} className="me-2">
-                        {notif.type}
-                      </Badge>
+      <p style={{ marginBottom: '0.5rem' }}>
+        <strong>{update.fields_changed.join(', ')}</strong> added for artist id <strong>{update.user_id}</strong>
+      </p>
+   
+   {update.update_type === 'clip' ? (
+  update.fields_changed.map((field) => (
+    <div key={field} style={{ marginBottom: '0.5rem' }}>
+      <p>
+      <strong>New {field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}
+      {field === 'video' ? (
+        <video
+          src={`http://localhost:5000/${update.updated_data?.[field]}`}
+          controls
+          style={{ borderRadius: '12px', width: '100%', maxWidth: '400px' }}
+        />
+      ) : (
+        update.updated_data?.[field] ?? 'N/A'
+      )}
+    </p>
+    </div>
+  ))
+) : (
+  update.fields_changed.map((field) => (
+    <div key={field} style={{ marginBottom: '0.5rem' }}>
+      <p>
+        <strong>Old {field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}
+        {update.original_data?.[field] ?? 'N/A'}
+      </p>
+      <p>
+        <strong>New {field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}
+        {update.updated_data?.[field] ?? 'N/A'}
+      </p>
+    </div>
+  ))
+)}
 
-                      <div className="d-flex gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() => handleAccept(notif.id)}
-                          className="d-flex align-items-center"
-                          style={{ backgroundColor: 'green', border: 'none' }}
-                        >
-                          <FontAwesomeIcon icon={faCheckCircle} className="me-2" />
-                          Accept
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => handleCancel(notif.id)}
-                          className="d-flex align-items-center"
-                          style={{ backgroundColor: 'red', border: 'none' }}
-                        >
-                          <FontAwesomeIcon icon={faTimesCircle} className="me-2" />
-                          Cancel
-                        </Button>
-                        <Button size="sm" variant="primary" className="d-flex align-items-center">
-                          <FontAwesomeIcon icon={faEye} className="me-2" />
-                          View
-                        </Button>
-                      </div>
 
-                      <div className="d-flex gap-2">
-                        <WhatsappShareButton url="https://example.com" title={notif.message}>
-                          <WhatsappIcon size={32} round />
-                        </WhatsappShareButton>
-                        <EmailShareButton url="https://example.com" subject="Notification" body={notif.message}>
-                          <EmailIcon size={32} round />
-                        </EmailShareButton>
-                      </div>
-                    </div>
-                  </div>
-                </Card.Body>
-              </Card>
-            ))}
-          </Tab.Pane>
-          <Tab.Pane eventKey="requests">
-  {notifications
-    .filter((notif) => notif.type === 'Request') // Filter by 'Request' type
-    .map((notif) => (
-      <Card
-        key={notif.id}
-        className={`shadow-sm mb-4 border-0 rounded-3 ${notif.status ? (notif.status === 'Accepted' ? 'bg-success' : 'bg-danger') : 'bg-white'}`}
-        style={{ transition: 'background-color 0.3s ease' }}
+
+      {update.admin_remarks && (
+        <p style={{ color: '#b30000', fontWeight: 'bold' }}>
+          Remarks: {update.admin_remarks}
+        </p>
+      )}
+
+      {activeTab === 'pending' && (
+        <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
+          <button
+            onClick={() => handleApprove(update._id)}
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              transition: 'background 0.3s',
+            }}
+          >
+            <FontAwesomeIcon icon={faThumbsUp} /> Approve
+          </button>
+          <button
+            onClick={() => handleReject(update._id)}
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: '#dc3545',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              transition: 'background 0.3s',
+            }}
+          >
+            <FontAwesomeIcon icon={faThumbsDown} /> Reject
+          </button>
+        </div>
+      )}
+
+      <button
+      onClick={() => handleViewProfile(update.user_id)}
+    
+        style={{
+          position: 'absolute',
+          bottom: '15px',
+          right: '15px',
+          padding: '0.4rem 0.8rem',
+          backgroundColor: '#007bff',
+          color: 'white',
+          border: 'none',
+          borderRadius: '6px',
+          cursor: 'pointer',
+        }}
       >
-        <Card.Body>
-          {/* Timestamp Badge */}
-          <div className='d-flex justify-content-end mb-3'>
-            <Badge bg="primary">
-              <FontAwesomeIcon icon={faStopwatch} /> {notif.timestamp}
-            </Badge>
+        <FontAwesomeIcon icon={faEye} /> View
+      </button>
+    </div>
+  );
+
+  useEffect(() => {
+    fetchUpdates();
+  }, []);
+
+  const statusTabs = ['pending', 'approved', 'rejected'];
+
+  return (
+    <div style={{ padding: '2rem', margin: '0 auto', backgroundColor: '#f9f9f9' }}>
+      <h2 style={{ marginBottom: '1.5rem', textAlign: 'center', color: '#333' }}>Artist Notifications</h2>
+
+      {/* Tabs */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+        {statusTabs.map((status) => (
+          <div
+            key={status}
+            onClick={() => setActiveTab(status)}
+            style={{
+              padding: '0.75rem 1.5rem',
+              margin: '0 0.5rem',
+              cursor: 'pointer',
+              borderBottom: activeTab === status ? '3px solid #007bff' : '3px solid transparent',
+              color: activeTab === status ? '#007bff' : '#555',
+              fontWeight: activeTab === status ? 'bold' : 'normal',
+              transition: 'color 0.3s',
+            }}
+          >
+            {status.charAt(0).toUpperCase() + status.slice(1)}
           </div>
-          <div className="">
-            <div className="d-flex flex-column flex-grow-1">
-              <h5 className="mb-2 text-dark" style={{ fontWeight: '600' }}>
-                {notif.message}
-              </h5>
-            </div>
+        ))}
+      </div>
 
-            <div className="d-flex gap-3 justify-content-end align-items-center">
-              <Badge bg="primary" className="me-2">
-                {notif.type}
-              </Badge>
+      {/* Content */}
+      {loading ? (
+        <p style={{ textAlign: 'center' }}>Loading...</p>
+      ) : (
+        <div>
+         {(() => {
+  const filtered = updates.filter((u) => u.status === activeTab);
+  if (filtered.length === 0) {
+    let message = '';
+    if (activeTab === 'pending') message = 'No waiting updates are available.';
+    else if (activeTab === 'approved') message = 'No approved updates are available.';
+    else if (activeTab === 'rejected') message = 'No rejected updates are available.';
+    return <p style={{ textAlign: 'center', color: '#777' }}>{message}</p>;
+  }
+  return filtered.map((update) => renderUpdateCard(update));
+})()}
 
-              <div className="d-flex gap-2">
-                <Button
-                  size="sm"
-                  onClick={() => handleAccept(notif.id)}
-                  className="d-flex align-items-center"
-                  style={{ backgroundColor: 'green', border: 'none' }}
-                >
-                  <FontAwesomeIcon icon={faCheckCircle} className="me-2" />
-                  Accept
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => handleCancel(notif.id)}
-                  className="d-flex align-items-center"
-                  style={{ backgroundColor: 'red', border: 'none' }}
-                >
-                  <FontAwesomeIcon icon={faTimesCircle} className="me-2" />
-                  Cancel
-                </Button>
-                <Button size="sm" variant="primary" className="d-flex align-items-center">
-                  <FontAwesomeIcon icon={faEye} className="me-2" />
-                  View
-                </Button>
-              </div>
-
-              <div className="d-flex gap-2">
-                <WhatsappShareButton url="https://example.com" title={notif.message}>
-                  <WhatsappIcon size={32} round />
-                </WhatsappShareButton>
-                <EmailShareButton url="https://example.com" subject="Notification" body={notif.message}>
-                  <EmailIcon size={32} round />
-                </EmailShareButton>
-              </div>
-            </div>
-          </div>
-        </Card.Body>
-      </Card>
-    ))}
-</Tab.Pane>
-
-<Tab.Pane eventKey="alerts">
-  {notifications
-    .filter((notif) => notif.type === 'Alert') // Filter by 'Alert' type
-    .map((notif) => (
-      <Card
-        key={notif.id}
-        className={`shadow-sm mb-4 border-0 rounded-3 ${notif.status ? (notif.status === 'Accepted' ? 'bg-success' : 'bg-danger') : 'bg-white'}`}
-        style={{ transition: 'background-color 0.3s ease' }}
-      >
-        <Card.Body>
-          {/* Timestamp Badge */}
-          <div className='d-flex justify-content-end mb-3'>
-            <Badge bg="primary">
-              <FontAwesomeIcon icon={faStopwatch} /> {notif.timestamp}
-            </Badge>
-          </div>
-          <div className="">
-            <div className="d-flex flex-column flex-grow-1">
-              <h5 className="mb-2 text-dark" style={{ fontWeight: '600' }}>
-                {notif.message}
-              </h5>
-            </div>
-
-            <div className="d-flex gap-3 justify-content-end align-items-center">
-              <Badge bg="warning" className="me-2">
-                {notif.type}
-              </Badge>
-
-              <div className="d-flex gap-2">
-                <Button
-                  size="sm"
-                  onClick={() => handleAccept(notif.id)}
-                  className="d-flex align-items-center"
-                  style={{ backgroundColor: 'green', border: 'none' }}
-                >
-                  <FontAwesomeIcon icon={faCheckCircle} className="me-2" />
-                  Accept
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => handleCancel(notif.id)}
-                  className="d-flex align-items-center"
-                  style={{ backgroundColor: 'red', border: 'none' }}
-                >
-                  <FontAwesomeIcon icon={faTimesCircle} className="me-2" />
-                  Cancel
-                </Button>
-                <Button size="sm" variant="primary" className="d-flex align-items-center">
-                  <FontAwesomeIcon icon={faEye} className="me-2" />
-                  View
-                </Button>
-              </div>
-
-              <div className="d-flex gap-2">
-                <WhatsappShareButton url="https://example.com" title={notif.message}>
-                  <WhatsappIcon size={32} round />
-                </WhatsappShareButton>
-                <EmailShareButton url="https://example.com" subject="Notification" body={notif.message}>
-                  <EmailIcon size={32} round />
-                </EmailShareButton>
-              </div>
-            </div>
-          </div>
-        </Card.Body>
-      </Card>
-    ))}
-</Tab.Pane>
-
-        </Tab.Content>
-      </Tab.Container>
-
-      {/* Modal for cancel reason */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Cancel Reason</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group controlId="cancelReason">
-            <Form.Label>Please provide a reason for cancellation:</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              value={cancelReason}
-              onChange={(e) => setCancelReason(e.target.value)}
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-          <Button variant="danger" onClick={handleSubmitCancel}>
-            Submit Cancel
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        </div>
+      )}
     </div>
   );
 };
 
-export default NotificationPage;
+export default AdminArtistUpdates;

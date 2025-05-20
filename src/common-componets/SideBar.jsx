@@ -79,7 +79,10 @@ const Sidebar = () => {
           {renderDropdown('Booking Purpose', faVideo, '/purpose')}
           {renderDropdown('Users', faUser, '/users')}
           {renderDropdown('Bookings', faBox, '/bookings')}
-          {renderDropdown('Notification', faBell, '/des')}
+          {renderDropdown('Notification', faBell, [
+            { label: 'Artist Notifications', path: '/des' },
+            { label: 'Push Notifications', path: '/push' },
+          ])}
           {renderDropdown('Payment', faMoneyBill, '/payment')}
           {renderDropdown("FAQ's", faQuestionCircle, '/faq')}
         </div>

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, Container, Row, Col, Image, Button, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruck, faMoneyBill, faTruckRampBox, faCheckCircle, faTools, faUser, faBagShopping } from '@fortawesome/free-solid-svg-icons';
+import { faTruck, faMoneyBill, faTruckRampBox, faTools, faUser, faBagShopping } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from 'react-bootstrap';
-
+import axios from "axios";
 const UserProfile = () => {
   const { booking_id } = useParams();
   const [loading, setLoading] = useState(true); 
@@ -51,42 +51,47 @@ const UserProfile = () => {
     };
 
     fetchBookingData();
-  }, [booking_id]);
+  }, [booking_id, newStatus]);
 
   // Change status function
-  const changeStatus = async () => {
-    try {
-      const token = localStorage.getItem("token");
-  
-      const url = `http://15.206.194.89:5000/api/booking/update-status/${booking_id}`;
-  
-      const response = await fetch(url, {
-        method: "PUT",
+const changeStatus = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const url = `http://15.206.194.89:5000/api/booking/update-status/${booking_id}`;
+
+    const response = await axios.put(
+      url,
+      { status: newStatus },
+      {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ status: newStatus }),
-      });
-  
-      const data = await response.json();
-      if (!response.ok || !data.success) {
-        throw new Error(data.message || "Error changing status");
       }
-  
-      // On success, update the booking data directly without refetching
-      setBooking((prevBooking) => ({
-        ...prevBooking,
-        status: newStatus, // Update status in the state
+    );
+
+      // Check if the API response is successful (status 200)
+    if (response.status === 200) {
+      // Update booking status and rejection statuses
+      setBooking((prev) => ({
+        ...prev,
+        status: newStatus,
+        adminRejected: true, // Set adminRejected to true after success
+        artistRejected: response.data.artistRejected,
+        userRejected: response.data.userRejected,
       }));
-  
-      // Close the modal immediately after successful status update
-      setShowModal(false);
-  
-    } catch (error) {
-      console.error("Error changing status:", error);
+
+    // Close modal
+    setShowModal(false);
     }
-  };
+    console.log("✅ Status changed:", response.data.message);
+  } catch (error) {
+    console.error("❌ Error changing status:", error?.response?.data?.message || error.message);
+  }
+};
+
+
 
   // Show confirmation modal
   const handleStatusChange = (status) => {
@@ -135,6 +140,7 @@ const UserProfile = () => {
   };
   
   return (
+    <>
     <Container className="mt-4" style={cardStyle}>
       <h2 className="text-center mb-4" style={headerStyle}>
         Booking Details
@@ -143,7 +149,7 @@ const UserProfile = () => {
         <Col md={6}>
           <div className="text-center mb-4">
             <Image
-              src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
+              src="https://i.pinimg.com/474x/a9/15/77/a915773aa44f2d6d5f5de7a5b765bd2d.jpg"
               roundedCircle
               style={{
                 width: '150px',
@@ -160,15 +166,32 @@ const UserProfile = () => {
 
         <Col md={6}>
           <div className="text-center mb-4">
-            <Image
-              src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
-              roundedCircle
-              style={{
-                width: '150px',
-                height: '150px',
-                marginBottom: '10px',
-              }}
-            />
+ {booking.artist_details && booking.artist_details.poster ? (
+  <Image
+    src={`http://15.206.194.89:5000/${booking.artist_details.poster}`}
+    style={{
+      width: '150px',
+      height: '150px',
+      marginBottom: '10px',
+    }}
+    alt="Artist Poster"
+  />
+) : (
+  <div
+    style={{
+      height: '150px',
+      marginBottom: '10px',
+  
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+  >
+    No Poster
+  </div>
+)}
+
+
             <div>
               <h5 style={headerStyle}>Artist: {booking.organization}</h5>
               <p>{booking.alternate_number}</p>
@@ -301,23 +324,25 @@ const UserProfile = () => {
           </Col>
         </Row>
       </Row>
-  
-      {/* Modal for Status Change Confirmation */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Status Change</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to change the status to {newStatus}?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={changeStatus}>
-            Confirm
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </Container>
+    {/* Modal for confirmation */}
+<Modal show={showModal} onHide={() => setShowModal(false)} centered>
+  <Modal.Header closeButton>
+    <Modal.Title>Confirm Status Change</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    Are you sure you want to change the booking status to <strong>{newStatus}</strong>?
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setShowModal(false)}>
+      Cancel
+    </Button>
+    <Button variant="primary" onClick={changeStatus}>
+      Confirm
+    </Button>
+  </Modal.Footer>
+</Modal>
+    </>
   );
 };
 
