@@ -28,7 +28,7 @@ const CustomerList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/user/details");
+        const response = await fetch("http://15.206.194.89:5000/api/user/details");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }

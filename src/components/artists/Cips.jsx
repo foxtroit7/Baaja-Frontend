@@ -194,9 +194,9 @@ const Cips = ({ user_id }) => {
             <Button variant="danger" onClick={handleDelete}>
               <FontAwesomeIcon icon={faTrash} />
             </Button>
-            <Button variant="primary" onClick={handleEdit}>
+            {/* <Button variant="primary" onClick={handleEdit}>
               <FontAwesomeIcon icon={faPencil} />
-            </Button>
+            </Button> */}
           </Modal.Footer>
         </Modal>
       )}

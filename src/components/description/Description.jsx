@@ -41,7 +41,7 @@ const handleReject = async (id) => {
   }
 
   try {
-    const res = await axios.post(`http://localhost:5000/api/admin-pending-updates-reject/${id}`, {
+    const res = await axios.post(`http://15.206.194.89:5000/api/admin-pending-updates-reject/${id}`, {
       admin_remarks: adminRemarks,
     });
 
@@ -85,7 +85,7 @@ const handleReject = async (id) => {
       <strong>New {field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}
       {field === 'video' ? (
         <video
-          src={`http://localhost:5000/${update.updated_data?.[field]}`}
+          src={`http://15.206.194.89:5000/${update.updated_data?.[field]}`}
           controls
           style={{ borderRadius: '12px', width: '100%', maxWidth: '400px' }}
         />
