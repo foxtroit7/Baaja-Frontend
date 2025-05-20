@@ -5,7 +5,9 @@ import {
   Table,
   Spinner,
   Tabs,
-  Tab
+  Tab,
+  Modal,
+  Button,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +15,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const BannerRow = ({ item, onDelete }) => {
+const BannerRow = ({ item, onDeleteClick }) => {
   const navigate = useNavigate();
 
   return (
@@ -21,7 +23,9 @@ const BannerRow = ({ item, onDelete }) => {
       <td className="text-center align-middle">{item.section}</td>
       <td className="text-center align-middle">{item.page}</td>
       <td className="text-center align-middle">
-        <a href={item.link} target="_blank" rel="noopener noreferrer">{item.link}</a>
+        <a href={item.link} target="_blank" rel="noopener noreferrer">
+          {item.link}
+        </a>
       </td>
       <td className="text-center">
         <img
@@ -38,38 +42,36 @@ const BannerRow = ({ item, onDelete }) => {
       </td>
       <td className="text-center align-middle">{item.connection}</td>
       <td className="text-center align-middle">
-  {item.section.toLowerCase() === 'top' ? (
-    <span
-      style={{
-        backgroundColor: item.background_color,
-        padding: '5px 5px',
-        borderRadius: '5px',
-        color: '#fff',
-        display: 'inline-block',
-      }}
-    >
-      {item.background_color}
-    </span>
-  ) : (
-  'No Color'
-  )}
-</td>
-
-    
-      <td>
-        <div className='d-flex justify-content-center align-items-center mt-2'>
-          <button
-            className='me-2 bg-danger border-0 ps-2 pe-2 pb-1 pt-1 rounded'
-            onClick={() => onDelete(item.banner_id)}
+        {item.section.toLowerCase() === 'top' ? (
+          <span
+            style={{
+              backgroundColor: item.background_color,
+              padding: '5px 5px',
+              borderRadius: '5px',
+              color: '#fff',
+              display: 'inline-block',
+            }}
           >
-            <FontAwesomeIcon icon={faTrash} className='text-light' />
+            {item.background_color}
+          </span>
+        ) : (
+          'No Color'
+        )}
+      </td>
+      <td>
+        <div className="d-flex justify-content-center align-items-center mt-2">
+          <button
+            className="me-2 bg-danger border-0 ps-2 pe-2 pb-1 pt-1 rounded"
+            onClick={() => onDeleteClick(item.banner_id)}
+          >
+            <FontAwesomeIcon icon={faTrash} className="text-light" />
           </button>
 
           <button
-            className='bg-warning border-0 ps-2 pe-2 pb-1 pt-1 rounded'
+            className="bg-warning border-0 ps-2 pe-2 pb-1 pt-1 rounded"
             onClick={() => navigate(`/edit-banner/${item.banner_id}`)}
           >
-            <FontAwesomeIcon icon={faEdit} className='text-light' />
+            <FontAwesomeIcon icon={faEdit} className="text-light" />
           </button>
         </div>
       </td>
@@ -79,15 +81,18 @@ const BannerRow = ({ item, onDelete }) => {
 
 const BannerList = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedBannerId, setSelectedBannerId] = useState(null);
 
   useEffect(() => {
     fetchBanners();
   }, []);
 
   const fetchBanners = () => {
-    axios.get('http://15.206.194.89:5000/api/banners')
+    axios
+      .get('http://15.206.194.89:5000/api/banners')
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -98,16 +103,24 @@ const BannerList = () => {
       });
   };
 
-  const handleDelete = async (banner_id) => {
+  const confirmDelete = (banner_id) => {
+    setSelectedBannerId(banner_id);
+    setShowModal(true);
+  };
+
+  const handleDeleteConfirmed = async () => {
     try {
-      await axios.delete(`http://15.206.194.89:5000/api/banners/${banner_id}`);
-      setData(data.filter((banner) => banner.banner_id !== banner_id));
-      toast.error(`Banner Deleted Successfully`, {
-        position: "top-right",
+      await axios.delete(`http://15.206.194.89:5000/api/banners/${selectedBannerId}`);
+      setData(data.filter((banner) => banner.banner_id !== selectedBannerId));
+      toast.error('Banner Deleted Successfully', {
+        position: 'top-right',
         autoClose: 3000,
       });
     } catch (error) {
-      console.error("Error deleting banner:", error);
+      console.error('Error deleting banner:', error);
+    } finally {
+      setShowModal(false);
+      setSelectedBannerId(null);
     }
   };
 
@@ -127,7 +140,7 @@ const BannerList = () => {
         </thead>
         <tbody>
           {filteredData.map((item) => (
-            <BannerRow key={item.banner_id} item={item} onDelete={handleDelete} />
+            <BannerRow key={item.banner_id} item={item} onDeleteClick={confirmDelete} />
           ))}
         </tbody>
       </Table>
@@ -156,18 +169,35 @@ const BannerList = () => {
           </div>
         ) : (
           <div style={{ backgroundColor: '#f8f9fa', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
-          <Tabs defaultActiveKey="top" id="banner-tabs" className="mb-3 justify-content-center fw-bold">
-            <Tab eventKey="top" title="Top Section">
-              {renderTable(topBanners)}
-            </Tab>
-            <Tab eventKey="bottom" title="Bottom Section">
-              {renderTable(bottomBanners)}
-            </Tab>
-          </Tabs>
-        </div>
-        
+            <Tabs defaultActiveKey="top" id="banner-tabs" className="mb-3 justify-content-center fw-bold">
+              <Tab eventKey="top" title="Top Section">
+                {renderTable(topBanners)}
+              </Tab>
+              <Tab eventKey="bottom" title="Bottom Section">
+                {renderTable(bottomBanners)}
+              </Tab>
+            </Tabs>
+          </div>
         )}
       </Container>
+
+      {/* Delete Confirmation Modal */}
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete this banner? This action cannot be undone.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleDeleteConfirmed}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

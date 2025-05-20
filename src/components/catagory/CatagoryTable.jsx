@@ -1,6 +1,6 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Table, Modal, Button } from 'react-bootstrap';
 import { useDrag, useDrop } from 'react-dnd';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -14,6 +14,8 @@ const CategoryTable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,12 +33,21 @@ const CategoryTable = () => {
     }
   };
 
-  const deleteCategory = async (category_id) => {
-    try {
-      await axios.delete(`http://15.206.194.89:5000/api/category/${category_id}`);
-      setData(data.filter((item) => item.category_id !== category_id));
-    } catch (err) {
-      console.error('Error deleting category:', err);
+  const handleDeleteClick = (category_id) => {
+    setSelectedCategoryId(category_id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    if (selectedCategoryId) {
+      try {
+        await axios.delete(`http://15.206.194.89:5000/api/category/${selectedCategoryId}`);
+        setData(data.filter((item) => item.category_id !== selectedCategoryId));
+        setShowDeleteModal(false);
+        setSelectedCategoryId(null);
+      } catch (err) {
+        console.error('Error deleting category:', err);
+      }
     }
   };
 
@@ -78,12 +89,14 @@ const CategoryTable = () => {
               src={`http://15.206.194.89:5000/${item.photo}`}
               alt={item.category}
               className="category-image"
+              // style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+              onError={(e) => (e.target.style.display = 'none')}
             />
           </div>
         </td>
         <td className="text-center">
-          <div className="action-buttons mt-2 align-middle d-flex justify-content-center align-items-center">
-            <button className="btn btn-danger me-2" onClick={() => deleteCategory(item.category_id)}>
+          <div className="action-buttons mt-2 d-flex justify-content-center align-items-center">
+            <button className="btn btn-danger me-2" onClick={() => handleDeleteClick(item.category_id)}>
               <FontAwesomeIcon icon={faTrash} />
             </button>
             <button className="btn btn-warning text-light" onClick={() => handleEditClick(item.category_id)}>
@@ -105,7 +118,7 @@ const CategoryTable = () => {
           <p className="text-danger text-center">Error: {error}</p>
         ) : (
           <div className="table-responsive">
-            <Table bordered hover  className="shadow-sm category-table table-striped">
+            <Table bordered hover className="shadow-sm category-table table-striped">
               <thead className="bg-primary text-white">
                 <tr>
                   <th className="text-center align-middle">Category Name</th>
@@ -121,6 +134,22 @@ const CategoryTable = () => {
             </Table>
           </div>
         )}
+
+        {/* Delete Confirmation Modal */}
+        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirm Delete</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Are you sure you want to delete this category?</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={confirmDelete}>
+              Delete
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Container>
     </DndProvider>
   );

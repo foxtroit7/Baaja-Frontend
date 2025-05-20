@@ -13,10 +13,12 @@ const BannerForm = () => {
     section: "",
     page: "",
     link: "",
-    photo: "",
     connection: "",
     background_color: "",
   });
+
+  const [existingPhoto, setExistingPhoto] = useState("");
+  const [newPhoto, setNewPhoto] = useState(null);
 
   useEffect(() => {
     if (banner_id) {
@@ -26,17 +28,18 @@ const BannerForm = () => {
 
   const fetchBannerData = async () => {
     try {
-      const response = await axios.get(`http://15.206.194.89:5000/api/banners/${banner_id}`);
+      const response = await axios.get(`http://15.206.194.89:5000/api/banner/${banner_id}`);
       const data = response.data;
 
       setFormData({
         section: data.section || "",
         page: data.page || "",
         link: data.link || "",
-        photo: data.photo || "",
         connection: data.connection || "",
         background_color: data.background_color || "",
       });
+
+      setExistingPhoto(data.photo || "");
     } catch (error) {
       console.error("Error fetching banner:", error);
     }
@@ -48,15 +51,22 @@ const BannerForm = () => {
   };
 
   const handleFileChange = (e) => {
-    setFormData({ ...formData, photo: e.target.files[0] });
+    setNewPhoto(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formDataToSend = new FormData();
+
     for (const key in formData) {
       formDataToSend.append(key, formData[key]);
+    }
+
+    if (newPhoto) {
+      formDataToSend.append("photo", newPhoto);
+    } else if (existingPhoto) {
+      formDataToSend.append("existingPhoto", existingPhoto); // Optional: handle on backend
     }
 
     try {
@@ -114,8 +124,12 @@ const BannerForm = () => {
             <Form.Group className="mb-3">
               <Form.Label>Upload Banner Photo</Form.Label>
               <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
-              {banner_id && typeof formData.photo === "string" && (
-                <img src={`http://15.206.194.89:5000/${formData.photo}`} alt="banner" style={{ width: "100%", marginTop: "10px" }} />
+              {existingPhoto && !newPhoto && (
+                <img
+                  src={`http://15.206.194.89:5000/${existingPhoto}`}
+                  alt="banner"
+                  style={{ width: "100%", marginTop: "10px" }}
+                />
               )}
             </Form.Group>
 
@@ -130,16 +144,15 @@ const BannerForm = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-  <Form.Label>Background Color</Form.Label>
-  <Form.Control
-    type="text"
-    placeholder="e.g., #FF5D5D"
-    name="background_color"
-    value={formData.background_color}
-    onChange={handleChange}
-  />
-</Form.Group>
-
+              <Form.Label>Background Color</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="e.g., #FF5D5D"
+                name="background_color"
+                value={formData.background_color}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
             <Button variant="primary" type="submit" className="w-100">
               {banner_id ? "Update Banner" : "Add Banner"}

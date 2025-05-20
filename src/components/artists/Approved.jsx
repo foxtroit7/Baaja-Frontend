@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button } from "react-bootstrap";
+import { Table, Button, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Approved = () => {
   const [artistList, setArtistList] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedArtistId, setSelectedArtistId] = useState(null);
 
   const fetchArtists = async () => {
     try {
@@ -24,11 +26,11 @@ const Approved = () => {
     fetchArtists();
   }, []);
 
-  const handleApprove = async (user_id) => {
+  const handleApprove = async () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://15.206.194.89:5000/api/artist/approve/${user_id}`,
+        `http://15.206.194.89:5000/api/artist/approve/${selectedArtistId}`,
         {},
         {
           headers: {
@@ -36,12 +38,23 @@ const Approved = () => {
           },
         }
       );
-      alert("Artist approved successfully");
-      fetchArtists(); // Refresh the data
+      setShowModal(false);
+      setSelectedArtistId(null);
+      fetchArtists();
     } catch (error) {
       console.error("Error approving artist:", error);
       alert("Approval failed");
     }
+  };
+
+  const handleShowModal = (user_id) => {
+    setSelectedArtistId(user_id);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedArtistId(null);
   };
 
   return (
@@ -67,21 +80,17 @@ const Approved = () => {
               <td>{new Date(artist.createdAt).toLocaleString()}</td>
               <td>{artist.profile_name || "N/A"}</td>
               <td>
-  <span className="badge bg-warning text-dark px-3 py-1 rounded-pill" style={{ fontSize: "0.8rem" }}>
-    {artist.status || "Pending"}
-  </span>
-</td>
-
+                <span className="badge bg-warning text-dark px-3 py-1 rounded-pill" style={{ fontSize: "0.8rem" }}>
+                  {artist.status || "Pending"}
+                </span>
+              </td>
               <td>
                 <Link to={`/pending_artists_details/${artist.user_id}`}>
                   <Button variant="primary">Check Profile</Button>
                 </Link>
               </td>
               <td>
-                <Button
-                  variant="success"
-                  onClick={() => handleApprove(artist.user_id)}
-                >
+                <Button variant="success" onClick={() => handleShowModal(artist.user_id)}>
                   Waiting for Approval
                 </Button>
               </td>
@@ -89,6 +98,24 @@ const Approved = () => {
           ))}
         </tbody>
       </Table>
+
+      {/* Modal for approval confirmation */}
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Approval</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to approve this artist?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cancel
+          </Button>
+          <Button variant="success" onClick={handleApprove}>
+            Yes, Approve
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
