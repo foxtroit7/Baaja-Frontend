@@ -100,7 +100,7 @@ const handleReject = async (id) => {
     <div key={field} style={{ marginBottom: '0.5rem' }}>
       <p>
         <strong>Old {field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}
-        {update.original_data?.[field] ?? 'N/A'}
+        {update.original_data?.[field] ?? 'No old data is available because first time artist has added data.'}
       </p>
       <p>
         <strong>New {field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   Table,
@@ -14,7 +14,6 @@ import {
   faSearch,
   faBroom,
   faEye,
-  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
@@ -73,28 +72,6 @@ const UserList = () => {
     }));
   };
 
-  const handleDeleteBooking = async (booking_id) => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found. User might be logged out.");
-        return;
-      }
-
-      await axios.delete(
-        `http://15.206.194.89:5000/api/bookings/delete/${booking_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setBookings(bookings.filter((booking) => booking.booking_id !== booking_id));
-    } catch (error) {
-      console.error("Error deleting booking:", error);
-    }
-  };
 
   const getFilteredData = () => {
     if (!bookings || !Array.isArray(bookings.bookings)) {
@@ -117,7 +94,7 @@ const UserList = () => {
       )
       .filter((item) => {
         if (filters.dateRange.from && filters.dateRange.to) {
-          const bookingDate = new Date(item.booking_date);
+          const bookingDate = new Date(item.createdAt);
           return (
             bookingDate >= new Date(filters.dateRange.from) &&
             bookingDate <= new Date(filters.dateRange.to)
@@ -160,12 +137,11 @@ const UserList = () => {
           </span>
         </td>
         <td style={{ padding: "15px" }}>
-          {new Date(item.booking_date).toLocaleDateString("en-US", {
+          {new Date(item.createdAt).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
-          })}{" "}
-          , {item.booking_time}
+          })}
         </td>
         <td style={{ padding: "15px" }}>
           {item.payment_status === "partial" && (
