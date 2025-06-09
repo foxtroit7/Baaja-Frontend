@@ -13,7 +13,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await fetch('http://15.206.194.89:5000/api/admin-login', {
+      const response = await fetch('http://35.154.161.226:5000/api/admin-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

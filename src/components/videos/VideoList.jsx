@@ -20,7 +20,7 @@ const VideoList = () => {
 
   const fetchVideos = async () => {
     try {
-      const response = await axios.get('http://15.206.194.89:5000/api/video');
+      const response = await axios.get('http://35.154.161.226:5000/api/video');
       setData(response.data);
     } catch (error) {
       console.error('Error fetching videos:', error);
@@ -29,7 +29,7 @@ const VideoList = () => {
 
   const handleDelete = async (video_id) => {
     try {
-      await axios.delete(`http://15.206.194.89:5000/api/video/${video_id}`);
+      await axios.delete(`http://35.154.161.226:5000/api/video/${video_id}`);
       setData(data.filter((item) => item.video_id !== video_id));
     } catch (error) {
       console.error('Error deleting video:', error);
@@ -65,7 +65,7 @@ const VideoList = () => {
         <td className="text-center align-middle">{item.video}</td>
         <td className="text-center"> <div className="image-container">
             <img
-              src={`http://15.206.194.89:5000/${item.photo}`}
+              src={`http://35.154.161.226:5000/${item.photo}`}
               alt={item.video}
               accept=''
               className=""

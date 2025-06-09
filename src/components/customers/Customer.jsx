@@ -16,7 +16,7 @@ const Customer = () => {
     try {
       const token = localStorage.getItem("token"); // or sessionStorage, depending on your app
 
-      const response = await fetch(`http://15.206.194.89:5000/api/user-bookings/${user_id}`, {
+      const response = await fetch(`http://35.154.161.226:5000/api/user-bookings/${user_id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +43,7 @@ console.log("user_id",user_id)
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://15.206.194.89:5000/api/user/details/${user_id}`); // Use dynamic id
+        const response = await fetch(`http://35.154.161.226:5000/api/user/details/${user_id}`); // Use dynamic id
         if (!response.ok) throw new Error('User not found');
         const data = await response.json();
         setUser(data);
@@ -73,7 +73,7 @@ console.log("user_id",user_id)
       <h2 className="text-center mb-2">User Profile</h2>
       <Row className="align-items-center justify-content-center mb-2">
         <div className="text-center">
-          <Image src={`http://15.206.194.89:5000/${user.photo}`}   // fallback to default image if not present in API
+          <Image src={`http://35.154.161.226:5000/${user.photo}`}   // fallback to default image if not present in API
                 roundedCircle
                 style={{
                   width: '150px',

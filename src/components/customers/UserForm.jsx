@@ -24,7 +24,7 @@ const UserForm = () => {
     const fetchBookingData = async () => {
       if (booking_id && uuid) {
         try {
-          const response = await fetch(`http://15.206.194.89:4000/api/users/${uuid}/bookings/${booking_id}`);
+          const response = await fetch(`http://35.154.161.226:4000/api/users/${uuid}/bookings/${booking_id}`);
           if (!response.ok) throw new Error("Booking not found");
           const data = await response.json();
           setFormData({
@@ -60,7 +60,7 @@ const UserForm = () => {
 
     try {
       const response = await fetch(
-        `http://15.206.194.89:4000/api/users/${uuid}/bookings/${booking_id}`, // Edit mode
+        `http://35.154.161.226:4000/api/users/${uuid}/bookings/${booking_id}`, // Edit mode
         {
           method: "PUT", // We are updating an existing booking
           headers: {

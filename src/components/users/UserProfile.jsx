@@ -28,7 +28,7 @@ const UserProfile = () => {
           throw new Error("Authentication token is missing");
         }
 
-        const url = `http://15.206.194.89:5000/api/bookings/${booking_id}`;
+        const url = `http://35.154.161.226:5000/api/bookings/${booking_id}`;
         const response = await fetch(url, {
           method: "GET",
           headers: {
@@ -58,7 +58,7 @@ const changeStatus = async () => {
   try {
     const token = localStorage.getItem("token");
 
-    const url = `http://15.206.194.89:5000/api/booking/update-status/${booking_id}`;
+    const url = `http://35.154.161.226:5000/api/booking/update-status/${booking_id}`;
 
     const response = await axios.put(
       url,
@@ -168,7 +168,7 @@ const changeStatus = async () => {
           <div className="text-center mb-4">
  {booking.artist_details && booking.artist_details.poster ? (
   <Image
-    src={`http://15.206.194.89:5000/${booking.artist_details.poster}`}
+    src={`http://35.154.161.226:5000/${booking.artist_details.poster}`}
     style={{
       width: '150px',
       height: '150px',

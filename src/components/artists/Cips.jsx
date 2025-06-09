@@ -24,7 +24,7 @@ const Cips = ({ user_id }) => {
 
       try {
         const response = await axios.get(
-          `http://15.206.194.89:5000/api/artist/clips/${user_id}`,
+          `http://35.154.161.226:5000/api/artist/clips/${user_id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ const Cips = ({ user_id }) => {
 
     try {
       await axios.put(
-        `http://15.206.194.89:5000/api/artist/clips/${user_id}/${selectedClip._id}`,
+        `http://35.154.161.226:5000/api/artist/clips/${user_id}/${selectedClip._id}`,
         updatedClip,
         {
           headers: {
@@ -88,7 +88,7 @@ const Cips = ({ user_id }) => {
 
     try { 
       await axios.delete(
-        `http://15.206.194.89:5000/api/artist/clips/${user_id}/${selectedClip._id}`,
+        `http://35.154.161.226:5000/api/artist/clips/${user_id}/${selectedClip._id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -148,7 +148,7 @@ const Cips = ({ user_id }) => {
                 </Card.Title>
                 <div className="ratio ratio-16x9 mt-3">
                   <video
-                    src={`http://15.206.194.89:5000/${clip.video}`}
+                    src={`http://35.154.161.226:5000/${clip.video}`}
                     controls
                     style={{ borderRadius: "12px", width: "100%" }}
                     onClick={() => handleShowModal(clip)}

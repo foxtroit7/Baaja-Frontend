@@ -12,7 +12,7 @@ const AdminArtistUpdates = () => {
   const fetchUpdates = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://15.206.194.89:5000/api/admin/pending-updates');
+      const response = await axios.get('http://35.154.161.226:5000/api/admin/pending-updates');
       setUpdates(response.data);
     } catch (error) {
       console.error('Error fetching updates:', error);
@@ -23,7 +23,7 @@ const AdminArtistUpdates = () => {
 const handleApprove = async (id) => {
   try {
     await axios.post(
-      `http://15.206.194.89:5000/api/admin-pending-updates-approve/${id}`
+      `http://35.154.161.226:5000/api/admin-pending-updates-approve/${id}`
     );
     alert("Update approved successfully!");
     fetchUpdates(); // This will re-fetch the list to reflect the approved status
@@ -41,7 +41,7 @@ const handleReject = async (id) => {
   }
 
   try {
-    const res = await axios.post(`http://15.206.194.89:5000/api/admin-pending-updates-reject/${id}`, {
+    const res = await axios.post(`http://35.154.161.226:5000/api/admin-pending-updates-reject/${id}`, {
       admin_remarks: adminRemarks,
     });
 
@@ -85,7 +85,7 @@ const handleReject = async (id) => {
       <strong>New {field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}
       {field === 'video' ? (
         <video
-          src={`http://15.206.194.89:5000/${update.updated_data?.[field]}`}
+          src={`http://35.154.161.226:5000/${update.updated_data?.[field]}`}
           controls
           style={{ borderRadius: '12px', width: '100%', maxWidth: '400px' }}
         />

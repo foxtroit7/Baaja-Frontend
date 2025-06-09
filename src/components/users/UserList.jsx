@@ -39,7 +39,7 @@ const UserList = () => {
         }
 
         const response = await axios.get(
-          "http://15.206.194.89:5000/api/all-bookings",
+          "http://35.154.161.226:5000/api/all-bookings",
           {
             headers: {
               Authorization: `Bearer ${token}`,

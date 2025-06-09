@@ -28,7 +28,7 @@ const CustomerList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://15.206.194.89:5000/api/user/details");
+        const response = await fetch("http://35.154.161.226:5000/api/user/details");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -45,7 +45,7 @@ const CustomerList = () => {
 
   // const handleDelete = async (user_id) => {
   //   try {
-  //     const response = await axios.delete(`http://15.206.194.89:5000/api/user/details/${user_id}`);
+  //     const response = await axios.delete(`http://35.154.161.226:5000/api/user/details/${user_id}`);
   //     if (response.status === 200) {
   //       setData((prevData) => prevData.filter((user) => user.user_id !== user_id));
   //     }

@@ -16,7 +16,7 @@ useEffect(() => {
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        `http://15.206.194.89:5000/api/pending_artists_details?user_id=${user_id}`,
+        `http://35.154.161.226:5000/api/pending_artists_details?user_id=${user_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -23,7 +23,7 @@ const [newRank, setNewRank] = useState('');
   
     try {
       const res = await axios.put(
-        `http://15.206.194.89:5000/api/update-artist-rank/${selectedArtist.sessionName}/${selectedArtist.artistId}`,
+        `http://35.154.161.226:5000/api/update-artist-rank/${selectedArtist.sessionName}/${selectedArtist.artistId}`,
         { artist_rank: newRank }
       );
       console.log("Updated:", res.data);
@@ -68,7 +68,7 @@ const [newRank, setNewRank] = useState('');
   const handleRemoveArtist = async (sessionName, artistId) => {
     try {
       const res = await axios.delete(
-        `http://15.206.194.89:5000/api/artist-rank/${sessionName}/${artistId}`
+        `http://35.154.161.226:5000/api/artist-rank/${sessionName}/${artistId}`
       );
       console.log("Artist Removed:", res.data);
   
@@ -104,7 +104,7 @@ const [newRank, setNewRank] = useState('');
    
   const handleUpdateRank = async () => {
     try {
-      await axios.put(`http://15.206.194.89:5000/api/session-rank/${selectedSession.session_name}`, {
+      await axios.put(`http://35.154.161.226:5000/api/session-rank/${selectedSession.session_name}`, {
         session_rank: parseInt(newSessionRank),
       });
       console.log(selectedSession)
@@ -119,7 +119,7 @@ const [newRank, setNewRank] = useState('');
   const handleDeleteSession = async (sessionName) => {
     if (!window.confirm(`Are you sure you want to delete the session "${sessionName}"?`)) return;
     try {
-      await axios.delete(`http://15.206.194.89:5000/api/delete-session-rank/${encodeURIComponent(sessionName)}`);
+      await axios.delete(`http://35.154.161.226:5000/api/delete-session-rank/${encodeURIComponent(sessionName)}`);
       fetchSessionNames(); 
     } catch (error) {
       console.error('Error deleting session:', error);
@@ -129,7 +129,7 @@ const [newRank, setNewRank] = useState('');
   
   const fetchSessionNames = async () => {
     try {
-      const response = await axios.get('http://15.206.194.89:5000/api/session-rank');
+      const response = await axios.get('http://35.154.161.226:5000/api/session-rank');
       const names = response.data.map((session) => session.session_name);
       setSessionNames(names);
       await fetchSessionData(names);
@@ -143,7 +143,7 @@ const [newRank, setNewRank] = useState('');
     try {
       const dataObj = {};
       for (let name of names) {
-        const res = await axios.get(`http://15.206.194.89:5000/api/session-rank/by-session-name?name=${encodeURIComponent(name)}`);
+        const res = await axios.get(`http://35.154.161.226:5000/api/session-rank/by-session-name?name=${encodeURIComponent(name)}`);
         dataObj[name] = res.data;  // Assuming res.data contains the correct session data
       }
       setSessionData(dataObj);
@@ -233,7 +233,7 @@ const [newRank, setNewRank] = useState('');
       <td className="text-center align-middle">
         {artist.artistDetails?.poster ? (
           <Image
-            src={`http://15.206.194.89:5000/${artist.artistDetails.poster}`}
+            src={`http://35.154.161.226:5000/${artist.artistDetails.poster}`}
             width={80}
             height={100}
             rounded

@@ -11,7 +11,7 @@ const AppointmentScheduler = ({ artist_id }) => {
     const fetchBusyDates = async () => {
       try {
         const response = await axios.get(
-          `http://15.206.194.89:5000/api/artist/${artist_id}/busy-dates`
+          `http://35.154.161.226:5000/api/artist/${artist_id}/busy-dates`
         );
         setBusyDates(response.data.busy_dates);
       } catch (error) {

@@ -24,7 +24,7 @@ const CategoryTable = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://15.206.194.89:5000/api/category');
+      const response = await axios.get('http://35.154.161.226:5000/api/category');
       setData(response.data);
       setLoading(false);
     } catch (err) {
@@ -41,7 +41,7 @@ const CategoryTable = () => {
   const confirmDelete = async () => {
     if (selectedCategoryId) {
       try {
-        await axios.delete(`http://15.206.194.89:5000/api/category/${selectedCategoryId}`);
+        await axios.delete(`http://35.154.161.226:5000/api/category/${selectedCategoryId}`);
         setData(data.filter((item) => item.category_id !== selectedCategoryId));
         setShowDeleteModal(false);
         setSelectedCategoryId(null);
@@ -86,7 +86,7 @@ const CategoryTable = () => {
         <td className="text-center">
           <div className="image-container">
             <img
-              src={`http://15.206.194.89:5000/${item.photo}`}
+              src={`http://35.154.161.226:5000/${item.photo}`}
               alt={item.category}
               className="category-image"
               // style={{ width: '80px', height: '80px', objectFit: 'cover' }}

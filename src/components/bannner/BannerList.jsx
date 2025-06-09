@@ -29,7 +29,7 @@ const BannerRow = ({ item, onDeleteClick }) => {
       </td>
       <td className="text-center">
         <img
-          src={`http://15.206.194.89:5000/${item.photo}`}
+          src={`http://35.154.161.226:5000/${item.photo}`}
           alt="Banner"
           className="rounded shadow"
           style={{
@@ -92,7 +92,7 @@ const BannerList = () => {
 
   const fetchBanners = () => {
     axios
-      .get('http://15.206.194.89:5000/api/banners')
+      .get('http://35.154.161.226:5000/api/banners')
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -110,7 +110,7 @@ const BannerList = () => {
 
   const handleDeleteConfirmed = async () => {
     try {
-      await axios.delete(`http://15.206.194.89:5000/api/banners/${selectedBannerId}`);
+      await axios.delete(`http://35.154.161.226:5000/api/banners/${selectedBannerId}`);
       setData(data.filter((banner) => banner.banner_id !== selectedBannerId));
       toast.error('Banner Deleted Successfully', {
         position: 'top-right',

@@ -15,7 +15,7 @@ const CategoryArtistAdd = () => {
   // Fetch categories on component mount
   useEffect(() => {
     axios
-      .get('http://15.206.194.89:5000/api/category')
+      .get('http://35.154.161.226:5000/api/category')
       .then((res) => setCategories(res.data || []))
       .catch((err) => console.error('Failed to fetch categories', err));
   }, []);
@@ -33,7 +33,7 @@ const CategoryArtistAdd = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `http://15.206.194.89:5000/api/artists_details?category_id=${category_id}`,
+        `http://35.154.161.226:5000/api/artists_details?category_id=${category_id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -80,7 +80,7 @@ const CategoryArtistAdd = () => {
     };
 console.log(body)
     axios
-      .post('http://15.206.194.89:5000/api/session-rank', body)
+      .post('http://35.154.161.226:5000/api/session-rank', body)
       .then(() => {
         alert('Session Rank Added!');
         setSessionName('');

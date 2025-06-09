@@ -26,7 +26,7 @@ const Dashboard = () => {
       return;
     }
 
-    let url = "http://15.206.194.89:5000/api/dashboard-stats";
+    let url = "http://35.154.161.226:5000/api/dashboard-stats";
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`, // Include Bearer token in Authorization header

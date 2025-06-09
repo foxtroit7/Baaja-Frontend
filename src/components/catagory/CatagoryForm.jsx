@@ -16,7 +16,7 @@ const CategoryForm = () => {
   useEffect(() => {
     if (category_id) {
       // Fetch category data when editing
-      axios.get(`http://15.206.194.89:5000/api/category/${category_id}`)
+      axios.get(`http://35.154.161.226:5000/api/category/${category_id}`)
         .then(response => {
           setCategory(response.data.category);
         })
@@ -40,7 +40,7 @@ const CategoryForm = () => {
       let response;
       if (category_id) {
         // If there's an id, it's an edit, so use PUT
-        response = await axios.put(`http://15.206.194.89:5000/api/category/${category_id}`, formData, {
+        response = await axios.put(`http://35.154.161.226:5000/api/category/${category_id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -51,7 +51,7 @@ const CategoryForm = () => {
         });
       } else {
         // If no id, it's an add, so use POST
-        response = await axios.post('http://15.206.194.89:5000/api/category', formData, {
+        response = await axios.post('http://35.154.161.226:5000/api/category', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

@@ -29,7 +29,7 @@ const Artist = () => {
             const token = localStorage.getItem("token");
             if (!token) throw new Error("Authentication token is missing");
 
-            const response = await axios.get("http://15.206.194.89:5000/api/artists_details", {
+            const response = await axios.get("http://35.154.161.226:5000/api/artists_details", {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setData(response.data);
@@ -40,7 +40,7 @@ const Artist = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get("http://15.206.194.89:5000/api/category");
+            const response = await axios.get("http://35.154.161.226:5000/api/category");
             setCategories(response.data);
         } catch (error) {
             console.error("Error fetching categories:", error);
@@ -54,8 +54,8 @@ const Artist = () => {
     const toggleTopBaaja = async (artist) => {
         try {
             const url = artist.top_baaja
-                ? `http://15.206.194.89:5000/api/artist/top_baaja/reject/${artist.user_id}`
-                : `http://15.206.194.89:5000/api/artist/top_baaja/approve/${artist.user_id}`;
+                ? `http://35.154.161.226:5000/api/artist/top_baaja/reject/${artist.user_id}`
+                : `http://35.154.161.226:5000/api/artist/top_baaja/approve/${artist.user_id}`;
     
             const payload = artist.top_baaja ? {} : { top_baaja_rank: topBaajaRank };
     

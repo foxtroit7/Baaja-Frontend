@@ -14,7 +14,7 @@ const Faq = () => {
 
   const fetchFaqs = async () => {
     try {
-      const response = await axios.get("http://15.206.194.89:5000/api/faq");
+      const response = await axios.get("http://35.154.161.226:5000/api/faq");
       setFaqs(response.data);
     } catch (error) {
       console.error("Error fetching FAQs", error);
@@ -48,9 +48,9 @@ const Faq = () => {
     e.preventDefault();
     try {
       if (editId) {
-        await axios.put(`http://15.206.194.89:5000/api/faq/${editId}`, formData);
+        await axios.put(`http://35.154.161.226:5000/api/faq/${editId}`, formData);
       } else {
-        await axios.post("http://15.206.194.89:5000/api/faq", formData);
+        await axios.post("http://35.154.161.226:5000/api/faq", formData);
       }
       fetchFaqs();
       handleCloseModal();
@@ -61,7 +61,7 @@ const Faq = () => {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://15.206.194.89:5000/api/faq/${deleteId}`);
+      await axios.delete(`http://35.154.161.226:5000/api/faq/${deleteId}`);
       fetchFaqs();
     } catch (error) {
       console.error("Error deleting FAQ", error);

@@ -17,7 +17,7 @@ const PushNotification = () => {
 
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get("http://15.206.194.89:5000/api/admin-notifications");
+      const res = await axios.get("http://35.154.161.226:5000/api/admin-notifications");
       setNotifications(res.data.notifications);
     } catch (err) {
       console.error("Failed to fetch notifications", err);
@@ -34,7 +34,7 @@ const PushNotification = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://15.206.194.89:5000/api/admin-notifications", formData);
+      await axios.post("http://35.154.161.226:5000/api/admin-notifications", formData);
       fetchNotifications();
       setShowModal(false);
       setFormData({ title: "", body: "", recipientType: "users" });

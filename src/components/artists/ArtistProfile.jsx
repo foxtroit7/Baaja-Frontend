@@ -27,7 +27,7 @@ const ArtistProfile = () => {
         }
 
         const response = await fetch(
-            `http://15.206.194.89:5000/api/artists_details?artist_id=${user_id}`,
+            `http://35.154.161.226:5000/api/artists_details?artist_id=${user_id}`,
             {
                 method: "GET",
                 headers: {
@@ -59,7 +59,7 @@ const ArtistProfile = () => {
 };
 const fetchPaymentData = async (user_id) => {
   try {
-    const response = await fetch(`http://15.206.194.89:5000/api/artist/payment/${user_id}`);
+    const response = await fetch(`http://35.154.161.226:5000/api/artist/payment/${user_id}`);
     const data = await response.json();
 
     if (response.ok) {
@@ -102,7 +102,7 @@ const fetchPaymentData = async (user_id) => {
   
 
       <img
-         src={`http://15.206.194.89:5000/${artist.poster}`}
+         src={`http://35.154.161.226:5000/${artist.poster}`}
         alt={artist.owner_name}
         className=" mb-3"
         width={120}

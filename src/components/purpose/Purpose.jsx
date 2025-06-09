@@ -16,7 +16,7 @@ const Purpose = () => {
   // Fetch all purposes
   const fetchPurposes = async () => {
     try {
-      const res = await axios.get('http://15.206.194.89:5000/api/purpose');
+      const res = await axios.get('http://35.154.161.226:5000/api/purpose');
       setPurposes(res.data || []);
     } catch (error) {
       console.error('Error fetching purposes:', error);
@@ -56,10 +56,10 @@ const Purpose = () => {
   const handleSave = async () => {
     try {
       if (isEditMode) {
-        await axios.put(`http://15.206.194.89:5000/api/purpose/${selectedPurpose._id}`, formData);
+        await axios.put(`http://35.154.161.226:5000/api/purpose/${selectedPurpose._id}`, formData);
         toast.success('Purpose updated successfully');
       } else {
-        await axios.post('http://15.206.194.89:5000/api/purpose', formData);
+        await axios.post('http://35.154.161.226:5000/api/purpose', formData);
         toast.success('Purpose added successfully');
       }
       fetchPurposes();
@@ -73,7 +73,7 @@ const Purpose = () => {
   // Delete purpose
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://15.206.194.89:5000/api/purpose/${selectedPurpose._id}`);
+      await axios.delete(`http://35.154.161.226:5000/api/purpose/${selectedPurpose._id}`);
       toast.success('Deleted successfully');
       setShowDeleteModal(false);
       fetchPurposes();

@@ -28,7 +28,7 @@ const BannerForm = () => {
 
   const fetchBannerData = async () => {
     try {
-      const response = await axios.get(`http://15.206.194.89:5000/api/banner/${banner_id}`);
+      const response = await axios.get(`http://35.154.161.226:5000/api/banner/${banner_id}`);
       const data = response.data;
 
       setFormData({
@@ -71,12 +71,12 @@ const BannerForm = () => {
 
     try {
       if (banner_id) {
-        await axios.put(`http://15.206.194.89:5000/api/banners/${banner_id}`, formDataToSend, {
+        await axios.put(`http://35.154.161.226:5000/api/banners/${banner_id}`, formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         toast.success("Banner Updated Successfully", { autoClose: 3000 });
       } else {
-        await axios.post("http://15.206.194.89:5000/api/banners", formDataToSend, {
+        await axios.post("http://35.154.161.226:5000/api/banners", formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         toast.success("Banner Created Successfully", { autoClose: 3000 });
@@ -126,7 +126,7 @@ const BannerForm = () => {
               <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
               {existingPhoto && !newPhoto && (
                 <img
-                  src={`http://15.206.194.89:5000/${existingPhoto}`}
+                  src={`http://35.154.161.226:5000/${existingPhoto}`}
                   alt="banner"
                   style={{ width: "100%", marginTop: "10px" }}
                 />

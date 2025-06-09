@@ -16,7 +16,7 @@ const VideoForm = () => {
 
   useEffect(() => {
     if (video_id) {
-      fetch(`http://15.206.194.89:5000/api/video/${video_id}`)
+      fetch(`http://35.154.161.226:5000/api/video/${video_id}`)
         .then((res) => {
           if (!res.ok) throw new Error('Failed to fetch video');
           return res.json();
@@ -44,7 +44,7 @@ const VideoForm = () => {
     setLoading(true);
     try {
       const method = video_id ? 'PUT' : 'POST';
-      const url = video_id ? `http://15.206.194.89:5000/api/video/${video_id}` : `http://15.206.194.89:5000/api/video`;
+      const url = video_id ? `http://35.154.161.226:5000/api/video/${video_id}` : `http://35.154.161.226:5000/api/video`;
 
       const formData = new FormData();
       formData.append('video', videoName);

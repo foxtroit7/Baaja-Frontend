@@ -12,7 +12,7 @@ const Help = () => {
 
   const fetchHelps = async () => {
     try {
-      const response = await axios.get("http://15.206.194.89:5000/api/help");
+      const response = await axios.get("http://35.154.161.226:5000/api/help");
       setHelps(response.data);
     } catch (error) {
       console.error("Error fetching Helps", error);
@@ -46,9 +46,9 @@ const Help = () => {
     e.preventDefault();
     try {
       if (editId) {
-        await axios.put(`http://15.206.194.89:5000/api/help/${editId}`, formData);
+        await axios.put(`http://35.154.161.226:5000/api/help/${editId}`, formData);
       } else {
-        await axios.post("http://15.206.194.89:5000/api/help", formData);
+        await axios.post("http://35.154.161.226:5000/api/help", formData);
       }
       fetchHelps();
       handleCloseModal();
@@ -59,7 +59,7 @@ const Help = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://15.206.194.89:5000/api/help/${id}`);
+      await axios.delete(`http://35.154.161.226:5000/api/help/${id}`);
       fetchHelps();
     } catch (error) {
       console.error("Error deleting Help", error);

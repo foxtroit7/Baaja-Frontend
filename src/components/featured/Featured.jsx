@@ -30,7 +30,7 @@ const Featured = () => {
       if (!token) throw new Error('Authentication token is missing');
 
       const response = await axios.get(
-        'http://15.206.194.89:5000/api/feautured/list',
+        'http://35.154.161.226:5000/api/feautured/list',
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -46,7 +46,7 @@ const Featured = () => {
   const fetchAllArtists = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://15.206.194.89:5000/api/artists_details', {
+      const response = await axios.get('http://35.154.161.226:5000/api/artists_details', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAllArtists(response.data);
@@ -64,7 +64,7 @@ const Featured = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        `http://15.206.194.89:5000/api/artist/feautured/approve/${selectedArtist}`,
+        `http://35.154.161.226:5000/api/artist/feautured/approve/${selectedArtist}`,
         { featured_rank: Number(newRank) },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -93,7 +93,7 @@ const Featured = () => {
 
     try {
       await axios.put(
-        `http://15.206.194.89:5000/api/artist/feautured/remove/${user_id}`,
+        `http://35.154.161.226:5000/api/artist/feautured/remove/${user_id}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -116,7 +116,7 @@ const Featured = () => {
 
     try {
       await axios.put(
-        `http://15.206.194.89:5000/api/artist/feautured/approve/${user_id}`,
+        `http://35.154.161.226:5000/api/artist/feautured/approve/${user_id}`,
         { featured_rank: Number(updatedRank) },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -189,7 +189,7 @@ const Featured = () => {
                     <td className="text-center align-middle">{item.owner_name}</td>
                     <td className="text-center align-middle">
                       <img
-                        src={`http://15.206.194.89:5000/${item.poster}`}
+                        src={`http://35.154.161.226:5000/${item.poster}`}
                         alt="Banner"
                         className="rounded shadow"
                         style={{

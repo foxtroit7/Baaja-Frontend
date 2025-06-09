@@ -12,7 +12,7 @@ const Potser = () => {
   const fetchArtists = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://15.206.194.89:5000/api/artists_details', {
+      const res = await axios.get('http://35.154.161.226:5000/api/artists_details', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setArtists(res.data);
@@ -41,7 +41,7 @@ const Potser = () => {
     setUploading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://15.206.194.89:5000/api/artist/poster/${user_id}`, formData, {
+      await axios.put(`http://35.154.161.226:5000/api/artist/poster/${user_id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -96,7 +96,7 @@ const Potser = () => {
                      <td className="text-center align-middle">
                       {artist.poster ? (
                         <Image
-                          src={`http://15.206.194.89:5000/${artist.poster}`}
+                          src={`http://35.154.161.226:5000/${artist.poster}`}
                           width={100}
                           height={120}
                           rounded

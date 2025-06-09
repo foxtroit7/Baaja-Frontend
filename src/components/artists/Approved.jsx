@@ -11,7 +11,7 @@ const Approved = () => {
   const fetchArtists = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://15.206.194.89:5000/api/pending_artists_details", {
+      const response = await axios.get("http://35.154.161.226:5000/api/pending_artists_details", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -30,7 +30,7 @@ const Approved = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://15.206.194.89:5000/api/artist/approve/${selectedArtistId}`,
+        `http://35.154.161.226:5000/api/artist/approve/${selectedArtistId}`,
         {},
         {
           headers: {
