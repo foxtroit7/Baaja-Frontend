@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Row, Button, Col, Card, Modal, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const Cips = ({ user_id }) => {
   const navigate = useNavigate();
@@ -54,31 +54,6 @@ const Cips = ({ user_id }) => {
     setSelectedClip(null);
   };
 
-  const handleEdit = async () => {
-    if (!token) {
-      setErrorMessage("Unauthorized! Please log in.");
-      return;
-    }
-
-    const updatedClip = { title: selectedClip.title };
-
-    try {
-      await axios.put(
-        `http://35.154.161.226:5000/api/artist/clips/${user_id}/${selectedClip._id}`,
-        updatedClip,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setClips(clips.map((clip) => (clip._id === selectedClip._id ? { ...clip, ...updatedClip } : clip)));
-      handleCloseModal();
-    } catch (error) {
-      setErrorMessage("Error updating clip.");
-    }
-  };
 
   const handleDelete = async () => {
     if (!token) {

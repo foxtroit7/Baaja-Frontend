@@ -222,6 +222,7 @@ const ArtistTable = ({ data, setSelectedArtist, setShowModal }) => (
                 <th>Location</th>
                 <th>Category Type</th>
                 <th>Rating</th>
+                <th>Top Baaja Rank</th>
                 <th>Top Baaja</th>
                 <th>Actions</th>
             </tr>
@@ -236,6 +237,7 @@ const ArtistTable = ({ data, setSelectedArtist, setShowModal }) => (
                         <td>{item.location}</td>
                         <td className="fw-semibold text-primary">{item.category_type}</td>
                         <td className="text-warning h5">{'★'.repeat(Math.floor(item.rating))}{'☆'.repeat(5 - Math.floor(item.rating))}</td>
+                       <td>{item.top_baaja_rank}</td>
                         <td>
                             <Button
                                 variant={item.top_baaja ? "success" : "secondary"}

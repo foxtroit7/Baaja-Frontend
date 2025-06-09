@@ -1,29 +1,21 @@
 import React, { useState, useEffect } from "react";
 import {
   Table, Container, Form, InputGroup,
-   Spinner, Pagination
+  Spinner, Pagination
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faSearch,  faEye
-} from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
 
 const CustomerList = () => {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [minBookings, setMinBookings] = useState("");
-  const [maxBookings, setMaxBookings] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
- const usersPerPage = 15;
+  const usersPerPage = 15;
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -43,43 +35,10 @@ const CustomerList = () => {
     fetchUsers();
   }, []);
 
-  // const handleDelete = async (user_id) => {
-  //   try {
-  //     const response = await axios.delete(`http://35.154.161.226:5000/api/user/details/${user_id}`);
-  //     if (response.status === 200) {
-  //       setData((prevData) => prevData.filter((user) => user.user_id !== user_id));
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting user:", error);
-  //   }
-  // };
-  // const resetFilters = () => {
-  //   setSearchQuery("");
-  //   setStatusFilter("");
-  //   setStartDate("");
-  //   setEndDate("");
-  //   setMinBookings("");
-  //   setMaxBookings("");
-  // };
-
   const filteredData = data.filter((customer) => {
     const nameMatch = customer.name?.toLowerCase().includes(searchQuery.toLowerCase()) || false;
     const placeMatch = customer.place?.toLowerCase().includes(searchQuery.toLowerCase()) || false;
-
-    const matchesSearchQuery = nameMatch || placeMatch;
-    const matchesStatus = !statusFilter || (statusFilter === "Active" ? customer.status === true : customer.status === false);
-
-    const customerDate = new Date(customer.date);
-    const matchesDateRange =
-      (!startDate || customerDate >= new Date(startDate)) &&
-      (!endDate || customerDate <= new Date(endDate));
-
-    const bookings = customer.total_bookings || 0;
-    const matchesBookings =
-      (!minBookings || bookings >= parseInt(minBookings)) &&
-      (!maxBookings || bookings <= parseInt(maxBookings));
-
-    return matchesSearchQuery && matchesStatus && matchesDateRange && matchesBookings;
+    return nameMatch || placeMatch;
   });
 
   // Pagination logic
@@ -132,6 +91,7 @@ const CustomerList = () => {
           />
         </InputGroup>
       </div>
+
       {loading ? (
         <div className="text-center">
           <Spinner animation="border" variant="primary" />
@@ -148,7 +108,7 @@ const CustomerList = () => {
                   <th className="text-center">Name</th>
                   <th className="text-center">Phone</th>
                   <th className="text-center">Location</th>
-                  <th className="text-center">View Prfile</th>
+                  <th className="text-center">View Profile</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,21 +118,16 @@ const CustomerList = () => {
                     <td className="text-center">{customer.name}</td>
                     <td className="text-center">{customer.phone_number}</td>
                     <td className="text-center">{customer.place || customer.location}</td>
-              
                     <td className="text-center">
                       <Link to={`/customer-profile/${customer.user_id}`} className="btn btn-primary text-light btn-md">
                         <FontAwesomeIcon icon={faEye} />
                       </Link>
-                      {/* <Button className="btn btn-danger text-light ms-2 btn-md" onClick={() => handleDelete(customer.user_id)}>
-                        <FontAwesomeIcon icon={faTrash} />
-                      </Button> */}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </Table>
           </div>
-
           {renderPagination()}
         </>
       )}

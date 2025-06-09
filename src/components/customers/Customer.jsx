@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Card, Container, Row, Col, Button, Table, Image, Modal } from 'react-bootstrap';
+import { Card, Container, Row, Col, Button, Table, Image} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruck, faMoneyBill, faTruckRampBox, faEye} from '@fortawesome/free-solid-svg-icons';
 
 const Customer = () => {
   const { user_id} = useParams(); 
   const [user, setUser] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
  
@@ -61,12 +60,8 @@ console.log("user_id",user_id)
     return <h2 className="text-center mt-5">User not found {user_id}</h2>;
   }
 
-  const handleClose = () => setShowModal(false);
 
-  const handleSuspend = () => {
-    console.log(`Account for ${user.name} suspended`)
-    setShowModal(false); // Close the modal
-  };
+
 
   return (
     <Container className="mt-4">
