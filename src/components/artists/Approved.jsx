@@ -65,9 +65,9 @@ const Approved = () => {
           <tr>
             <th>Artist Id</th>
             <th>Name</th>
-            <th>Request Time</th>
+      
             <th>Profile Name</th>
-            <th>Status</th>
+       
             <th>View</th>
             <th>Approval Request</th>
           </tr>
@@ -76,14 +76,9 @@ const Approved = () => {
           {artistList.map((artist) => (
             <tr className="text-center align-middle" key={artist._id}>
               <td>{artist.user_id}</td>
-              <td>{artist.owner_name || "N/A"}</td>
-              <td>{new Date(artist.createdAt).toLocaleString()}</td>
+              <td>{artist.name || "N/A"}</td>
               <td>{artist.profile_name || "N/A"}</td>
-              <td>
-                <span className="badge bg-warning text-dark px-3 py-1 rounded-pill" style={{ fontSize: "0.8rem" }}>
-                  {artist.status || "Pending"}
-                </span>
-              </td>
+              
               <td>
                 <Link to={`/pending_artists_details/${artist.user_id}`}>
                   <Button variant="primary">Check Profile</Button>
