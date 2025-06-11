@@ -193,7 +193,7 @@ const changeStatus = async () => {
 
 
             <div>
-              <h5 style={headerStyle}>Artist: {booking.organization}</h5>
+              <h5 style={headerStyle}>Artist: {booking.artist_details?.owner_name}</h5>
               <p>{booking.alternate_number}</p>
             </div>
           </div>

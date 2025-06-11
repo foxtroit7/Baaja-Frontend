@@ -120,7 +120,7 @@ const UserList = () => {
         <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td> {/* Index number column */}
         <td style={{ padding: "15px" }}>{item.booking_id}</td>
         <td style={{ padding: "15px" }}>{item.full_name}</td>
-        <td style={{ padding: "15px" }}>{item.organization}</td>
+        <td style={{ padding: "15px" }}>{item.artist_details?.owner_name}</td>
         <td>
           <span
             className={`badge ${
