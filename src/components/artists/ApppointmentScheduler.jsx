@@ -10,8 +10,14 @@ const AppointmentScheduler = ({ artist_id }) => {
   useEffect(() => {
     const fetchBusyDates = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://35.154.161.226:5000/api/artist/${artist_id}/busy-dates`
+          `http://35.154.161.226:5000/api/artist/${artist_id}/busy-dates`,
+           {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
         );
         setBusyDates(response.data.busy_dates);
       } catch (error) {
