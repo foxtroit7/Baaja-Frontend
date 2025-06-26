@@ -8,17 +8,14 @@ import {
   Button,
   InputGroup,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faBroom,
-  faEye,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faBroom, faEye } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 const UserList = () => {
   const [bookings, setBookings] = useState([]);
+  const [initialized, setInitialized] = useState(false);
   const [filters, setFilters] = useState({
     search: "",
     status: "",
@@ -29,7 +26,25 @@ const UserList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
 
+  const location = useLocation();
+
+  // 1. Get initial status from query param
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const statusFromURL = params.get("status");
+
+    setFilters((prev) => ({
+      ...prev,
+      status: statusFromURL || "",
+    }));
+
+    setInitialized(true); // Flag when filters are initialized
+  }, []);
+
+  // 2. Fetch bookings when filters change and initialized
+  useEffect(() => {
+    if (!initialized) return;
+
     const fetchBookings = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -38,14 +53,18 @@ const UserList = () => {
           return;
         }
 
-        const response = await axios.get(
-          "http://35.154.161.226:5000/api/all-bookings",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get("http://35.154.161.226:5000/api/all-bookings", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            status: filters.status,
+            paymentStatus: filters.paymentStatus,
+            search: filters.search,
+            from: filters.dateRange.from,
+            to: filters.dateRange.to,
+          },
+        });
 
         setBookings(response.data);
       } catch (error) {
@@ -54,8 +73,9 @@ const UserList = () => {
     };
 
     fetchBookings();
-  }, []);
+  }, [filters, initialized]);
 
+  // 3. Handle input filters
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({
@@ -72,52 +92,29 @@ const UserList = () => {
     }));
   };
 
-
-  const getFilteredData = () => {
-    if (!bookings || !Array.isArray(bookings.bookings)) {
-      return [];
-    }
-
-    return bookings.bookings
-      .filter((item) =>
-        filters.status ? item.status?.toLowerCase() === filters.status.toLowerCase() : true
-      )
-      .filter((item) =>
-        filters.paymentStatus
-          ? item.payment_status?.toLowerCase() === filters.paymentStatus.toLowerCase()
-          : true
-      )
-      .filter((item) =>
-        filters.search
-          ? item.booking_id?.toLowerCase().includes(filters.search.toLowerCase())
-          : true
-      )
-      .filter((item) => {
-        if (filters.dateRange.from && filters.dateRange.to) {
-          const bookingDate = new Date(item.createdAt);
-          return (
-            bookingDate >= new Date(filters.dateRange.from) &&
-            bookingDate <= new Date(filters.dateRange.to)
-          );
-        }
-        return true;
-      });
+  const handleResetFilters = () => {
+    setFilters({
+      search: "",
+      status: "",
+      paymentStatus: "",
+      dateRange: { from: "", to: "" },
+    });
   };
 
-  // Pagination logic
-  const filteredData = getFilteredData();
+  // 4. Pagination logic
+  const allData = bookings.bookings || [];
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const currentItems = allData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(allData.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
-  const renderTableRows = (data) => {
-    return data?.map((item, index) => (
+  // 5. Render table
+  const renderTableRows = (data) =>
+    data?.map((item, index) => (
       <tr key={item.booking_id}>
-        <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td> {/* Index number column */}
+        <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
         <td style={{ padding: "15px" }}>{item.booking_id}</td>
         <td style={{ padding: "15px" }}>{item.full_name}</td>
         <td style={{ padding: "15px" }}>{item.artist_details?.owner_name}</td>
@@ -161,23 +158,16 @@ const UserList = () => {
                 <FontAwesomeIcon icon={faEye} />
               </Button>
             </Link>
-            {/* <Button
-              variant="danger"
-              onClick={() => handleDeleteBooking(item.booking_id)}
-            >
-              <FontAwesomeIcon icon={faTrash} />
-            </Button> */}
           </div>
         </td>
       </tr>
     ));
-  };
 
   return (
     <Container style={{ fontFamily: "'Roboto', sans-serif", padding: "30px" }}>
       <h2 className="mb-4 text-center fw-bold text-dark">Booking List</h2>
 
-      {/* Filters Section */}
+      {/* Filters */}
       <Form className="mb-4">
         <Row className="align-items-center">
           <Col md={3}>
@@ -236,23 +226,14 @@ const UserList = () => {
             />
           </Col>
           <Col md={1}>
-            <Button
-              variant="outline-danger"
-              onClick={() =>
-                setFilters({
-                  search: "",
-                  status: "",
-                  paymentStatus: "",
-                  dateRange: { from: "", to: "" },
-                })
-              }
-            >
+            <Button variant="outline-danger" onClick={handleResetFilters}>
               <FontAwesomeIcon icon={faBroom} />
             </Button>
           </Col>
         </Row>
       </Form>
 
+      {/* Table */}
       <div className="table-responsive">
         <Table
           bordered
@@ -267,14 +248,14 @@ const UserList = () => {
         >
           <thead className="bg-primary text-white">
             <tr>
-              <th>#</th> {/* Index number column */}
-              <th style={{ padding: "15px" }}>Booking ID</th>
-              <th style={{ padding: "15px" }}>User Name</th>
-              <th style={{ padding: "15px" }}>Artist Name</th>
-              <th style={{ padding: "15px" }}>Status</th>
-              <th style={{ padding: "15px" }}>Booking Time</th>
-              <th style={{ padding: "15px" }}>Payment Status</th>
-              <th style={{ padding: "15px" }}>View</th>
+              <th>#</th>
+              <th>Booking ID</th>
+              <th>User Name</th>
+              <th>Artist Name</th>
+              <th>Status</th>
+              <th>Booking Time</th>
+              <th>Payment Status</th>
+              <th>View</th>
             </tr>
           </thead>
           <tbody>{renderTableRows(currentItems)}</tbody>
@@ -288,29 +269,28 @@ const UserList = () => {
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className="me-1"
-           size="sm" 
+          size="sm"
         >
           &lt;
         </Button>
         {Array.from({ length: totalPages }, (_, index) => (
-  <Button
-    key={index}
-    variant="outline-primary"
-    onClick={() => handlePageChange(index + 1)}
-    active={currentPage === index + 1}
-    size="sm" 
-    style={{ fontSize: "10px" }} // Custom font size for page numbers
-  >
-    {index + 1}
-  </Button>
-))}
-
+          <Button
+            key={index}
+            variant="outline-primary"
+            onClick={() => handlePageChange(index + 1)}
+            active={currentPage === index + 1}
+            size="sm"
+            style={{ fontSize: "10px" }}
+          >
+            {index + 1}
+          </Button>
+        ))}
         <Button
           variant="outline-primary"
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className="me-1 ms-1"
-           size="sm" 
+          size="sm"
         >
           &gt;
         </Button>

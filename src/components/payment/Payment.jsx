@@ -10,9 +10,9 @@ import {
   Badge,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faBroom } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faBroom, faEye } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 const Payment = () => {
   const [payments, setPayments] = useState([]);
   const [search, setSearch] = useState("");
@@ -134,6 +134,7 @@ const Payment = () => {
               <th className="py-3">Pending Amount</th>
               <th className="py-3">Time</th>
               <th className="py-3">Booking ID</th>
+              <th className="py-3">Booking Details</th>
               
           </tr>
           </thead>
@@ -148,6 +149,11 @@ const Payment = () => {
                 <td>₹{item.pending_price}</td>
                 <td className="fw-bold text-primary">{new Date(item.createdAt).toLocaleString()}</td>
                 <td>{item.booking_id}</td>
+                <td>      <Link to={`/user-profile/${item.booking_id}`}>
+                              <Button variant="primary" className="me-2 text-light">
+                                <FontAwesomeIcon icon={faEye} />
+                              </Button>
+                            </Link></td>
               </tr>
             ))}
           </tbody>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Container,
@@ -11,12 +11,13 @@ import {
   Button,
   Modal,
 } from 'react-bootstrap';
-
+import Select from 'react-select'; 
 const Featured = () => {
   const [featuredData, setFeaturedData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [rankChanges, setRankChanges] = useState({});
+
 
   // Modal state
   const [showModal, setShowModal] = useState(false);
@@ -248,31 +249,44 @@ const Featured = () => {
         <Modal.Header closeButton>
           <Modal.Title>Add Artist to Featured</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>Select Artist</Form.Label>
-            <Form.Select
-              value={selectedArtist}
-              onChange={(e) => setSelectedArtist(e.target.value)}
-            >
-              <option value="">-- Select Artist --</option>
-              {allArtists.map((artist) => (
-                <option key={artist.user_id} value={artist.user_id}>
-                  {artist.user_id} - {artist.profile_name}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Enter Rank</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="Enter featured rank"
-              value={newRank}
-              onChange={(e) => setNewRank(e.target.value)}
-            />
-          </Form.Group>
-        </Modal.Body>
+       <Modal.Body>
+
+  {/* Artist Dropdown */}
+ <Form.Group className="mb-3">
+  <Form.Label>Select Artist</Form.Label>
+  <Select
+    options={allArtists.map((artist) => ({
+      value: artist.user_id,
+      label: `${artist.user_id} - ${artist.profile_name}`,
+    }))}
+    value={
+      selectedArtist
+        ? {
+            value: selectedArtist,
+            label: `${selectedArtist} - ${
+              allArtists.find((a) => a.user_id === selectedArtist)?.profile_name || ''
+            }`,
+          }
+        : null
+    }
+    onChange={(selected) => setSelectedArtist(selected?.value || '')}
+    isClearable
+    placeholder="Search and select artist..."
+  />
+</Form.Group>
+
+  {/* Rank Input */}
+  <Form.Group>
+    <Form.Label>Enter Rank</Form.Label>
+    <Form.Control
+      type="number"
+      placeholder="Enter featured rank"
+      value={newRank}
+      onChange={(e) => setNewRank(e.target.value)}
+    />
+  </Form.Group>
+</Modal.Body>
+
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Cancel

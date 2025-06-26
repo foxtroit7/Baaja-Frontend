@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 
 const CategoryArtistAdd = () => {
   const navigate = useNavigate();
@@ -153,20 +154,29 @@ console.log(body)
               </Form.Select>
             </Form.Group>
 
-            <Form.Group className="mb-2">
-              <Form.Label>Select Artist</Form.Label>
-              <Form.Select
-                value={item.artist_id}
-                onChange={(e) => handleChange(index, 'artist_id', e.target.value)}
-              >
-                <option value="">-- Select Artist --</option>
-                {item.artists?.map((artist) => (
-                  <option key={artist.user_id} value={artist.user_id}>
-                    {artist.profile_name} ({artist.user_id})
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
+           <Form.Group className="mb-2">
+  <Form.Label>Select Artist</Form.Label>
+  <Select
+    options={item.artists?.map((artist) => ({
+      value: artist.user_id,
+      label: `${artist.profile_name} (${artist.user_id})`,
+    }))}
+    value={
+      item.artist_id
+        ? {
+            value: item.artist_id,
+            label: `${item.artists?.find(a => a.user_id === item.artist_id)?.profile_name || ''} (${item.artist_id})`
+          }
+        : null
+    }
+    onChange={(selected) =>
+      handleChange(index, 'artist_id', selected ? selected.value : '')
+    }
+    isClearable
+    placeholder="Search and select artist"
+  />
+</Form.Group>
+
 
             <Form.Group>
               <Form.Label>Artist Rank</Form.Label>

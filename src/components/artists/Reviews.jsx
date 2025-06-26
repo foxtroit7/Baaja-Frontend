@@ -12,7 +12,7 @@ const Reviews = ({ user_id }) => {
   const [newReview, setNewReview] = useState("");
   const [newName, setNewName] = useState("");
   const [newRating, setNewRating] = useState("");
-console.log(user_id);
+
 
   const fetchReviews = () => {
     if (user_id) {
@@ -97,7 +97,7 @@ console.log(user_id);
       );
       if (response.ok) {
         const addedReview = await response.json();
-        console.log("Added review:", addedReview); // Log the added review
+        // console.log("Added review:", addedReview); // Log the added review
 
         // Force a re-fetch to ensure reviews are updated
         fetchReviews();

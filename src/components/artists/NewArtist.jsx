@@ -61,7 +61,7 @@ useEffect(() => {
             }}
           />
 
-          <h3 className="fw-bold">Owner Name: {user.owner_name}</h3>
+          <h3 className="fw-bold">Owner Name: {user.name}</h3>
           <h4 className="fw-bold">Artist Id: {user.user_id}</h4>
           <h4 className="fw-bold">Profile Name: {user.profile_name}</h4>
           <h5 className="text-primary" style={{ fontWeight: 600, fontSize: "1.1rem" }}>

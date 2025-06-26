@@ -112,59 +112,64 @@ const Artist = () => {
                     <h3 className="text-center fw-bold text-dark">Artists List</h3>
                 </Col>
             </Row>
+<Row className="mb-4">
+  <Col md={5}>
+    <InputGroup>
+      <Form.Control
+        type="text"
+        placeholder="Search by name, category, or location"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <InputGroup.Text>
+        <FontAwesomeIcon icon={faSearch} className="text-primary" />
+      </InputGroup.Text>
+    </InputGroup>
+  </Col>
 
-            <Row className="mb-4">
-                <Col md={4}>
-                    <InputGroup>
-                        <Form.Control
-                            type="text"
-                            placeholder="Search by name, category, or location"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-                        <InputGroup.Text>
-                            <FontAwesomeIcon icon={faSearch} className="text-primary" />
-                        </InputGroup.Text>
-                    </InputGroup>
-                </Col>
+  <Col md={3}>
+    <Form.Select
+      value={selectedCategory}
+      onChange={(e) => setSelectedCategory(e.target.value)}
+    >
+      <option value="All">All Categories</option>
+      {categories.map((cat) => (
+        <option key={cat.category_id} value={cat.category_id}>
+          {cat.category}
+        </option>
+      ))}
+    </Form.Select>
+  </Col>
 
-                <Col md={3}>
-                    <Form.Select
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                    >
-                        <option value="All">All Categories</option>
-                        {categories.map((cat) => (
-                            <option key={cat.category_id} value={cat.category_id}>
-                                {cat.category}
-                            </option>
-                        ))}
-                    </Form.Select>
-                </Col>
+  <Col md={2}>
+    <Dropdown className="w-100">
+      <Dropdown.Toggle variant="primary" className="w-100" size="md">
+        Sort By
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        <Dropdown.Item onClick={() => handleSortChange('default')}>Default</Dropdown.Item>
+        <Dropdown.Item onClick={() => handleSortChange('bookings')}>Higher to Lower Bookings</Dropdown.Item>
+        <Dropdown.Item onClick={() => handleSortChange('alphabetical')}>Alphabetically A-Z</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  </Col>
 
-                <Col md={2}>
-                    <Dropdown>
-                        <Dropdown.Toggle variant="primary" size="md">
-                            Sort By
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => handleSortChange('default')}>Default</Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleSortChange('bookings')}>Higher to Lower Bookings</Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleSortChange('alphabetical')}>Alphabetically A-Z</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Col>
+  <Col md={2}>
+    <Button
+      variant="danger"
+      onClick={() => {
+        setSearch('');
+        setSortOrder('default');
+        setSelectedCategory('All');
+      }}
+      className="w-100"
+    >
+      <FontAwesomeIcon icon={faBroom} className="me-2" />
+      Reset
+    </Button>
+  </Col>
+</Row>
 
-                <Col md={2}>
-                    <Button variant="danger" onClick={() => {
-                        setSearch('');
-                        setSortOrder('default');
-                        setSelectedCategory('All');
-                    }}>
-                        <FontAwesomeIcon icon={faBroom} />
-                    </Button>
-                </Col>
-            </Row>
 
             <Row>
                 <Col>
