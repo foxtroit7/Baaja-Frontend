@@ -83,14 +83,8 @@ const Booking = ({ artist_id }) => {
     <div>
       <div style={{ fontFamily: "'Roboto', sans-serif", padding: '30px' }}>
         <h4
-          className="mb-4"
-          style={{
-            fontFamily: "'Sans Serif', sans-serif",
-            fontWeight: 'bold',
-            textAlign: 'center',
-            color: '#343a40',
-            letterSpacing: '1px',
-          }}
+          className="mb-4 text-main"
+         
         >
           Booking History
         </h4>
@@ -139,10 +133,10 @@ const Booking = ({ artist_id }) => {
             value={to}
             onChange={(e) => setTo(e.target.value)}
           />
-          <Button onClick={fetchBookings} variant="primary">
+          <Button onClick={fetchBookings} className='bg-main'>
             Filter
           </Button>
-          <Button onClick={handleResetFilters} variant="secondary">
+          <Button onClick={handleResetFilters} className='bg-main'>
             Reset
           </Button>
         </div>
@@ -150,7 +144,7 @@ const Booking = ({ artist_id }) => {
         {/* Booking Table */}
         {loading ? (
           <div className="text-center">
-            <Spinner animation="border" variant="primary" />
+            <Spinner animation="border" className="bg-main" />
           </div>
         ) : error ? (
           <div className="text-center text-danger">{error}</div>
@@ -158,10 +152,10 @@ const Booking = ({ artist_id }) => {
           <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
             <Table
               responsive
-              hover
-              className="table-borderless"
+              
+              className="text-center table-striped rounded"
               style={{
-                backgroundColor: '#f8f9fa',
+               
                 borderRadius: '10px',
                 overflow: 'hidden',
                 boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
@@ -233,7 +227,7 @@ const Booking = ({ artist_id }) => {
                       </td>
                       <td>
                         <Link to={`/user-profile/${booking.booking_id}`}>
-                          <Button variant="primary" size="md" className="me-2">
+                          <Button size="md" className="me-2 bg-main">
                             <FontAwesomeIcon icon={faEye} />
                           </Button>
                         </Link>

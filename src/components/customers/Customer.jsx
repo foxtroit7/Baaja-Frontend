@@ -115,7 +115,7 @@ const Customer = () => {
         <Col md={4}>
           <Card className="text-center shadow">
             <Card.Body>
-              <FontAwesomeIcon icon={faTruck} size="2x" className="text-primary" />
+              <FontAwesomeIcon icon={faTruck} size="2x" className="text-main" />
               <Card.Title>Location</Card.Title>
               <Card.Text>{user.location || 'Not available'}</Card.Text>
             </Card.Body>
@@ -124,7 +124,7 @@ const Customer = () => {
         <Col md={4}>
           <Card className="text-center shadow">
             <Card.Body>
-              <FontAwesomeIcon icon={faMoneyBill} size="2x" className="text-primary" />
+              <FontAwesomeIcon icon={faMoneyBill} size="2x" className="text-main" />
               <Card.Title>Total Bookings</Card.Title>
               <Card.Text>{user.total_bookings}</Card.Text>
             </Card.Body>
@@ -133,7 +133,7 @@ const Customer = () => {
         <Col md={4}>
           <Card className="text-center shadow">
             <Card.Body>
-              <FontAwesomeIcon icon={faTruckRampBox} size="2x" className="text-primary" />
+              <FontAwesomeIcon icon={faTruckRampBox} size="2x" className="text-main" />
               <Card.Title>Pending Bookings</Card.Title>
               <Card.Text>{user.pending_bookings}</Card.Text>
             </Card.Body>
@@ -145,7 +145,7 @@ const Customer = () => {
 
       {/* Filters */}
       <Row className="mb-3 align-items-end">
-        <Col md={5}>
+        <Col md={5} className='mb-1'>
           <InputGroup>
             <InputGroup.Text>
               <FontAwesomeIcon icon={faSearch} />
@@ -154,11 +154,12 @@ const Customer = () => {
               type="text"
               placeholder="Search by Booking ID"
               value={filters.search}
+              className='custom-placeholder'
               onChange={(e) => setFilters((prev) => ({ ...prev, search: e.target.value }))}
             />
           </InputGroup>
         </Col>
-        <Col md={3}>
+        <Col md={3} className='mb-1'>
           <Form.Select
             value={filters.status}
             onChange={(e) => setFilters((prev) => ({ ...prev, status: e.target.value }))}
@@ -170,12 +171,12 @@ const Customer = () => {
             <option value="completed">Completed</option>
           </Form.Select>
         </Col>
-        <Col md={2}>
-          <Button variant="primary" onClick={applyFilters} className="w-100">
+        <Col md={2} className='mb-1'>
+          <Button  onClick={applyFilters} className="w-100 bg-main">
             Filter
           </Button>
         </Col>
-        <Col md={2}>
+        <Col md={2} className='mb-1'>
           <Button variant="secondary" onClick={resetFilters} className="w-100">
             Reset
           </Button>
@@ -183,7 +184,7 @@ const Customer = () => {
       </Row>
 
       <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
-        <Table responsive hover bordered>
+        <Table responsive className='table-striped'>
           <thead className="text-center">
             <tr>
               <th>Scheduled Start</th>
@@ -251,7 +252,7 @@ const Customer = () => {
                   </td>
                   <td>
                     <Link to={`/user-profile/${booking.booking_id}`}>
-                      <Button variant="primary" size="md" className="me-2">
+                      <Button  size="md" className="me-2 bg-main">
                         <FontAwesomeIcon icon={faEye} />
                       </Button>
                     </Link>

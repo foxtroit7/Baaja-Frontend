@@ -129,7 +129,7 @@ const VideoForm = () => {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" style={{ width: '100%', padding: '10px', fontWeight: 600, fontSize: '1rem' }} disabled={loading}>
+            <Button className='bg-main' type="submit" style={{ width: '100%', padding: '10px', fontWeight: 600, fontSize: '1rem' }} disabled={loading}>
               {loading ? (video_id ? 'Updating...' : 'Adding...') : video_id ? 'Update Video' : 'Add Video'}
             </Button>
           </Form>

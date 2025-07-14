@@ -85,7 +85,7 @@ const Payment = () => {
 
       <Form className="mb-4">
         <Row>
-          <Col md={4}>
+          <Col md={5} className="mb-1">
             <Form.Select value={statusFilter} onChange={handleStatusChange}>
               <option value="">All Status</option>
               <option value="partial">partial</option>
@@ -95,12 +95,13 @@ const Payment = () => {
 
        
 
-          <Col md={6}>
+          <Col md={5} className="mb-1">
             <InputGroup>
               <Form.Control
                 type="text"
                 placeholder="Search Booking ID, Razorpay Order id"
                 value={search}
+                className="custom-placeholder"
                 onChange={handleSearchChange}
               />
               <InputGroup.Text>
@@ -108,13 +109,14 @@ const Payment = () => {
               </InputGroup.Text>
             </InputGroup>
           </Col>
-             <Col md={2}>
+             <Col md={2} className="mb-1">
             <Button
               variant="danger"
               onClick={() => {
                 setSearch("");
                 setStatusFilter("");
               }}
+              className="ps-5 pe-5"
             >
               <FontAwesomeIcon icon={faBroom} />
             </Button>
@@ -123,34 +125,39 @@ const Payment = () => {
       </Form>
 
       <div className="table-responsive">
-        <Table bordered hover striped className="text-center align-middle">
+        <Table responsive
+                  className="text-center table-striped"
+                  style={{
+                    borderRadius: "10px"
+                  }}
+                >
           <thead>
             <tr>
-              <th className="py-3">Razorpay Order ID</th>
-              <th className="py-3">Razorpay Payment ID</th>
-              <th className="py-3">Payment Status</th>
-              <th className="py-3">Total Price</th>
-              <th className="py-3">Advance Paid</th>
-              <th className="py-3">Pending Amount</th>
-              <th className="py-3">Time</th>
-              <th className="py-3">Booking ID</th>
-              <th className="py-3">Booking Details</th>
+              <th className="align-middle">Razorpay Order ID</th>
+              <th className="align-middle">Razorpay Payment ID</th>
+              <th className="align-middle">Payment Status</th>
+              <th className="align-middle">Total Price</th>
+              <th className="align-middle">Advance Paid</th>
+              <th className="align-middle">Pending Amount</th>
+              <th className="align-middle">Time</th>
+              <th className="align-middle">Booking ID</th>
+              <th className="align-middle">Booking Details</th>
               
           </tr>
           </thead>
           <tbody>
             {paginatedData.map((item, index) => (
               <tr key={index}>
-                <td className="fw-bold text-primary">{item.razorpay_order_id}</td>
-                <td className="fw-bold text-primary">{item.razorpay_payment_id}</td>
-                <td>{getStatusBadge(item.payment_status)}</td>
-                <td>₹{item.total_price}</td>
-                <td>₹{item.advance_price}</td>
-                <td>₹{item.pending_price}</td>
-                <td className="fw-bold text-primary">{new Date(item.createdAt).toLocaleString()}</td>
-                <td>{item.booking_id}</td>
-                <td>      <Link to={`/user-profile/${item.booking_id}`}>
-                              <Button variant="primary" className="me-2 text-light">
+                <td className="fw-bold align-middle text-main">{item.razorpay_order_id}</td>
+                <td className="fw-bold align-middle text-main">{item.razorpay_payment_id}</td>
+                <td className="align-middle">{getStatusBadge(item.payment_status)}</td>
+                <td className="align-middle">₹{item.total_price}</td>
+                <td className="align-middle">₹{item.advance_price}</td>
+                <td className="align-middle">₹{item.pending_price}</td>
+                <td className="fw-bold text-main">{new Date(item.createdAt).toLocaleString()}</td>
+                <td className="align-middle">{item.booking_id}</td>
+                <td className="align-middle">      <Link to={`/user-profile/${item.booking_id}`}>
+                              <Button  className="me-2 text-light bg-main">
                                 <FontAwesomeIcon icon={faEye} />
                               </Button>
                             </Link></td>
@@ -163,10 +170,10 @@ const Payment = () => {
       {/* Pagination Buttons */}
       <div className="d-flex justify-content-center mt-3">
         <Button
-       variant="outline-primary"
+       
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="me-1"
+          className="me-1 bg-main"
            size="sm" 
         >
          &lt;
@@ -175,8 +182,9 @@ const Payment = () => {
         {[...Array(totalPages)].map((_, index) => (
           <Button
              key={index}
-    variant="outline-primary"
+  
     onClick={() => handlePageChange(index + 1)}
+    className="bg-main m-1"
     active={currentPage === index + 1}
     size="sm" 
     style={{ fontSize: "10px" }} // Custom font size for page numbers
@@ -186,10 +194,10 @@ const Payment = () => {
         ))}
 
         <Button
-          variant="outline-primary"
+        
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
-          className="ms-1"
+          className="ms-1 bg-main"
           size="sm" 
 
         >

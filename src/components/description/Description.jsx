@@ -3,6 +3,7 @@ import axios from 'axios';
 import { faEye, faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 const AdminArtistUpdates = () => {
   const [updates, setUpdates] = useState([]);
@@ -94,8 +95,6 @@ const AdminArtistUpdates = () => {
     <div
       key={update._id}
       style={{
-        backgroundColor: '#fff',
-        border: '1px solid #e0e0e0',
         borderRadius: '12px',
         padding: '1.5rem',
         marginBottom: '1.5rem',
@@ -188,28 +187,23 @@ const AdminArtistUpdates = () => {
         </div>
       )}
 
-      <button
+      <Button
         onClick={() => handleViewProfile(update.user_id)}
         style={{
           position: 'absolute',
           bottom: '15px',
-          right: '15px',
-          padding: '0.4rem 0.8rem',
-          backgroundColor: '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: '6px',
-          cursor: 'pointer',
+          right: '15px'
         }}
+        className='bg-main'
       >
-        <FontAwesomeIcon icon={faEye} /> View
-      </button>
+        <FontAwesomeIcon icon={faEye} />
+      </Button>
     </div>
   );
 
   return (
-    <div style={{ padding: '2rem', margin: '0 auto', backgroundColor: '#f9f9f9' }}>
-      <h2 style={{ marginBottom: '1.5rem', textAlign: 'center', color: '#333' }}>Artist Notifications</h2>
+    <div style={{ padding: '2rem', margin: '0 auto',}}>
+      <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>Artist Notifications</h2>
 
       {/* Tabs */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
@@ -248,52 +242,38 @@ const AdminArtistUpdates = () => {
           type="date"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
-          style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #ccc' }}
+          style={{ padding: '0.5rem', borderRadius: '6px' }}
         />
 
         <input
           type="date"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
-          style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #ccc' }}
+          style={{ padding: '0.5rem', borderRadius: '6px' }}
         />
 
-        <button
+        <Button
           onClick={handleFilterChange}
           disabled={loading}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-          }}
+          className='bg-main'
         >
-          Apply Filters
-        </button>
+          Apply
+        </Button>
 
-        <button
+        <Button
           onClick={handleResetFilters}
           disabled={loading}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#6c757d',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-          }}
+          variant='secondary'
         >
-          Reset Filters
-        </button>
+          Reset
+        </Button>
       </div>
 
       {/* Content */}
       {loading ? (
         <p style={{ textAlign: 'center' }}>Loading...</p>
       ) : updates.length === 0 ? (
-        <p style={{ textAlign: 'center', color: '#777' }}>
+        <p style={{ textAlign: 'center'}}>
           {activeTab === 'pending'
             ? 'No waiting updates are available.'
             : activeTab === 'approved'

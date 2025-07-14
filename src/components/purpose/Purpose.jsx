@@ -88,29 +88,29 @@ const Purpose = () => {
       <h3 className="mb-4">Manage Purpose</h3>
 
       <div className="d-flex justify-content-end mb-3">
-  <Button variant="primary" onClick={openAddModal}>
+  <Button  onClick={openAddModal} className='bg-main'>
     Add Purpose
   </Button>
 </div>
 
-      <Table striped bordered hover>
+      <Table responsive className='table-striped'>
         <thead>
           <tr>
-            <th>#</th>
-            <th>Purpose</th>
-            <th>Actions</th>
+            <th className='text-center'>#</th>
+            <th className='text-center'>Purpose</th>
+            <th className='text-center'>Actions</th>
           </tr>
         </thead>
         <tbody>
           {purposes.map((data, index) => (
             <tr key={data._id}>
-              <td>{index + 1}</td>
-              <td>{data.purpose}</td>
-              <td>
-                <Button variant="primary" size="sm" onClick={() => openEditModal(data)} className="me-2">
+              <td className='text-center'>{index + 1}</td>
+              <td className='text-center'>{data.purpose}</td>
+              <td className='d-flex justify-content-center'>
+                <Button  size="sm" onClick={() => openEditModal(data)} className="me-2 bg-main">
                   <FontAwesomeIcon icon={faEdit} className='text-light' />
                 </Button>
-                <Button variant="danger" size="sm" onClick={() => openDeleteModal(data)}>
+                <Button className='bg-main' size="sm" onClick={() => openDeleteModal(data)}>
                   <FontAwesomeIcon icon={faTrash} className='text-light' />
                 </Button>
               </td>
@@ -122,17 +122,18 @@ const Purpose = () => {
       {/* Modal for Add/Edit */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>{isEditMode ? 'Edit Purpose' : 'Add Purpose'}</Modal.Title>
+          <Modal.Title className='text-dark'>{isEditMode ? 'Edit Purpose' : 'Add Purpose'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group>
-            <Form.Label>Title</Form.Label>
+            <Form.Label className='text-dark'>Title</Form.Label>
             <Form.Control
               type="text"
               name="purpose"
               value={formData.purpose}
               onChange={handleChange}
               placeholder="Enter purpose purpose"
+              className='custom-placeholder'
             />
           </Form.Group>
         </Modal.Body>
@@ -140,7 +141,7 @@ const Purpose = () => {
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleSave}>
+          <Button className='bg-main' onClick={handleSave}>
             {isEditMode ? 'Update' : 'Add'}
           </Button>
         </Modal.Footer>

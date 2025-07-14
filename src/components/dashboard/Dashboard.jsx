@@ -6,7 +6,7 @@ import {
   Card,
   Form,
   Button,
-} from "react-bootstrap";
+} from "react-bootstrap"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUsers,
@@ -154,7 +154,7 @@ if (loading || !data) return <div>Loading...</div>;
       <Row className="mb-4 align-items-center">
         <Col md={2}>
           <Form.Group controlId="timeFilter">
-            <Form.Label>Time Filter:</Form.Label>
+            <Form.Label>Time:</Form.Label>
             <Form.Select value={timeFilter} onChange={handleTimeFilterChange}>
               <option value="All">All</option>
               <option value="today">Today</option>
@@ -165,7 +165,7 @@ if (loading || !data) return <div>Loading...</div>;
         </Col>
         <Col md={2}>
           <Form.Group controlId="monthFilter">
-            <Form.Label>Month Filter:</Form.Label>
+            <Form.Label>Month:</Form.Label>
             <Form.Select value={monthFilter} onChange={handleMonthFilterChange}>
               <option value="All">All</option>
               {[
@@ -195,7 +195,7 @@ if (loading || !data) return <div>Loading...</div>;
           </Form.Group>
         </Col>
         <Col md={2} className="mt-4">
-          <Button variant="primary" onClick={handleReset} className="w-100">
+          <Button onClick={handleReset} className="w-100 bg-main">
             Reset
           </Button>
         </Col>
@@ -207,7 +207,7 @@ if (loading || !data) return <div>Loading...</div>;
           <Link to="/users" className="text-decoration-none text-dark">
             <Card className="text-center shadow border-0">
               <Card.Body>
-                <FontAwesomeIcon icon={faUsers} className="fs-3 text-primary mb-3" />
+                <FontAwesomeIcon icon={faUsers} className="fs-3 text-main mb-3" />
                 <Card.Title>Total Users</Card.Title>
                 <Card.Text className="fs-5 fw-bold">{data.totalUsers}</Card.Text>
               </Card.Body>
@@ -218,7 +218,7 @@ if (loading || !data) return <div>Loading...</div>;
           <Link to="/artists" className="text-decoration-none text-dark">
             <Card className="text-center shadow border-0">
               <Card.Body>
-                <FontAwesomeIcon icon={faUserFriends} className="fs-3 text-success mb-3" />
+                <FontAwesomeIcon icon={faUserFriends} className="fs-3 text-main mb-3" />
                 <Card.Title>Total Artists</Card.Title>
                 <Card.Text className="fs-5 fw-bold">{data.totalArtists}</Card.Text>
               </Card.Body>
@@ -229,7 +229,7 @@ if (loading || !data) return <div>Loading...</div>;
           <Link to="/bookings?status=rejected" className="text-decoration-none text-dark">
             <Card className="text-center shadow border-0">
               <Card.Body>
-                <FontAwesomeIcon icon={faCancel} className="fs-3 text-danger mb-3" />
+                <FontAwesomeIcon icon={faCancel} className="fs-3 text-main mb-3" />
                 <Card.Title>Cancelled Bookings</Card.Title>
                 <Card.Text className="fs-5 fw-bold">{data.cancelledBookings}</Card.Text>
               </Card.Body>
@@ -243,7 +243,7 @@ if (loading || !data) return <div>Loading...</div>;
           <Link to="/bookings?status=accepted" className="text-decoration-none text-dark">
             <Card className="text-center shadow border-0">
               <Card.Body>
-                <FontAwesomeIcon icon={faBarsProgress} className="fs-3 text-warning mb-3" />
+                <FontAwesomeIcon icon={faBarsProgress} className="fs-3 text-main mb-3" />
                 <Card.Title>Active Bookings</Card.Title>
                 <Card.Text className="fs-5 fw-bold">{data.activeBookings}</Card.Text>
               </Card.Body>
@@ -254,7 +254,7 @@ if (loading || !data) return <div>Loading...</div>;
           <Link to="/bookings?status=completed" className="text-decoration-none text-dark">
             <Card className="text-center shadow border-0">
               <Card.Body>
-                <FontAwesomeIcon icon={faMoneyBill} className="fs-3 text-success mb-3" />
+                <FontAwesomeIcon icon={faMoneyBill} className="fs-3 text-main mb-3" />
                 <Card.Title>Completed Booking</Card.Title>
                 <Card.Text className="fs-5 fw-bold">{data.completedBookings}</Card.Text>
               </Card.Body>
@@ -265,7 +265,7 @@ if (loading || !data) return <div>Loading...</div>;
           <Link to="/bookings?status=pending" className="text-decoration-none text-dark">
             <Card className="text-center shadow border-0">
               <Card.Body>
-                <FontAwesomeIcon icon={faStopCircle} className="fs-3 text-info mb-3" />
+                <FontAwesomeIcon icon={faStopCircle} className="fs-3 text-main mb-3" />
                 <Card.Title>Pending Bookings</Card.Title>
                 <Card.Text className="fs-5 fw-bold">{data.pendingBookings}</Card.Text>
               </Card.Body>

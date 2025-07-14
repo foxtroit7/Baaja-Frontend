@@ -154,7 +154,7 @@ const ChangeDesc = () => {
           </Form.Group>
 
           <Button
-            variant="primary"
+          className="bg-main"
             type="submit"
             style={{
               width: '100%',

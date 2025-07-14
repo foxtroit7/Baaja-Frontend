@@ -76,7 +76,7 @@ const PushNotification = () => {
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="mb-0">Push Notifications</h2>
-        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+        <button className="btn bg-main" onClick={() => setShowModal(true)}>
           Send Notification
         </button>
       </div>
@@ -112,11 +112,11 @@ const PushNotification = () => {
                       style={{ maxHeight: "200px" }}
                     />
                   )}
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item">
-                      <strong>ID:</strong> <span className="text-primary">{note._id}</span>
+                  <ul className="list-group list-group-flush bg-main">
+                    <li className="list-group-item bg-main">
+                      <strong>ID:</strong> <span className="text-main">{note._id}</span>
                     </li>
-                    <li className="list-group-item">
+                    <li className="list-group-item bg-main">
                       <strong>To:</strong>{" "}
                       <span
                         className={`badge ${
@@ -130,11 +130,11 @@ const PushNotification = () => {
                         {note.recipientType}
                       </span>
                     </li>
-                    <li className="list-group-item">
+                    <li className="list-group-item bg-main">
                       <strong>Sent To:</strong>{" "}
-                      <span className="text-primary fw-bold">{note.sentTo}</span>
+                      <span className="text-main fw-bold">{note.sentTo}</span>
                     </li>
-                    <li className="list-group-item">
+                    <li className="list-group-item bg-main">
                       <strong>Sent At:</strong>{" "}
                       <span className="badge bg-secondary">
                         {new Date(note.sentAt).toLocaleString()}
@@ -156,12 +156,12 @@ const PushNotification = () => {
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Send Notification</h5>
+                <h5 className="modal-title text-dark">Send Notification</h5>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="modal-body">
                   <div className="form-group mb-2">
-                    <label>Title</label>
+                    <label className="text-dark">Title</label>
                     <input
                       type="text"
                       className="form-control"
@@ -172,7 +172,7 @@ const PushNotification = () => {
                     />
                   </div>
                   <div className="form-group mb-2">
-                    <label>Body</label>
+                    <label  className="text-dark">Body</label>
                     <textarea
                       className="form-control"
                       name="body"
@@ -182,7 +182,7 @@ const PushNotification = () => {
                     ></textarea>
                   </div>
                   <div className="form-group mb-2">
-                    <label>Image</label>
+                    <label  className="text-dark">Image</label>
                     <input
                       type="file"
                       className="form-control"
@@ -191,7 +191,7 @@ const PushNotification = () => {
                     />
                   </div>
                   <div className="form-group mb-2">
-                    <label>Send To:</label>
+                    <label  className="text-dark">Send To:</label>
                     <div className="form-check form-check-inline">
                       <input
                         className="form-check-input"
@@ -201,7 +201,7 @@ const PushNotification = () => {
                         checked={formData.recipientType === "users"}
                         onChange={handleChange}
                       />
-                      <label className="form-check-label">Users</label>
+                      <label className="form-check-label text-dark">Users</label>
                     </div>
                     <div className="form-check form-check-inline">
                       <input
@@ -212,7 +212,7 @@ const PushNotification = () => {
                         checked={formData.recipientType === "artists"}
                         onChange={handleChange}
                       />
-                      <label className="form-check-label">Artists</label>
+                      <label className="form-check-label text-dark">Artists</label>
                     </div>
                     <div className="form-check form-check-inline">
                       <input
@@ -228,7 +228,7 @@ const PushNotification = () => {
                   </div>
                 </div>
                 <div className="modal-footer">
-                  <button type="submit" className="btn btn-success">
+                  <button type="submit" className="btn bg-main">
                     Send
                   </button>
                   <button

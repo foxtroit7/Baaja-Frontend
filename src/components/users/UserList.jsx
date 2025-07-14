@@ -154,7 +154,7 @@ const UserList = () => {
         <td>
           <div className="text-center text-light">
             <Link to={`/user-profile/${item.booking_id}`}>
-              <Button variant="primary" className="me-2 text-light">
+              <Button  className="me-2 text-light bg-main">
                 <FontAwesomeIcon icon={faEye} />
               </Button>
             </Link>
@@ -165,26 +165,27 @@ const UserList = () => {
 
   return (
     <Container style={{ fontFamily: "'Roboto', sans-serif", padding: "30px" }}>
-      <h2 className="mb-4 text-center fw-bold text-dark">Booking List</h2>
+      <h2 className="mb-4 text-center fw-bold text-main">Booking List</h2>
 
       {/* Filters */}
       <Form className="mb-4">
         <Row className="align-items-center">
-          <Col md={3}>
+          <Col md={3} className="mb-1">
             <InputGroup>
               <InputGroup.Text>
-                <FontAwesomeIcon icon={faSearch} className="text-primary" />
+                <FontAwesomeIcon icon={faSearch} className="text-dark" />
               </InputGroup.Text>
               <Form.Control
                 type="text"
                 placeholder="Search by Booking Id"
                 name="search"
                 value={filters.search}
+                className="custom-placeholder"
                 onChange={handleFilterChange}
               />
             </InputGroup>
           </Col>
-          <Col md={2}>
+          <Col md={2}  className="mb-1">
             <Form.Select
               name="status"
               value={filters.status}
@@ -197,7 +198,7 @@ const UserList = () => {
               <option value="rejected">Rejected</option>
             </Form.Select>
           </Col>
-          <Col md={2}>
+          <Col md={2}  className="mb-1">
             <Form.Select
               name="paymentStatus"
               value={filters.paymentStatus}
@@ -209,7 +210,7 @@ const UserList = () => {
               <option value="partial">Partial</option>
             </Form.Select>
           </Col>
-          <Col md={2}>
+          <Col md={2}  className="mb-1">
             <Form.Control
               type="date"
               name="from"
@@ -217,7 +218,7 @@ const UserList = () => {
               onChange={handleDateRangeChange}
             />
           </Col>
-          <Col md={2}>
+          <Col md={2}  className="mb-1">
             <Form.Control
               type="date"
               name="to"
@@ -225,8 +226,8 @@ const UserList = () => {
               onChange={handleDateRangeChange}
             />
           </Col>
-          <Col md={1}>
-            <Button variant="outline-danger" onClick={handleResetFilters}>
+          <Col md={1}  className="mb-1">
+            <Button variant="danger" onClick={handleResetFilters}>
               <FontAwesomeIcon icon={faBroom} />
             </Button>
           </Col>
@@ -235,18 +236,13 @@ const UserList = () => {
 
       {/* Table */}
       <div className="table-responsive">
-        <Table
-          bordered
-          hover
-          className="text-center"
+        <Table responsive
+          className="text-center table-striped"
           style={{
-            backgroundColor: "#f8f9fa",
-            borderRadius: "10px",
-            overflow: "hidden",
-            boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)",
+            borderRadius: "10px"
           }}
         >
-          <thead className="bg-primary text-white">
+          <thead className="bg-main text-white">
             <tr>
               <th>#</th>
               <th>Booking ID</th>
@@ -265,10 +261,10 @@ const UserList = () => {
       {/* Pagination */}
       <div className="d-flex justify-content-center">
         <Button
-          variant="outline-primary"
+        
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="me-1"
+          className="me-1 bg-main"
           size="sm"
         >
           &lt;
@@ -276,7 +272,7 @@ const UserList = () => {
         {Array.from({ length: totalPages }, (_, index) => (
           <Button
             key={index}
-            variant="outline-primary"
+         className="bg-main m-1"
             onClick={() => handlePageChange(index + 1)}
             active={currentPage === index + 1}
             size="sm"
@@ -286,10 +282,10 @@ const UserList = () => {
           </Button>
         ))}
         <Button
-          variant="outline-primary"
+          
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="me-1 ms-1"
+          className="me-1 ms-1 bg-main"
           size="sm"
         >
           &gt;

@@ -196,7 +196,7 @@ const UserForm = () => {
 
           {/* Submit Button */}
           <Button
-            variant="primary"
+         className="bg-main"
             type="submit"
             style={{ width: "100%", padding: "10px", fontWeight: 600, fontSize: "1rem" }}
           >

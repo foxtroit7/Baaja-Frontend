@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, Container, Row, Col, Button, Modal, Form, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,9 @@ import Booking from './Booking';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ArtistProfile = () => {
+  const [showServiceModal, setShowServiceModal] = useState(false);
+const [editedServices, setEditedServices] = useState([]);
+
   const { user_id } = useParams();
   const [artist, setArtist] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -132,12 +135,12 @@ const ArtistProfile = () => {
   return (
     <Container className="mt-4">
       <ToastContainer />
-      <div className="text-center mb-4 p-4 rounded shadow position-relative" style={{ backgroundColor: '#f8f9fa' }}>
+      <div className="text-center mb-4 p-4 rounded shadow position-relative" >
         {/* ✏️ Edit Icon in top-right */}
         <FontAwesomeIcon
           icon={faEdit}
           className="position-absolute"
-          style={{ top: '15px', right: '20px', cursor: 'pointer', color: '#007bff' }}
+          style={{ top: '15px', right: '20px', cursor: 'pointer', color: '#D20A2E ' }}
         onClick={() => {
   setFormData({
     owner_name: artist.owner_name || '',
@@ -157,52 +160,55 @@ const ArtistProfile = () => {
           height={140}
           style={{ objectFit: 'cover', border: '2px solid #007bff' }}
         />
-        <h3 className="fw-bold">Owner Name: {artist.owner_name}</h3>
-        <h5 className="text-primary">Category: {artist.category_type}</h5>
-        <h6 className="text-muted">{artist.location}</h6>
-        <h5>
+        <h3 className="text-main fw-bold">Owner Name: {artist.owner_name}</h3>
+        <h5 className="text-main">Category: {artist.category_type}</h5>
+        <h6 className="text-main">{artist.location}</h6>
+        <h5 className='text-main'>
           Rating: {Array.from({ length: 5 }, (_, i) => (i < artist.rating ? '⭐' : '☆')).join('')}
         </h5>
-        <h5 className="text-dark">Experience: {artist.experience}</h5>
-        <h5 className="text-secondary fw-bold">About:</h5>
-        <p className="">{artist.description}</p>
+        <h5 className="text-main">Experience: {artist.experience}</h5>
+        <h5 className="text-main fw-bold">About:</h5>
+        <p className="text-main">{artist.description}</p>
       </div>
 
       {/* 🛠 Edit Modal */}
       <Modal show={showDesModal} onHide={() => setDesShowModal(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Artist Info</Modal.Title>
+          <Modal.Title className='text-dark'>Edit Artist Info</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3">
-            <Form.Label>Owner Name</Form.Label>
+            <Form.Label  className='text-dark'>Owner Name</Form.Label>
             <Form.Control
               type="text"
               value={formData.owner_name}
+            
               onChange={(e) => setFormData({ ...formData, owner_name: e.target.value })}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Experience</Form.Label>
+            <Form.Label className='text-dark'>Experience</Form.Label>
             <Form.Control
               type="text"
               value={formData.experience}
+             
               onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>About</Form.Label>
+            <Form.Label  className='text-dark'>About</Form.Label>
             <Form.Control
               as="textarea"
               rows={4}
+            
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
           </Form.Group>
         </Modal.Body>
             <Modal.Footer>
-          <Button variant="secondary" onClick={() => setDesShowModal(false)}>Cancel</Button>
-          <Button variant="primary" onClick={handleDetailsSubmit}>Save Changes</Button>
+          <Button className='bg-main' onClick={() => setDesShowModal(false)}>Cancel</Button>
+          <Button className='bg-main' onClick={handleDetailsSubmit}>Save Changes</Button>
         </Modal.Footer>
       </Modal>
 
@@ -210,7 +216,7 @@ const ArtistProfile = () => {
         <Col md={6}>
           <Card className="text-center shadow-lg rounded-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
             <Card.Body>
-              <FontAwesomeIcon icon={faTruck} className="fs-3 text-primary mb-3" />
+              <FontAwesomeIcon icon={faTruck} className="fs-3 text-main mb-3" />
               <Card.Title>Total Bookings</Card.Title>
               <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>{artist.total_bookings}</Card.Text>
             </Card.Body>
@@ -219,9 +225,9 @@ const ArtistProfile = () => {
         <Col md={6}>
           <Card className="text-center shadow-lg rounded-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
             <Card.Body>
-              <FontAwesomeIcon icon={faMoneyBill} className="fs-3 text-success mb-3" />
-              <Card.Title>Total Money</Card.Title>
-              <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>{artist.total_money}</Card.Text>
+              <FontAwesomeIcon icon={faMoneyBill} className="fs-3 text-main mb-3" />
+              <Card.Title>Total Revenue</Card.Title>
+              <Card.Text style={{ fontWeight: '500', fontSize: '18px' }}>{artist.total_revenue}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -229,13 +235,26 @@ const ArtistProfile = () => {
 
       <Row>
         <Col md={6}>
-          <Card className="text-center shadow-lg rounded-3 mb-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
+          <Card className="text-center shadow-lg rounded-3 mb-3" style={{ backgroundColor: '#f8f9fa', border: 'none' }}  
+  >
             <Card.Body>
-              <FontAwesomeIcon icon={faTruck} className="fs-3 text-primary mb-3" />
+              <FontAwesomeIcon icon={faTruck} className="fs-3 text-main mb-3" />
               <Card.Title>Required Services</Card.Title>
+                <Button
+              
+                size="sm"
+                className="position-absolute bg-main"
+                style={{ top: '15px', right: '15px' }}
+                       onClick={() => {
+    setEditedServices([...artist.required_services]);
+    setShowServiceModal(true);
+  }}
+              >
+                <FontAwesomeIcon icon={faPen} />
+              </Button>
               <div>
                 {artist.required_services.map((service, index) => (
-                  <span key={index} className="badge bg-primary me-2 mb-2">{service}</span>
+                  <span key={index} className="badge bg-main me-2 mb-2">{service}</span>
                 ))}
               </div>
             </Card.Body>
@@ -245,11 +264,11 @@ const ArtistProfile = () => {
         <Col md={6}>
           <Card className="text-center shadow-lg rounded-3 mb-3 position-relative" style={{ backgroundColor: '#f8f9fa', border: 'none' }}>
             <Card.Body>
-              <FontAwesomeIcon icon={faMoneyBill} className="fs-3 text-success mb-3" />
+              <FontAwesomeIcon icon={faMoneyBill} className="fs-3 text-main mb-3" />
               <Button
-                variant="outline-primary"
+               
                 size="sm"
-                className="position-absolute"
+                className="position-absolute bg-main"
                 style={{ top: '15px', right: '15px' }}
                 onClick={() => {
                   setFormData(paymentData || {});
@@ -280,17 +299,18 @@ const ArtistProfile = () => {
 
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Booking Charges</Modal.Title>
+          <Modal.Title  className='text-dark'>Edit Booking Charges</Modal.Title>
         </Modal.Header>
       <Modal.Body>
   {message && <Alert variant={variant}>{message}</Alert>}
-  <Row>
+  <Row className='text-dark'>
     {["first", "second", "third", "fourth", "fifth", "sixth", "seventh"].map((day, index) => (
       <Col md={6} key={day} className="mb-3">
         <Form.Group>
-          <Form.Label>{day.charAt(0).toUpperCase() + day.slice(1)} Day</Form.Label>
+          <Form.Label  className='text-dark'>{day.charAt(0).toUpperCase() + day.slice(1)} Day</Form.Label>
           <Form.Control
             type="number"
+        
             value={formData[`${day}_day_booking`] || ""}
             onChange={(e) =>
               setFormData({ ...formData, [`${day}_day_booking`]: e.target.value })
@@ -304,9 +324,79 @@ const ArtistProfile = () => {
 
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
-          <Button variant="primary" onClick={handleSubmit}>Save</Button>
+          <Button className="bg-main" onClick={handleSubmit}>Save</Button>
         </Modal.Footer>
       </Modal>
+<Modal show={showServiceModal} onHide={() => setShowServiceModal(false)} centered>
+  <Modal.Header closeButton>
+    <Modal.Title  className='text-dark'>Edit Required Services</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    {editedServices.map((service, index) => (
+      <Form.Group className="mb-2" key={index}>
+        <Form.Control
+          type="text"
+          
+          value={service}
+          onChange={(e) => {
+            const newServices = [...editedServices];
+            newServices[index] = e.target.value;
+            setEditedServices(newServices);
+          }}
+        />
+      </Form.Group>
+    ))}
+    <Button
+      size="sm"
+      onClick={() => setEditedServices([...editedServices, ""])}
+      className="me-2 bg-main"
+    >
+      + Add Service
+    </Button>
+    {editedServices.length > 0 && (
+      <Button
+        size="sm"
+        onClick={() => setEditedServices(editedServices.slice(0, -1))}
+        className='bg-main'
+      >
+        − Remove Last
+      </Button>
+    )}
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setShowServiceModal(false)}>Cancel</Button>
+    <Button
+     className="bg-main"
+      onClick={async () => {
+        const token = localStorage.getItem("token");
+        try {
+          const response = await fetch(`http://35.154.161.226:5000/api/artist/details/${user_id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ required_services: editedServices }),
+          });
+          const result = await response.json();
+          if (response.ok) {
+            toast.success(result.message || "Updated successfully");
+            setShowServiceModal(false);
+            fetchArtist();
+          } else {
+            toast.error(result.message || "Update failed");
+          }
+        } catch (err) {
+          console.error("Error updating services:", err);
+          toast.error("Server error.");
+        }
+      }}
+    >
+      Save Changes
+    </Button>
+  </Modal.Footer>
+</Modal>
+
 
       <ApppointmentScheduler artist_id={user_id} />
       <Clips user_id={user_id} />

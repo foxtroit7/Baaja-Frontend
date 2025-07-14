@@ -121,7 +121,6 @@ const changeStatus = async () => {
   const iconStyle = {
     fontSize: '1.5rem',
     marginBottom: '0.5rem',
-    color: '#007bff',
   };
 
   const getStatusBadgeClass = (status) => {
@@ -142,7 +141,7 @@ const changeStatus = async () => {
   return (
     <>
     <Container className="mt-4" style={cardStyle}>
-      <h2 className="text-center mb-4" style={headerStyle}>
+      <h2 className="text-center mb-4 text-main" style={headerStyle}>
         Booking Details
       </h2>
       <Row className="align-items-center">
@@ -158,7 +157,7 @@ const changeStatus = async () => {
               }}
             />
             <div>
-              <h5 style={headerStyle}>User: {booking.full_name}</h5>
+              <h5 className='text-main'>User: {booking.full_name}</h5>
               <p>{booking.phone_number}</p>
             </div>
           </div>
@@ -193,7 +192,7 @@ const changeStatus = async () => {
 
 
             <div>
-              <h5 style={headerStyle}>Artist: {booking.artist_details?.owner_name}</h5>
+              <h5 className='text-main'>Artist: {booking.artist_details?.owner_name}</h5>
               <p>{booking.alternate_number}</p>
             </div>
           </div>
@@ -232,7 +231,7 @@ const changeStatus = async () => {
               </Card.Text>
               {/* Dropdown for Status Change */}
               <Dropdown>
-                <Dropdown.Toggle variant="primary" id="dropdown-basic" style={{ borderRadius: '25px' }}>
+                <Dropdown.Toggle className="bg-main" id="dropdown-basic" style={{ borderRadius: '25px' }}>
                   Change Status
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
@@ -311,7 +310,7 @@ const changeStatus = async () => {
           <Col md={6}>
             <Card className="shadow p-4" style={{ height: '30vh' }}>
               <Card.Body>
-                <Card.Title className="text-center text-primary mb-4" style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                <Card.Title className="text-center text-main mb-4" style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
                   <FontAwesomeIcon icon={faUser} style={{ marginRight: '10px' }} /> User Details
                 </Card.Title>
                 <Card.Text style={{ fontSize: '1rem' }}>
@@ -337,7 +336,7 @@ const changeStatus = async () => {
     <Button variant="secondary" onClick={() => setShowModal(false)}>
       Cancel
     </Button>
-    <Button variant="primary" onClick={changeStatus}>
+    <Button className='bg-main' onClick={changeStatus}>
       Confirm
     </Button>
   </Modal.Footer>

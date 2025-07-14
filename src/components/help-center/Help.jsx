@@ -70,7 +70,7 @@ const Help = () => {
     <div className="container mt-4 text-center">
       <h2 className="mb-4">Help Center</h2>
       <div className="d-flex justify-content-end">
-        <Button variant="primary" onClick={() => handleShowModal()}>Add Question</Button>
+        <Button className="bg-main" onClick={() => handleShowModal()}>Add Question</Button>
       </div>
       <div className="d-flex justify-content-center">
         <Accordion defaultActiveKey="0" className="mt-3 w-75 p-4 shadow-lg rounded custom-accordion">
@@ -82,7 +82,7 @@ const Help = () => {
                 <div className="d-flex justify-content-end">
                 <FontAwesomeIcon
                   icon={faEdit}
-                  className="text-primary mx-2"
+                  className="text-main mx-2"
                   onClick={() => handleShowModal(Help)}
                 />
                 <FontAwesomeIcon
@@ -124,7 +124,7 @@ const Help = () => {
                 required
               />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button className="bg-main" type="submit">
               {editId ? "Update" : "Add"}
             </Button>
           </Form>

@@ -14,7 +14,7 @@ const Catagory = () => {
       
       <Row>
         <Col className="d-flex justify-content-end">
-          <Button onClick={handleButtonClick}>Add New Catagory</Button>
+          <Button onClick={handleButtonClick} className='bg-main'>Add New Category</Button>
         </Col>
       </Row>
     </Container>

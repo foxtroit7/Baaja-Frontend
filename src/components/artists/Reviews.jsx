@@ -113,8 +113,8 @@ const Reviews = ({ user_id }) => {
   };
 
   return (
-    <div style={{ fontFamily: "'Roboto', sans-serif", padding: "30px", backgroundColor: "#f0f4f8" }}>
-      <h2 className="mb-4" style={{ fontWeight: "bold", textAlign: "center", color: "#3c4048" }}>
+    <div style={{ fontFamily: "'Roboto', sans-serif", padding: "30px"}}>
+      <h2 className="mb-4" style={{ fontWeight: "bold", textAlign: "center" }}>
         User Reviews
       </h2>
 
@@ -126,7 +126,7 @@ const Reviews = ({ user_id }) => {
             border: "none",
             borderRadius: "4px",
           }}
-          variant="primary"
+         className="bg-main"
         >
           Add Review
         </Button>
@@ -147,7 +147,7 @@ const Reviews = ({ user_id }) => {
                 <Card.Body>
                   <div className="d-flex align-items-center mb-4">
                     <div className="">
-                      <Card.Title style={{ fontSize: "1.2rem", fontWeight: "bold", color: "#007BFF" }}>
+                      <Card.Title style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
                         {review.name}
                       </Card.Title>
                     </div>
@@ -155,8 +155,6 @@ const Reviews = ({ user_id }) => {
                   <Card.Text
                     style={{
                       fontSize: "1rem",
-                      color: "#6c757d",
-                      lineHeight: "1.6",
                       fontStyle: "italic",
                     }}
                   >
@@ -174,13 +172,13 @@ const Reviews = ({ user_id }) => {
       {/* Modal for Edit/Delete */}
       <Modal show={showModals} onHide={() => setShowModals(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Edit/Delete Review</Modal.Title>
+          <Modal.Title className="text-dark">Edit/Delete Review</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {currentReview && (
             <>
               <Form.Group className="mb-3">
-                <Form.Label>Edit Review</Form.Label>
+                <Form.Label className="text-dark">Edit Review</Form.Label>
                 <Form.Control as="textarea" rows={3} value={editedReview} onChange={handleEditChange} />
               </Form.Group>
               <div className="text-center text-light">
@@ -199,33 +197,36 @@ const Reviews = ({ user_id }) => {
       {/* Modal for Adding Review */}
       <Modal show={showAddReviewModal} onHide={() => setShowAddReviewModal(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Add New Review</Modal.Title>
+          <Modal.Title className="text-dark">Add New Review</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3">
-            <Form.Label>Name</Form.Label>
+            <Form.Label className="text-dark">Name</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter your name"
               value={newName}
+              className="custom-placeholder"
               onChange={(e) => setNewName(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Review</Form.Label>
+            <Form.Label className="text-dark">Review</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
               placeholder="Enter your review"
               value={newReview}
+               className="custom-placeholder"
               onChange={(e) => setNewReview(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Rating</Form.Label>
+            <Form.Label className="text-dark">Rating</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter your rating"
+               className="custom-placeholder"
               value={newRating}
               onChange={(e) => setNewRating(e.target.value)}
             />
@@ -235,7 +236,7 @@ const Reviews = ({ user_id }) => {
           <Button variant="secondary" onClick={() => setShowAddReviewModal(false)}>
             Close
           </Button>
-          <Button variant="primary" onClick={addReview}>
+          <Button className="bg-main" onClick={addReview}>
             <FontAwesomeIcon icon={faSave} /> Save
           </Button>
         </Modal.Footer>

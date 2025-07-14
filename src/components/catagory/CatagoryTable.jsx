@@ -95,7 +95,7 @@ const CategoryTable = () => {
           </div>
         </td>
         <td className="text-center">
-          <div className="action-buttons mt-2 d-flex justify-content-center align-items-center">
+          <div className="action-buttons mt-3 d-flex justify-content-center align-items-center align-middle">
             <button className="btn btn-danger me-2" onClick={() => handleDeleteClick(item.category_id)}>
               <FontAwesomeIcon icon={faTrash} />
             </button>
@@ -111,15 +111,15 @@ const CategoryTable = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Container className="mt-4">
-        <h3 className="text-center mb-4 page-title">Category Lists</h3>
+        <h3 className="text-center text-main mb-4">Category List</h3>
         {loading ? (
           <p className="text-center text-muted">Loading categories...</p>
         ) : error ? (
           <p className="text-danger text-center">Error: {error}</p>
         ) : (
           <div className="table-responsive">
-            <Table bordered hover className="shadow-sm category-table table-striped">
-              <thead className="bg-primary text-white">
+            <Table responsive className="shadow-sm category-table table-striped">
+              <thead className="bg-main text-white">
                 <tr>
                   <th className="text-center align-middle">Category Name</th>
                   <th className="text-center align-middle">Category Image</th>

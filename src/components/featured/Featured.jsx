@@ -145,11 +145,11 @@ const Featured = () => {
       <Card className="shadow-lg border-0">
         <Card.Body>
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <Card.Title className="display-6 text-dark fw-bold">
+            <Card.Title className="display-6 fw-bold">
               Featured Artists
             </Card.Title>
             <Button
-              variant="success"
+              className='bg-main'
               onClick={() => {
                 fetchAllArtists();
                 setShowModal(true);
@@ -161,14 +161,14 @@ const Featured = () => {
 
           {loading ? (
             <div className="text-center my-5">
-              <Spinner animation="border" variant="primary" />
+              <Spinner animation="border" className='bg-main' />
               <p className="mt-2">Loading data...</p>
             </div>
           ) : error ? (
             <Alert variant="danger">{error}</Alert>
           ) : (
-            <Table responsive hover className="table-bordered text-center">
-              <thead className="table-primary">
+            <Table responsive className="table-striped text-center">
+              <thead className="">
                 <tr>
                   <th>#</th>
                   <th>User ID</th>
@@ -203,7 +203,7 @@ const Featured = () => {
                     </td>
                     <td className="text-center align-middle">{item.profile_name}</td>
                     <td className="text-center align-middle">{item.category_id}</td>
-                    <td className="text-center align-middle fw-bold text-primary" >{item.featured_rank}</td>
+                    <td className="text-center align-middle fw-bold text-main" >{item.featured_rank}</td>
                     <td className="text-center align-middle">
                       {item.featured ? (
                         <Badge bg="success">Yes</Badge>
@@ -215,12 +215,13 @@ const Featured = () => {
                       <Form.Control
                         type="number"
                         placeholder="Enter rank"
+
                         value={rankChanges[item.user_id] || ''}
                         onChange={(e) => handleRankChange(item.user_id, e.target.value)}
-                        className="mb-2"
+                        className="mb-2 custom-placeholder"
                       />
                       <Button
-                        variant="primary"
+                      className='bg-main'
                         size="sm"
                         onClick={() => handleUpdateRank(item.user_id)}
                       >
@@ -247,13 +248,13 @@ const Featured = () => {
       {/* ➕ Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Add Artist to Featured</Modal.Title>
+          <Modal.Title className='text-dark'>Add Artist to Featured</Modal.Title>
         </Modal.Header>
        <Modal.Body>
 
   {/* Artist Dropdown */}
  <Form.Group className="mb-3">
-  <Form.Label>Select Artist</Form.Label>
+  <Form.Label className='text-dark'>Select Artist</Form.Label>
   <Select
     options={allArtists.map((artist) => ({
       value: artist.user_id,
@@ -269,18 +270,21 @@ const Featured = () => {
           }
         : null
     }
+    className= "text-dark"
     onChange={(selected) => setSelectedArtist(selected?.value || '')}
     isClearable
     placeholder="Search and select artist..."
+
   />
 </Form.Group>
 
   {/* Rank Input */}
   <Form.Group>
-    <Form.Label>Enter Rank</Form.Label>
+    <Form.Label className='text-dark'>Enter Rank</Form.Label>
     <Form.Control
       type="number"
       placeholder="Enter featured rank"
+      className='custom-placeholder'
       value={newRank}
       onChange={(e) => setNewRank(e.target.value)}
     />
@@ -291,7 +295,7 @@ const Featured = () => {
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleAddToFeatured}>
+          <Button className="bg-main" onClick={handleAddToFeatured}>
             Add to Featured
           </Button>
         </Modal.Footer>

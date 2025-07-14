@@ -26,6 +26,93 @@
     transform: rotate(360deg);
   }
 }
+/* Global Theme Styling */
+body.light-theme {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+.light-theme .card-body,
+.light-theme .form-control,
+.light-theme .form-select {
+  border-radius: 8px;
+}
+body.dark-theme {
+  background-color: hsl(222, 84%, 5%);
+  color: #ffffff;
+}
+
+/* Card Background */
+.dark-theme .card {
+  background-color: hsl(223, 92%, 35%);
+  color: #ffffff;
+}
+
+.dark-theme .card-body,
+.dark-theme .form-control,
+.dark-theme .form-select {
+  background-color: hsl(223, 89%, 24%);
+  color: #ffffff;
+  border: 1px solid hsl(216, 24%, 35%);
+  border-radius: 8px;
+}
+
+/* Button */
+.dark-theme .btn-outline-secondary {
+  border-color: #ccc;
+  color: #ccc;
+}
+
+.dark-theme .btn-outline-secondary:hover {
+  background-color: #ccc;
+  color: #000;
+}
+
+/* Table (if any) */
+.dark-theme table {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+/* Light mode ⇒ keep your current red brand color */
+body.light-theme .bg-main {
+  background-color: #D20A2E !important;
+  border: none !important;
+  color: #ffffff !important;
+}
+
+body.light-theme .text-main {
+  color: #D20A2E !important;
+}
+body.dark-theme .bg-main {
+  background-color: hsl(224, 91%, 18%) !important;
+  color: #fff !important;
+}
+
+body.dark-theme .text-main {
+  color: #fff !important;
+}
+body.dark-theme .custom-placeholder::placeholder {
+  color: #fff;
+}
+/* ---------- Dark‑theme table styling ---------- */
+body.dark-theme .table-striped {
+  background-color: #1560bd;    
+color: #fff;
+  /* header cells (optional) */
+  --bs-table-bg: #1560bd;             
+  --bs-table-color: #ffffff;          
+}
+
+/* zebra striping inside dark mode */
+body.dark-theme .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: #002395;   
+  color: #fff;   
+}
+
+body.dark-theme .table-striped > tbody > tr:nth-of-type(even) > * {
+    background-color: #1560bd;   
+    color: #fff;       
+}
 /* Page Title */
 .page-title {
   color: #333;
@@ -107,7 +194,6 @@
   transition: all 0.2s ease-in-out;
 }
 .custom-accordion .accordion-button {
-  background-color: transparent !important;
   border: none !important;
   box-shadow: none !important;
 }

@@ -126,8 +126,8 @@ const BannerList = () => {
 
   const renderTable = (filteredData) => (
     <div className="table-responsive">
-      <Table bordered hover className="shadow-sm table-striped">
-        <thead className="bg-primary text-white text-center">
+      <Table responsive className="shadow-sm table-striped">
+        <thead className="bg-main text-white text-center">
           <tr>
             <th>Section</th>
             <th>Page</th>
@@ -154,13 +154,13 @@ const BannerList = () => {
     <>
       <ToastContainer />
       <Container>
-        <h2 className="text-center my-4" style={{ fontFamily: 'Roboto, sans-serif', fontWeight: 'bold', color: '#333' }}>
-          Banners List
+        <h2 className="text-center text-main my-4">
+          Banner List
         </h2>
 
         {loading ? (
           <div className="text-center my-4">
-            <Spinner animation="border" variant="primary" />
+            <Spinner animation="border" className="bg-main" />
             <p>Loading banners...</p>
           </div>
         ) : error ? (
@@ -168,12 +168,12 @@ const BannerList = () => {
             <p>Error: {error}</p>
           </div>
         ) : (
-          <div style={{ backgroundColor: '#f8f9fa', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
-            <Tabs defaultActiveKey="top" id="banner-tabs" className="mb-3 justify-content-center fw-bold">
-              <Tab eventKey="top" title="Top Section">
+          <div style={{ padding: '20px', borderRadius: '10px'}}>
+            <Tabs defaultActiveKey="top" id="banner-tabs" className="mb-3 justify-content-center text-main fw-bold">
+              <Tab eventKey="top" title="Top Section" className='text-main'>
                 {renderTable(topBanners)}
               </Tab>
-              <Tab eventKey="bottom" title="Bottom Section">
+              <Tab eventKey="bottom" title="Bottom Section" className='text-main'>
                 {renderTable(bottomBanners)}
               </Tab>
             </Tabs>

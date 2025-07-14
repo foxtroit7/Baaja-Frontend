@@ -99,14 +99,14 @@ const ArtistPaymentDetails = () => {
 
           <div style={{ textAlign: "center" }}>
             <p
-              className="text-primary"
+              className="text-main"
               style={{ fontSize: "1.2rem", fontWeight: "bold" }}
             >
               Payment Process
             </p>
             <FontAwesomeIcon
               icon={faArrowRightArrowLeft}
-              className="h3 text-primary"
+              className="h3 text-main"
             />
           </div>
 

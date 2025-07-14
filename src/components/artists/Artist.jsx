@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Container, Row, Col, Table, InputGroup,
     Form, Button, Dropdown, Modal
@@ -109,7 +109,7 @@ const Artist = () => {
         <Container style={{ marginTop: '30px', fontFamily: 'Roboto, sans-serif' }}>
             <Row className="mb-4">
                 <Col>
-                    <h3 className="text-center fw-bold text-dark">Artists List</h3>
+                    <h3 className="text-center fw-bold">Artist List</h3>
                 </Col>
             </Row>
 <Row className="mb-4">
@@ -120,9 +120,10 @@ const Artist = () => {
         placeholder="Search by name, category, or location"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        className='custom-placeholder mb-1'
       />
       <InputGroup.Text>
-        <FontAwesomeIcon icon={faSearch} className="text-primary" />
+        <FontAwesomeIcon icon={faSearch} className=" search" />
       </InputGroup.Text>
     </InputGroup>
   </Col>
@@ -131,6 +132,7 @@ const Artist = () => {
     <Form.Select
       value={selectedCategory}
       onChange={(e) => setSelectedCategory(e.target.value)}
+      className='mb-1'
     >
       <option value="All">All Categories</option>
       {categories.map((cat) => (
@@ -142,8 +144,8 @@ const Artist = () => {
   </Col>
 
   <Col md={2}>
-    <Dropdown className="w-100">
-      <Dropdown.Toggle variant="primary" className="w-100" size="md">
+    <Dropdown className="w-100 mb-1">
+      <Dropdown.Toggle  className="w-100 bg-main" size="md">
         Sort By
       </Dropdown.Toggle>
       <Dropdown.Menu>
@@ -162,7 +164,7 @@ const Artist = () => {
         setSortOrder('default');
         setSelectedCategory('All');
       }}
-      className="w-100"
+      className="w-100 mb-1"
     >
       <FontAwesomeIcon icon={faBroom} className="me-2" />
       Reset
@@ -218,8 +220,9 @@ const Artist = () => {
 };
 
 const ArtistTable = ({ data, setSelectedArtist, setShowModal }) => (
-    <Table bordered hover className="text-center table-striped">
-        <thead style={{ backgroundColor: '#343a40', color: '#ffffff' }}>
+    <div class="table-responsive">
+    <Table className="text-center table-striped rounded">
+        <thead>
             <tr>
                 <th>User ID</th>
                 <th>Name</th>
@@ -236,16 +239,19 @@ const ArtistTable = ({ data, setSelectedArtist, setShowModal }) => (
             {data.length > 0 ? (
                 data.map(item => (
                     <tr key={item.user_id} style={{ verticalAlign: 'middle' }}>
-                        <td><Link to={`/artist-profile/${item.user_id}`} className="text-decoration-none text-primary fw-bold">{item.user_id}</Link></td>
-                        <td className="fw-semibold">{item.owner_name}</td>
-                        <td>{item.total_bookings}</td>
-                        <td>{item.location}</td>
-                        <td className="fw-semibold text-primary">{item.category_type}</td>
+                        <td><Link to={`/artist-profile/${item.user_id}`} className="text-decoration-none text-main fw-bold">{item.user_id}</Link></td>
+                        <td className="fw-semibold text-main">{item.owner_name}</td>
+                        <td className="fw-semibold text-main">{item.total_bookings}</td>
+                        <td className="fw-semibold text-main">{item.location}</td>
+                        <td className="fw-semibold text-main">{item.category_type}</td>
                         <td className="text-warning h5">{'★'.repeat(Math.floor(item.rating))}{'☆'.repeat(5 - Math.floor(item.rating))}</td>
-                       <td>{item.top_baaja_rank}</td>
+                       <td className="fw-semibold text-main">{item.top_baaja_rank}</td>
                         <td>
                             <Button
-                                variant={item.top_baaja ? "success" : "secondary"}
+                               style={{
+    backgroundColor: item.top_baaja ? "#D20A2E" : "green",
+    border:"none"
+  }}
                                 size="sm"
                                 onClick={() => {
                                     setSelectedArtist(item);
@@ -256,7 +262,7 @@ const ArtistTable = ({ data, setSelectedArtist, setShowModal }) => (
                             </Button>
                         </td>
                         <td>
-                            <Link to={`/artist-profile/${item.user_id}`} className="btn btn-outline-primary btn-sm">View</Link>
+                            <Link to={`/artist-profile/${item.user_id}`}  className="btn bg-main btn-sm">View</Link>
                         </td>
                     </tr>
                 ))
@@ -267,6 +273,7 @@ const ArtistTable = ({ data, setSelectedArtist, setShowModal }) => (
             )}
         </tbody>
     </Table>
+    </div>
 );
 
 export default Artist;

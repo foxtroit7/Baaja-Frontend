@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
@@ -7,9 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const CategoryForm = () => {
   const navigate = useNavigate();
-  const { category_id } = useParams(); // Get the category ID from the URL
+  const { category_id } = useParams();
   const [category, setCategory] = useState('');
-  const [photo, setPhoto] = useState(null); // File input
+  const [photo, setPhoto] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -31,9 +31,9 @@ const CategoryForm = () => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append('category', category); // Add category name
+    formData.append('category', category); 
     if (photo) {
-      formData.append('photo', photo); // Add photo file
+      formData.append('photo', photo); 
     }
 
     try {
@@ -79,12 +79,12 @@ const CategoryForm = () => {
     <>
       <ToastContainer />
       <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh', fontFamily: 'Roboto, sans-serif' }}>
-        <div className="p-4 rounded shadow-lg" style={{ width: '100%', maxWidth: '600px', backgroundColor: '#f8f9fa' }}>
-          <h2 className="mb-4 text-center" style={{ fontWeight: 600, color: '#343a40' }}>
+        <div className="p-4 rounded shadow-lg" style={{ width: '100%', maxWidth: '600px' }}>
+          <h3 className="mb-4 text-center">
             {category_id ? 'Edit Category' : 'Add New Category'}
-          </h2>
+          </h3>
 
-          {successMessage && <Alert variant="success">{successMessage}</Alert>}
+          {successMessage && <Alert className='bg-main'>{successMessage}</Alert>}
           {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
           <Form onSubmit={handleSubmit}>
@@ -94,6 +94,7 @@ const CategoryForm = () => {
                 type="text"
                 placeholder="Enter Category Name"
                 value={category}
+                className='custom-placeholder'
                 onChange={(e) => setCategory(e.target.value)}
                 required
                 style={{
@@ -119,7 +120,7 @@ const CategoryForm = () => {
             </Form.Group>
 
             <Button
-              variant="primary"
+              className="bg-main"
               type="submit"
               style={{
                 width: '100%',

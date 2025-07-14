@@ -60,7 +60,7 @@ const Approved = () => {
   return (
     <div className="mt-4">
       <h3 className="text-center mb-4">Artist Approval Requests</h3>
-      <Table striped bordered hover responsive className="text-center">
+      <Table responsive className="text-center table-striped">
         <thead>
           <tr>
             <th>Artist Id</th>
@@ -81,11 +81,11 @@ const Approved = () => {
               
               <td>
                 <Link to={`/pending_artists_details/${artist.user_id}`}>
-                  <Button variant="primary">Check Profile</Button>
+                  <Button className="bg-main">Check Profile</Button>
                 </Link>
               </td>
               <td>
-                <Button variant="success" onClick={() => handleShowModal(artist.user_id)}>
+                <Button className="bg-main" onClick={() => handleShowModal(artist.user_id)}>
                   Waiting for Approval
                 </Button>
               </td>
@@ -106,7 +106,7 @@ const Approved = () => {
           <Button variant="secondary" onClick={handleCloseModal}>
             Cancel
           </Button>
-          <Button variant="success" onClick={handleApprove}>
+          <Button className="bg-main" onClick={handleApprove}>
             Yes, Approve
           </Button>
         </Modal.Footer>

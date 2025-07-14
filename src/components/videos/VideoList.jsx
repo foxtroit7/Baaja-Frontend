@@ -74,7 +74,7 @@ const VideoList = () => {
             />
           </div></td>
         <td className="text-center">
-          <Button href={item.link} target="_blank" variant="primary" className='mt-2'>
+          <Button href={item.link} target="_blank"  className='mt-2 bg-main'>
             Video Link
           </Button>
         </td>
@@ -95,7 +95,7 @@ const VideoList = () => {
       <Container>
         <h2 className="text-center my-4">Video Lists</h2>
         <Table bordered hover>
-          <thead className="bg-primary text-white">
+          <thead className="bg-main text-white">
             <tr>
               {columns.map((col, index) => (
                 <th key={index} className="text-center">{col}</th>

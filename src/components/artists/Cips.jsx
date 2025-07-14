@@ -86,12 +86,7 @@ const Cips = ({ user_id }) => {
         <Col className="d-flex justify-content-end">
           <Button
             onClick={handleAddClip}
-            style={{
-              backgroundColor: "#007BFF",
-              border: "none",
-              fontWeight: "bold",
-              borderRadius: "8px",
-            }}
+           className='bg-main'
           >
             Add New Clip
           </Button>
@@ -169,9 +164,6 @@ const Cips = ({ user_id }) => {
             <Button variant="danger" onClick={handleDelete}>
               <FontAwesomeIcon icon={faTrash} />
             </Button>
-            {/* <Button variant="primary" onClick={handleEdit}>
-              <FontAwesomeIcon icon={faPencil} />
-            </Button> */}
           </Modal.Footer>
         </Modal>
       )}

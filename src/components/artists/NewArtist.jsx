@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import axios from "axios";
 import Person from "../../assets/person.jpeg";
 import { useParams } from 'react-router-dom';
@@ -42,29 +43,28 @@ useEffect(() => {
   return (
     <Container>
       {user && (
-        <div
+        <Card
           className="text-center mb-4 p-4 rounded shadow"
-          style={{
-            backgroundColor: "#f8f9fa",
-            fontFamily: "Roboto, sans-serif",
-          }}
+         
         >
-          <img
-            src={user.profilePicture || Person}
+    <div className="d-flex justify-content-center">
+            <img
+            src={user.poster || Person}
             alt={user.name}
             className="rounded-circle mb-3"
             style={{
               width: "120px",
               height: "120px",
               objectFit: "cover",
-              border: "3px solid #007bff",
+              border: "3px solid",
             }}
           />
+    </div>
 
-          <h3 className="fw-bold">Owner Name: {user.name}</h3>
-          <h4 className="fw-bold">Artist Id: {user.user_id}</h4>
-          <h4 className="fw-bold">Profile Name: {user.profile_name}</h4>
-          <h5 className="text-primary" style={{ fontWeight: 600, fontSize: "1.1rem" }}>
+          <h3 className="fw-bold text-main">Owner Name: {user.name}</h3>
+          <h4 className="fw-bold text-main">Artist Id: {user.user_id}</h4>
+          <h4 className="fw-bold  text-main">Profile Name: {user.profile_name}</h4>
+          <h5 className="text-main" style={{ fontWeight: 600, fontSize: "1.1rem" }}>
             Category Of Artist: {user.category_type}
           </h5>
           <h6>Location: {user.location}</h6>
@@ -73,7 +73,7 @@ useEffect(() => {
             {user.phone}
           </p>
 
-          <h5 className="text-secondary fw-bold">About: {user.description}</h5>
+          <h5 className="text-main fw-bold">About: {user.description}</h5>
 
           <div>
             {user.items?.map((item) => {
@@ -92,7 +92,7 @@ useEffect(() => {
                   </p>
                   {item.desc.length > 100 && (
                     <h5
-                      className="text-decoration-none fw-bolder fs-6 text-primary"
+                      className="text-decoration-none fw-bolder fs-6 text-main"
                       onClick={() => toggleReadMore(item.id)}
                       style={{ cursor: "pointer", fontSize: "0.9rem", textAlign: "right" }}
                     >
@@ -103,7 +103,7 @@ useEffect(() => {
               );
             })}
           </div>
-        </div>
+        </Card>
       )}
 
       <Clips user_id={user_id} />

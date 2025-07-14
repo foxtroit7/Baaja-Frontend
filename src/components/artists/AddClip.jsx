@@ -59,13 +59,13 @@ const handleSubmit = async (event) => {
   return (
     <Container
       className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: '100vh', fontFamily: 'Roboto, sans-serif' }}
+      style={{ minHeight: '100vh'}}
     >
       <div
         className="p-4 rounded shadow-lg"
-        style={{ width: '100%', maxWidth: '600px', backgroundColor: '#f8f9fa' }}
+        style={{ width: '100%', maxWidth: '600px' }}
       >
-        <h2 className="mb-4 text-center" style={{ fontWeight: 600, color: '#343a40' }}>Add New Clip</h2>
+        <h2 className="mb-4 text-cente text-main" style={{ fontWeight: 600}}>Add New Clip</h2>
 
         {message && <Alert variant={message.type}>{message.text}</Alert>}
 
@@ -76,6 +76,7 @@ const handleSubmit = async (event) => {
             <Form.Control
               type="text"
               placeholder="Enter Clip Title"
+               className="custom-placeholder"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -96,7 +97,7 @@ const handleSubmit = async (event) => {
           </Form.Group>
 
           <Button
-            variant="primary"
+            className='bg-main'
             type="submit"
             style={{ width: '100%', padding: '10px', fontWeight: 600, fontSize: '1rem' }}
           >

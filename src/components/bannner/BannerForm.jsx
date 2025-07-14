@@ -95,7 +95,7 @@ const BannerForm = () => {
     <>
       <ToastContainer />
       <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
-        <div className="p-4 rounded shadow" style={{ width: "100%", maxWidth: "600px", backgroundColor: "#f9f9f9" }}>
+        <div className="p-4 rounded shadow" style={{ width: "100%", maxWidth: "600px" }}>
           <h3 className="text-center mb-4">{banner_id ? "Edit Banner" : "Add New Banner"}</h3>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
@@ -117,12 +117,12 @@ const BannerForm = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Banner Link</Form.Label>
-              <Form.Control type="text" name="link" value={formData.link} onChange={handleChange} />
+              <Form.Label className="text-main">Banner Link</Form.Label>
+              <Form.Control className="text-main text-decoration-none text" value={formData.link} onChange={handleChange} />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Upload Banner Photo</Form.Label>
+              <Form.Label className="text-main">Upload Banner Photo</Form.Label>
               <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
               {existingPhoto && !newPhoto && (
                 <img
@@ -151,10 +151,11 @@ const BannerForm = () => {
                 name="background_color"
                 value={formData.background_color}
                 onChange={handleChange}
+                className="custom-placeholder"
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100">
+            <Button type="submit" className="w-100 bg-main">
               {banner_id ? "Update Banner" : "Add Banner"}
             </Button>
           </Form>

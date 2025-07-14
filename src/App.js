@@ -1,5 +1,6 @@
 import './App.css';
 import Layout from './components/layout/Layout';
+import ThemeProvider from './context/ThemeContext'; 
 import {  BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Catagory from './components/catagory/Catagory';
 import CatagoryForm from './components/catagory/CatagoryForm';
@@ -38,10 +39,12 @@ import Approved from './components/artists/Approved';
 function App() {
   return (
    <>
+  <ThemeProvider>
   <Router>
   <Routes>
     {/* Login route without Layout */}
     <Route path="/" element={<Login />} />
+  
     <Route path="/signup" element={<Signup />} />
     <Route path="/" element={<Layout />}>
     <Route path="/dashboard" element={<Dashboard />} />
@@ -81,9 +84,12 @@ function App() {
     <Route path='/category-artist' element={<CategoryArtist />} />
     <Route path='/category-artist-add' element={<CategoryArtistAdd />} />
     <Route path='/approved' element={<Approved/>} />
+    
 </Route>
+
   </Routes>
   </Router>
+  </ThemeProvider>
    </>
   );
 }

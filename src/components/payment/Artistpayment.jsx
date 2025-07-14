@@ -101,7 +101,7 @@ const ArtistPayment = () => {
         <Link
                 to={`/payment-details/${item.transactionId}`}
                 style={{ textDecoration: "none", color: "inherit" }}
-                className="text-primary fw-bold"
+                className="text-main fw-bold"
               >
                 {item.transactionId}
               </Link>
@@ -207,7 +207,7 @@ const ArtistPayment = () => {
             </InputGroup>
           </Col>
           <Col md={1}>
-            <Button variant="primary" className="ms-2" onClick={downloadPDF}>
+            <Button  className="ms-2 bg-main" onClick={downloadPDF}>
               <FontAwesomeIcon icon={faDownload} />
             </Button>
           </Col>

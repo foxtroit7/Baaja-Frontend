@@ -1,56 +1,90 @@
-import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
-import '../css/sidebar.css';
-import { NavLink } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faUser, faDrum, faSignsPost, faVideo, faBox,
-  faTableColumns, faBell, faMoneyBill, faQuestionCircle,
-  faChevronDown, faChevronUp
-} from '@fortawesome/free-solid-svg-icons';
+  faUser,
+  faDrum,
+  faSignsPost,
+  faVideo,
+  faBox,
+  faTableColumns,
+  faBell,
+  faMoneyBill,
+  faQuestionCircle,
+  faChevronDown,
+  faChevronUp,
+  faChevronLeft,
+  faChevronRight,
+  faSignOutAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
-const Sidebar = () => {
+import "../css/sidebar.css";
+
+/**
+ * Sidebar receives collapsed + setCollapsed from Layout
+ * so both stay in sync and Layout can resize main content.
+ */
+const Sidebar = ({ collapsed, setCollapsed }) => {
   const [activeDropdowns, setActiveDropdowns] = useState({});
 
-  const handleToggle = (title) => {
-    setActiveDropdowns((prev) => ({
-      ...prev,
-      [title]: !prev[title],
-    }));
-  };
+  /* auto-collapse on small screens */
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 991.98px)");
+    const handler = (e) => setCollapsed(e.matches);
+    handler(mq);                 // set initial
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, [setCollapsed]);
+
+  const handleToggleDropdown = (title) =>
+    setActiveDropdowns((prev) => ({ ...prev, [title]: !prev[title] }));
 
   const renderDropdown = (title, icon, links) => (
-    <div className="my-3">
+    <div className="my-3" key={title}>
       <div
-        className="text-white w-100 d-flex justify-content-between align-items-center fs-5"
-        onClick={() => handleToggle(title)}
-        style={{ cursor: 'pointer' }}
+        className={`sidebar-item d-flex align-items-center ${
+          collapsed ? "justify-content-center" : "justify-content-between"
+        }`}
+        style={{ cursor: "pointer" }}
+        data-label={title}
+        onClick={() => handleToggleDropdown(title)}
       >
-        <div>
-          <FontAwesomeIcon icon={icon} className="me-2" /> {title}
-        </div>
-        <FontAwesomeIcon icon={activeDropdowns[title] ? faChevronUp : faChevronDown} />
+        <FontAwesomeIcon icon={icon} className={collapsed ? "" : "me-2"} />
+        {!collapsed && (
+          <>
+            <span>{title}</span>
+            <FontAwesomeIcon
+              icon={activeDropdowns[title] ? faChevronUp : faChevronDown}
+              className="ms-auto"
+            />
+          </>
+        )}
       </div>
 
-      {activeDropdowns[title] && (
+      {!collapsed && activeDropdowns[title] && (
         <div className="ps-4 mt-2">
           {Array.isArray(links) ? (
-            links.map((item, idx) => (
+            links.map(({ label, path }) => (
               <NavLink
-                to={item.path}
-                key={idx}
+                key={path}
+                to={path}
                 className={({ isActive }) =>
-                  `d-block text-decoration-none text-white fs-6 py-1 ${isActive ? 'fw-bold' : ''}`
+                  `d-block text-decoration-none text-white fs-6 py-1 ${
+                    isActive ? "fw-bold" : ""
+                  }`
                 }
               >
-                {item.label}
+                {label}
               </NavLink>
             ))
           ) : (
             <NavLink
               to={links}
               className={({ isActive }) =>
-                `d-block text-decoration-none text-white fs-6 py-1 ${isActive ? 'fw-bold' : ''}`
+                `d-block text-decoration-none text-white fs-6 py-1 ${
+                  isActive ? "fw-bold" : ""
+                }`
               }
             >
               {title}
@@ -61,42 +95,69 @@ const Sidebar = () => {
     </div>
   );
 
+  /* all menu sections */
+  const sections = [
+    ["Dashboard", faTableColumns, "/dashboard"],
+    [
+      "Artists",
+      faUser,
+      [
+        { label: "Artists", path: "/artists" },
+        { label: "Featured Artists", path: "/featured" },
+        { label: "Upload Posters", path: "/posters" },
+        { label: "Category Artists", path: "/category-artist" },
+        { label: "Approval Requests", path: "/approved" },
+      ],
+    ],
+    ["Category", faDrum, "/category"],
+    ["Banners", faSignsPost, [{ label: "Banners", path: "/banner" }]],
+    ["Purpose", faVideo, "/purpose"],
+    ["Users", faUser, "/users"],
+    ["Bookings", faBox, "/bookings"],
+    [
+      "Notification",
+      faBell,
+      [
+        { label: "Artist Notifications", path: "/des" },
+        { label: "Push Notifications", path: "/push" },
+      ],
+    ],
+    ["Payment", faMoneyBill, "/payment"],
+    ["FAQ's", faQuestionCircle, "/faq"],
+  ];
+
   return (
-    <div className="d-flex">
-      <div
-        className="vh-100 bg-primary p-3 rounded-end shadow-lg position-fixed overflow-auto"
-        style={{ width: '250px', borderTopRightRadius: '15px', borderBottomRightRadius: '15px' }}
+    <nav                      /* no position-fixed */
+      className={`bg-main sidebar p-3 shadow-lg overflow-auto ${
+        collapsed ? "sidebar--collapsed" : ""
+      }`}
+      style={{ height: "100vh" }}
+    >
+      {/* collapse / expand button */}
+      <Button
+        variant="link"
+        className="toggle-btn text-white p-0 mb-3"
+        onClick={() => setCollapsed(!collapsed)}
       >
-        <div className="flex-column mt-4">
+        <FontAwesomeIcon
+          icon={collapsed ? faChevronRight : faChevronLeft}
+          size="lg"
+        />
+      </Button>
 
-          {renderDropdown('Dashboard', faTableColumns, '/dashboard')}
-          {renderDropdown('Artists', faUser,[ {label: 'Artists',path: '/artists'}, {label: 'Featured Artists',path: '/featured'}, {label: 'Upload Posters',path: '/posters'}, {label: 'Category Artists',path: '/category-artist'}, {label: 'Approval Requests',path: '/approved'}])}
-          {renderDropdown('Category', faDrum, '/category')}
-          {renderDropdown('Banners', faSignsPost, [
-            { label: 'Banners', path: '/banner' },
-            // { label: 'Promotions', path: '/promotions' }
-          ])}
-          {renderDropdown('Booking Purpose', faVideo, '/purpose')}
-          {renderDropdown('Users', faUser, '/users')}
-          {renderDropdown('Bookings', faBox, '/bookings')}
-          {renderDropdown('Notification', faBell, [
-            { label: 'Artist Notifications', path: '/des' },
-            { label: 'Push Notifications', path: '/push' },
-          ])}
-          {renderDropdown('Payment', faMoneyBill, '/payment')}
-          {renderDropdown("FAQ's", faQuestionCircle, '/faq')}
-        </div>
-
-        {/* Logout Button */}
-        <div className="mt-5 d-flex justify-content-center align-items-center">
-          <NavLink to="/login" className="text-decoration-none">
-            <Button variant="light" className="text-primary font-600 fw-bold">
-              Logout
-            </Button>
-          </NavLink>
-        </div>
+      <div className="flex-column mt-4">
+        {sections.map(([t, i, l]) => renderDropdown(t, i, l))}
       </div>
-    </div>
+
+      <div className="mt-5 d-flex justify-content-center">
+        <NavLink to="/" className="text-decoration-none w-100">
+          <Button variant="light" className="bg-light text-dark fw-bold w-100">
+            <FontAwesomeIcon icon={faSignOutAlt} />
+            {!collapsed && <span className="ms-2">Logout</span>}
+          </Button>
+        </NavLink>
+      </div>
+    </nav>
   );
 };
 

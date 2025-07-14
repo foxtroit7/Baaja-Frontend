@@ -64,7 +64,7 @@ const Potser = () => {
     <Container className="py-4">
       <Card className="shadow border-0">
         <Card.Body>
-          <h3 className="text-dark mb-4">Upload Artist Posters</h3>
+          <h3 className=" mb-4">Upload Artist Posters</h3>
 
           {loading ? (
             <div className="text-center my-5">
@@ -74,8 +74,8 @@ const Potser = () => {
           ) : error ? (
             <Alert variant="danger">{error}</Alert>
           ) : (
-            <Table bordered hover responsive>
-              <thead className="table-primary text-center">
+            <Table responsive className="table-striped">
+              <thead className=" text-center">
                 <tr>
                   <th>#</th>
                   <th>User ID</th>
@@ -115,7 +115,7 @@ const Potser = () => {
                     </td>
                      <td className="text-center align-middle">
                       <Button
-                        variant="primary"
+                       className="bg-main"
                         size="sm"
                         onClick={() => handleUpload(artist.user_id)}
                         disabled={uploading}

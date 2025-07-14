@@ -75,7 +75,7 @@ const Faq = () => {
     <div className="container mt-4 text-center">
       <h2 className="mb-4">Frequently Asked Questions</h2>
       <div className="d-flex justify-content-end">
-        <Button variant="primary" onClick={() => handleShowModal()}>Add Question</Button>
+        <Button className="bg-main" onClick={() => handleShowModal()}>Add Question</Button>
       </div>
       <div className="d-flex justify-content-center">
         <Accordion defaultActiveKey="0" className="mt-3 w-75 p-4 shadow-lg rounded custom-accordion">
@@ -87,7 +87,7 @@ const Faq = () => {
                 <div className="d-flex justify-content-end">
                   <FontAwesomeIcon
                     icon={faEdit}
-                    className="text-primary mx-2"
+                    className="text-main mx-2"
                     onClick={() => handleShowModal(faq)}
                     style={{ cursor: "pointer" }}
                   />
@@ -110,12 +110,12 @@ const Faq = () => {
       {/* Modal for adding/editing FAQ */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>{editId ? "Edit FAQ" : "Add FAQ"}</Modal.Title>
+          <Modal.Title className="text-dark">{editId ? "Edit FAQ" : "Add FAQ"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Question</Form.Label>
+              <Form.Label className="text-dark">Question</Form.Label>
               <Form.Control
                 type="text"
                 name="question"
@@ -125,7 +125,7 @@ const Faq = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Answer</Form.Label>
+              <Form.Label className="text-dark">Answer</Form.Label>
               <Form.Control
                 as="textarea"
                 name="answer"
@@ -134,7 +134,7 @@ const Faq = () => {
                 required
               />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button className="bg-main" type="submit">
               {editId ? "Update" : "Add"}
             </Button>
           </Form>

@@ -62,7 +62,7 @@ const AppointmentScheduler = ({ artist_id }) => {
   const renderWeekRow = (weekDays, key) => (
     <div
       key={key}
-      className="mb-2"
+      className="mb-2 text-main"
       style={{
         display: "grid",
         gridTemplateColumns: "repeat(7, 1fr)",
@@ -78,7 +78,7 @@ const AppointmentScheduler = ({ artist_id }) => {
     firstWeek.push(
       <div
         key={`empty-${i}`}
-        className="border bg-light rounded p-3"
+        className="border bg-main rounded p-3"
         style={{ height: "70px" }}
       ></div>
     );
@@ -92,12 +92,12 @@ const AppointmentScheduler = ({ artist_id }) => {
       <div
         key={dayString}
         className={`p-2 text-center rounded border ${
-          isBusy ? "bg-danger text-white" : "bg-primary-subtle text-dark"
+          isBusy ? "bg-danger text-white" : "bg-main-subtle text-dark"
         }`}
         style={{ height: "70px", cursor: isBusy ? "pointer" : "default" }}
         onClick={() => isBusy && handleBusyDateClick(dayString)}
       >
-        <div>{day.date()}</div>
+        <div className="text-main">{day.date()}</div>
         {isBusy && <small>Booked</small>}
       </div>
     );
@@ -113,7 +113,7 @@ const AppointmentScheduler = ({ artist_id }) => {
         week.push(
           <div
             key={`empty-${day}`}
-            className="p-3 bg-light border rounded"
+            className="p-3 bg-main border rounded"
           ></div>
         );
         day.add(1, "day");
@@ -127,12 +127,12 @@ const AppointmentScheduler = ({ artist_id }) => {
         <div
           key={dayString}
           className={`p-2 text-center rounded border ${
-            isBusy ? "bg-danger text-white" : "bg-primary-subtle text-dark"
+            isBusy ? "bg-success text-white" : "bg-main-subtle text-dark"
           }`}
           style={{ height: "70px", cursor: isBusy ? "pointer" : "default" }}
           onClick={() => isBusy && handleBusyDateClick(dayString)}
         >
-          <div>{day.date()}</div>
+          <div className="text-main mt-2">{day.date()}</div>
           {isBusy && <small>Booked</small>}
         </div>
       );
@@ -153,11 +153,11 @@ const AppointmentScheduler = ({ artist_id }) => {
   return (
     <div className="container-fluid mt-4 px-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <button className="btn btn-outline-primary" onClick={handlePrevMonth}>
+        <button className="btn bg-main" onClick={handlePrevMonth}>
           &lt; Prev
         </button>
         <h4 className="text-center m-0">{currentMonth.format("MMMM YYYY")}</h4>
-        <button className="btn btn-outline-primary" onClick={handleNextMonth}>
+        <button className="btn bg-main" onClick={handleNextMonth}>
           Next &gt;
         </button>
       </div>
@@ -169,11 +169,11 @@ const AppointmentScheduler = ({ artist_id }) => {
           gridTemplateColumns: "repeat(7, 1fr)",
           gap: "10px",
           fontWeight: "bold",
-          textAlign: "center",
+          textAlign: "center"
         }}
       >
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-          <div className="bg-secondary text-white rounded py-2" key={day}>
+          <div className="bg-main rounded py-1" key={day}>
             {day}
           </div>
         ))}
@@ -183,7 +183,7 @@ const AppointmentScheduler = ({ artist_id }) => {
 
       {/* Booking Details Modal */}
   <Modal show={showModal} onHide={() => setShowModal(false)} centered size="lg">
-  <Modal.Header closeButton className="bg-primary text-white">
+  <Modal.Header closeButton className="bg-main text-white">
     <Modal.Title>📅 Booking Details - {new Date(selectedDate).toLocaleDateString()}</Modal.Title>
   </Modal.Header>
 
@@ -193,7 +193,7 @@ const AppointmentScheduler = ({ artist_id }) => {
         <div key={index} className="mb-4 p-4 bg-white rounded shadow-sm border border-secondary">
           {/* Booking Header */}
           <div className="mb-3 pb-2 border-bottom d-flex justify-content-between align-items-center">
-            <h5 className="text-dark mb-0">🔖 Booking ID: <span className="text-primary">{booking.booking_id}</span></h5>
+            <h5 className="text-dark mb-0">🔖 Booking ID: <span className="text-main">{booking.booking_id}</span></h5>
             <span className={`badge ${booking.status === 'accepted' ? 'bg-success' : 'bg-warning'} text-uppercase`}>
               {booking.status}
             </span>

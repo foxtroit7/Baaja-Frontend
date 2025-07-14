@@ -1,31 +1,40 @@
-/* .hover-effect {
-    color: #fff;
-    margin: 7px 3px 10px 3px;
-    box-sizing: border-box; 
-    padding: 3px 3px;
-    transition: all 0.3s ease; 
-    font-size: 18px;
-  }
-  
-  .hover-effect:hover {
-    border-radius: 5px;
-    background-color: #fff;
-    color: blue;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  }
-  .active-link{
-    color: #fff;
-    margin: 7px 7px 10px 7px;
-    padding: 8px 6px; 
-    box-sizing: border-box; 
-    transition: all 0.3s ease; 
-    font-size: 18px;
-  }
-  .active{
-    color: #fff;
-    margin: 7px 7px 10px 7px;
-    padding: 8px 6px; 
-    box-sizing: border-box; 
-    transition: all 0.3s ease; 
-    font-size: 18px;
-  } */
+/* smooth width change */
+.sidebar {
+  width: 250px;
+  transition: width 0.25s ease;
+}
+
+/* collapsed rail */
+.sidebar--collapsed {
+  width: 70px;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+/* remove icon gap */
+.sidebar--collapsed .sidebar-item .me-2 {
+  margin-right: 0 !important;
+}
+
+/* shared item styles */
+.sidebar-item {
+  color: #fff;
+  font-size: 1.05rem;
+  position: relative; /* for tooltip */
+}
+
+/* simple tooltip when collapsed */
+.sidebar--collapsed .sidebar-item:hover::after {
+  content: attr(data-label);
+  position: absolute;
+  left: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #000;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  z-index: 9999;
+}

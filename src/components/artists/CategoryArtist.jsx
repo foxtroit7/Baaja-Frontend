@@ -161,21 +161,21 @@ const [newRank, setNewRank] = useState('');
   return (
     <div className=" mx-4 mt-6">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold ">Artist List</h2>
+        <h2 className="fw-bold ">Category Artist List</h2>
         <Link to="/category-artist-add">
-          <Button className="btn btn-primary shadow">Add Category Artist</Button>
+          <Button className="btn bg-main shadow">Add Category Artist</Button>
         </Link>
       </div>
 
       {sessionNames.map((sessionName, index) => (
   <div key={index} className="mb-8">
-    <div className="d-flex justify-content-between align-items-center mb-3 mt-3">
-      <h4 className="text-xl font-bold text-primary">{sessionName}</h4>
+    <div className="d-flex justify-content-between align-items-center  mt-3">
+      <h4 className="text-xl font-bold text-main">{sessionName}</h4>
       <div>
       <Button
-  variant="primary"
+ 
   size="sm"
-  className="me-2"
+  className="me-2 bg-main"
   onClick={() => {
     const session = sessionData[sessionName];  // Access the full session data object
     setSelectedSession({
@@ -200,9 +200,9 @@ const [newRank, setNewRank] = useState('');
       </div>
     </div>
 
-    <div className=" w-full bg-white overflow-x-auto bg-white">
-      <Table className=" w-full text-sm text-center border border-gray-300">
-        <thead className=" font-semibold">
+    <div className="">
+      <Table responsive className="w-full text-sm text-center table-striped">
+        <thead className="font-semibold">
           <tr>
             <th className="text-center align-middle">Session Name</th>
             <th className="text-center align-middle">Session Rank</th>
@@ -222,11 +222,11 @@ const [newRank, setNewRank] = useState('');
     <tr key={i} className="hover:bg-gray-50 transition">
       <td className="text-center align-middle">{sessionName}</td>
       {/* Corrected to ensure session_rank is displayed correctly */}
-      <td className="text-center align-middle fw-bold text-primary">
+      <td className="text-center align-middle fw-bold text-main">
         {sessionData[sessionName]?.session_rank || 'N/A'}  {/* Use fallback for undefined */}
       </td>
       <td className="text-center align-middle">{artist.artist_id}</td>
-      <td className="text-center align-middle fw-bold text-primary">{artist.artist_rank}</td>
+      <td className="text-center align-middle fw-bold text-main">{artist.artist_rank}</td>
       <td className="text-center align-middle">{artist.artistDetails?.owner_name}</td>
       <td className="text-center align-middle">{artist.artistDetails?.category_type}</td>
       <td className="text-center align-middle">{artist.category_id}</td>
@@ -239,7 +239,6 @@ const [newRank, setNewRank] = useState('');
             rounded
             style={{
               objectFit: 'cover',
-              border: '2px solid #0d6efd',
               borderRadius: '8px',
             }}
           />
@@ -293,7 +292,7 @@ const [newRank, setNewRank] = useState('');
         </div>
         <div className="modal-footer">
           <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
-          <button className="btn btn-primary" onClick={handleUpdateRank}>Update</button>
+          <button className="btn bg-main" onClick={handleUpdateRank}>Update</button>
         </div>
       </div>
     </div>
@@ -335,7 +334,7 @@ const [newRank, setNewRank] = useState('');
           </button>
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn bg-main"
             onClick={handleUpdateArtistRank}
           >
             Update

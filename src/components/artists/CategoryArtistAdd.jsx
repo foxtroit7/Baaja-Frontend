@@ -98,8 +98,8 @@ console.log(body)
   return (
     <div className="p-4 max-w-3xl mx-auto">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold text-primary">Add Session Rank</h2>
-        <Button onClick={() => navigate(-1)} className="btn btn-primary shadow">
+        <h2 className="fw-bold text-main">Add Session Rank</h2>
+        <Button onClick={() => navigate(-1)} className="btn bg-main shadow">
           Back
         </Button>
       </div>
@@ -112,6 +112,7 @@ console.log(body)
             value={sessionName}
             onChange={(e) => setSessionName(e.target.value)}
             placeholder="Enter session name"
+            className='custom-placeholder'
           />
         </Form.Group>
 
@@ -122,6 +123,7 @@ console.log(body)
             value={sessionRank}
             onChange={(e) => setSessionRank(e.target.value)}
             placeholder="Enter session rank"
+             className='custom-placeholder'
           />
         </Form.Group>
 
@@ -129,7 +131,7 @@ console.log(body)
         <h5>Category Rank Model</h5>
 
         {categoryRankModel.map((item, index) => (
-          <div key={index} className="border p-3 mb-3 rounded bg-light position-relative">
+          <div key={index} className="border p-3 mb-3 rounded position-relative">
             <Button
               variant="light"
               size="sm"
@@ -174,6 +176,7 @@ console.log(body)
     }
     isClearable
     placeholder="Search and select artist"
+    className='custom-placeholder'
   />
 </Form.Group>
 
@@ -194,7 +197,7 @@ console.log(body)
         </Button>
 
         <div>
-          <Button variant="success" onClick={handleSubmit}>
+          <Button className='bg-main' onClick={handleSubmit}>
             Submit
           </Button>
         </div>

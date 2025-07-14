@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
   Table, Container, Form, InputGroup,
-  Spinner, Pagination
+  Spinner, Pagination,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faEye } from "@fortawesome/free-solid-svg-icons";
 
@@ -57,6 +59,7 @@ const CustomerList = () => {
           key={number}
           active={number === currentPage}
           onClick={() => paginate(number)}
+          className=""
         >
           {number}
         </Pagination.Item>
@@ -73,53 +76,59 @@ const CustomerList = () => {
 
   return (
     <Container>
-      <h2 className="text-center my-4" style={{ fontFamily: "Roboto, sans-serif", fontWeight: "bold", color: "#333" }}>
+      <h2 className="text-center text-main my-4">
         User List
       </h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <span style={{ fontSize: "1.9rem", fontWeight: "bold" }}>Users</span>
-        <InputGroup style={{ width: "300px" }}>
-          <InputGroup.Text>
-            <FontAwesomeIcon icon={faSearch} className="text-primary" />
-          </InputGroup.Text>
-          <Form.Control
-            type="text"
-            placeholder="Search by Name or Location"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </InputGroup>
+      <div><h2>Users</h2></div>
+       
+        {/* right‑aligned search box */}
+<div>
+  <InputGroup style={{ maxWidth: "300px" }}>
+    <InputGroup.Text>
+      <FontAwesomeIcon icon={faSearch} className="text-dark" />
+    </InputGroup.Text>
+    <Form.Control
+      type="text"
+      placeholder="Search Name or Location"
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      className="custom-placeholder"
+    />
+  </InputGroup>
+</div>
+
       </div>
 
       {loading ? (
-        <div className="text-center">
-          <Spinner animation="border" variant="primary" />
+        <div className="align-middle">
+          <Spinner animation="border" className="bg-main" />
         </div>
       ) : error ? (
         <div className="text-center text-danger">{error}</div>
       ) : (
         <>
           <div className="table-responsive">
-            <Table bordered hover className="shadow-sm table-striped" style={{ borderRadius: "10px", overflow: "hidden" }}>
-              <thead className="bg-primary text-white" style={{ fontSize: "1.1rem" }}>
+            <Table responsive className="shadow-sm table-striped" style={{ borderRadius: "10px", overflow: "hidden" }}>
+              <thead className="bg-main text-white" style={{ fontSize: "1.1rem" }}>
                 <tr>
-                  <th className="text-center">User ID</th>
-                  <th className="text-center">Name</th>
-                  <th className="text-center">Phone</th>
-                  <th className="text-center">Location</th>
+                  <th className="align-middle">User ID</th>
+                  <th className="align-middle">Name</th>
+                  <th className="align-middle">Phone</th>
+                  <th className="align-middle">Location</th>
                   <th className="text-center">View Profile</th>
                 </tr>
               </thead>
               <tbody>
                 {currentUsers.map((customer) => (
                   <tr key={customer.user_id} style={{ fontSize: "1rem" }}>
-                    <td className="text-center">{customer.user_id}</td>
-                    <td className="text-center">{customer.name}</td>
-                    <td className="text-center">{customer.phone_number}</td>
-                    <td className="text-center">{customer.place || customer.location}</td>
-                    <td className="text-center">
-                      <Link to={`/customer-profile/${customer.user_id}`} className="btn btn-primary text-light btn-md">
+                    <td className="align-middle">{customer.user_id}</td>
+                    <td className="align-middle">{customer.name}</td>
+                    <td className="align-middle">{customer.phone_number}</td>
+                    <td className="align-middle">{customer.place || customer.location}</td>
+                    <td className="align-middle d-flex justify-content-center">
+                      <Link to={`/customer-profile/${customer.user_id}`} className="btn bg-main text-light btn-md">
                         <FontAwesomeIcon icon={faEye} />
                       </Link>
                     </td>
