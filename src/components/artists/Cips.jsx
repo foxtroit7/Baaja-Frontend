@@ -113,6 +113,7 @@ const Cips = ({ user_id }) => {
                     color: "#343a40",
                     textAlign: "center",
                   }}
+                  className='text-main'
                 >
                   {clip.title}
                 </Card.Title>

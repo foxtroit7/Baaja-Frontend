@@ -93,8 +93,9 @@ const Booking = ({ artist_id }) => {
         <div className="d-flex flex-wrap gap-3 mb-4">
           <input
             type="text"
-            className="form-control"
+            className="form-control text-main"
             placeholder="Search Booking ID"
+          
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{ maxWidth: 200 }}

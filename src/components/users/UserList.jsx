@@ -20,6 +20,7 @@ const UserList = () => {
     search: "",
     status: "",
     paymentStatus: "",
+    bookingType: "",
     dateRange: { from: "", to: "" },
   });
 
@@ -45,32 +46,28 @@ const UserList = () => {
   useEffect(() => {
     if (!initialized) return;
 
-    const fetchBookings = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          console.error("No token found in localStorage");
-          return;
-        }
+const fetchBookings = async (customFilters = filters) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-        const response = await axios.get("http://35.154.161.226:5000/api/all-bookings", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            status: filters.status,
-            paymentStatus: filters.paymentStatus,
-            search: filters.search,
-            from: filters.dateRange.from,
-            to: filters.dateRange.to,
-          },
-        });
+    const response = await axios.get("http://35.154.161.226:5000/api/all-bookings", {
+      headers: { Authorization: `Bearer ${token}` },
+      params: {
+        status: customFilters.status,
+        paymentStatus: customFilters.paymentStatus,
+        search: customFilters.search,
+        from: customFilters.dateRange.from,
+        to: customFilters.dateRange.to,
+      },
+    });
 
-        setBookings(response.data);
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      }
-    };
+    setBookings(response.data);
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+  }
+};
+
 
     fetchBookings();
   }, [filters, initialized]);
@@ -97,12 +94,21 @@ const UserList = () => {
       search: "",
       status: "",
       paymentStatus: "",
+      bookingType: "",
       dateRange: { from: "", to: "" },
     });
   };
 
   // 4. Pagination logic
-  const allData = bookings.bookings || [];
+  let allData = bookings.bookings || [];
+
+if (filters.bookingType) {
+  allData = allData.filter((item) => {
+    const type = (item.booking_type || "Online Booking").toLowerCase();
+    return type === filters.bookingType.toLowerCase();
+  });
+}
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = allData.slice(indexOfFirstItem, indexOfLastItem);
@@ -140,6 +146,15 @@ const UserList = () => {
             day: "numeric",
           })}
         </td>
+   <td style={{ padding: "15px" }}>
+  {(!item.booking_type || item.booking_type === "Online Booking") ? (
+    <span className="badge bg-success">Online Booking</span>
+  ) : (
+    <span className="badge bg-secondary">Offline Booking</span>
+  )}
+</td>
+
+
         <td style={{ padding: "15px" }}>
           {item.payment_status === "partial" && (
             <span className="badge bg-warning text-dark">Partial</span>
@@ -170,7 +185,7 @@ const UserList = () => {
       {/* Filters */}
       <Form className="mb-4">
         <Row className="align-items-center">
-          <Col md={3} className="mb-1">
+          <Col md={2} className="mb-1">
             <InputGroup>
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} className="text-dark" />
@@ -198,6 +213,18 @@ const UserList = () => {
               <option value="rejected">Rejected</option>
             </Form.Select>
           </Col>
+          <Col md={2} className="mb-1">
+  <Form.Select
+    name="bookingType"
+    value={filters.bookingType}
+    onChange={handleFilterChange}
+  >
+    <option value="">All Booking Types</option>
+    <option value="Online Booking">Online Booking</option>
+    <option value="Offline Booking">Offline Booking</option>
+  </Form.Select>
+</Col>
+
           <Col md={2}  className="mb-1">
             <Form.Select
               name="paymentStatus"
@@ -210,7 +237,7 @@ const UserList = () => {
               <option value="partial">Partial</option>
             </Form.Select>
           </Col>
-          <Col md={2}  className="mb-1">
+          <Col md={1}  className="mb-1">
             <Form.Control
               type="date"
               name="from"
@@ -218,7 +245,7 @@ const UserList = () => {
               onChange={handleDateRangeChange}
             />
           </Col>
-          <Col md={2}  className="mb-1">
+          <Col md={1}  className="mb-1">
             <Form.Control
               type="date"
               name="to"
@@ -250,6 +277,7 @@ const UserList = () => {
               <th>Artist Name</th>
               <th>Status</th>
               <th>Booking Time</th>
+              <th>Booking Type</th>
               <th>Payment Status</th>
               <th>View</th>
             </tr>
