@@ -17,6 +17,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faSignOutAlt,
+  faMusic,
 } from "@fortawesome/free-solid-svg-icons";
 
 import "../css/sidebar.css";
@@ -109,11 +110,12 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
         { label: "Approval Requests", path: "/approved" },
       ],
     ],
+     ["Users", faUser, "/users"],
+     ["Bookings", faBox, "/bookings"],
     ["Category", faDrum, "/category"],
     ["Banners", faSignsPost, [{ label: "Banners", path: "/banner" }]],
     ["Purpose", faVideo, "/purpose"],
-    ["Users", faUser, "/users"],
-    ["Bookings", faBox, "/bookings"],
+    ["Youtube", faMusic, "/videos"],
     [
       "Notification",
       faBell,
