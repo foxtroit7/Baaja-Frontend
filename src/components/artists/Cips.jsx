@@ -106,17 +106,6 @@ const Cips = ({ user_id }) => {
               }}
             >
               <Card.Body>
-                <Card.Title
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "1.2rem",
-                    color: "#343a40",
-                    textAlign: "center",
-                  }}
-                  className='text-main'
-                >
-                  {clip.title}
-                </Card.Title>
                 <div className="ratio ratio-16x9 mt-3">
                   <video
                     src={`http://35.154.161.226:5000/${clip.video}`}
@@ -138,7 +127,6 @@ const Cips = ({ user_id }) => {
             <Modal.Title>Edit or Delete Clip</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h5>{selectedClip.title}</h5>
             <div className="ratio ratio-16x9 mb-3">
               <video
                 src={selectedClip.video}
@@ -147,16 +135,6 @@ const Cips = ({ user_id }) => {
               ></video>
             </div>
 
-            <Form>
-              <Form.Group controlId="formTitle">
-                <Form.Label>Title</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={selectedClip.title}
-                  onChange={(e) => setSelectedClip({ ...selectedClip, title: e.target.value })}
-                />
-              </Form.Group>
-            </Form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="warning" onClick={handleCloseModal}>

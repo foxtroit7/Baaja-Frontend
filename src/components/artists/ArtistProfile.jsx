@@ -161,6 +161,7 @@ const [editedServices, setEditedServices] = useState([]);
           style={{ objectFit: 'cover', border: '2px solid #007bff' }}
         />
         <h3 className="text-main fw-bold">Owner Name: {artist.owner_name}</h3>
+        <h3 className="text-main fw-bold">Profile Name: {artist.profile_name}</h3>
         <h5 className="text-main">Category: {artist.category_type}</h5>
         <h6 className="text-main">{artist.location}</h6>
         <h5 className='text-main'>

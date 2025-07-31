@@ -238,7 +238,6 @@ const changeStatus = async () => {
                   <Dropdown.Item onClick={() => handleStatusChange('accepted')}>accepted</Dropdown.Item>
                   <Dropdown.Item onClick={() => handleStatusChange('completed')}>completed</Dropdown.Item>
                   <Dropdown.Item onClick={() => handleStatusChange('rejected')}>rejected</Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleStatusChange('pending')}>pending</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </Card.Body>
@@ -327,9 +326,9 @@ const changeStatus = async () => {
     {/* Modal for confirmation */}
 <Modal show={showModal} onHide={() => setShowModal(false)} centered>
   <Modal.Header closeButton>
-    <Modal.Title>Confirm Status Change</Modal.Title>
+    <Modal.Title className='text-dark'>Confirm Status Change</Modal.Title>
   </Modal.Header>
-  <Modal.Body>
+  <Modal.Body className='text-dark'>
     Are you sure you want to change the booking status to <strong>{newStatus}</strong>?
   </Modal.Body>
   <Modal.Footer>

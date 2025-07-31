@@ -6,7 +6,6 @@ const AddClip = () => {
   const navigate = useNavigate();
   const { user_id } = useParams();
   const [file, setFile] = useState(null);
-  const [title, setTitle] = useState('');
   const [message, setMessage] = useState(null);
 
 const handleFileChange = (event) => {
@@ -25,7 +24,6 @@ const handleSubmit = async (event) => {
   }
 
   const formData = new FormData();
-  formData.append("title", title);
   formData.append("video", file);
 
   try {
@@ -70,19 +68,7 @@ const handleSubmit = async (event) => {
         {message && <Alert variant={message.type}>{message.text}</Alert>}
 
         <Form onSubmit={handleSubmit}>
-          {/* Clip Title */}
-          <Form.Group className="mb-3" controlId="formClipTitle">
-            <Form.Label style={{ fontWeight: 500 }}>Clip Title</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Clip Title"
-               className="custom-placeholder"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-              style={{ fontWeight: 400, fontSize: '1rem', borderRadius: '0.375rem' }}
-            />
-          </Form.Group>
+       
 
           {/* Video Upload */}
           <Form.Group controlId="formFile" className="mb-3">

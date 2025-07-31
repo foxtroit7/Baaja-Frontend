@@ -241,6 +241,7 @@ if (filters.bookingType) {
             <Form.Control
               type="date"
               name="from"
+                 className="text-main"
               value={filters.dateRange.from}
               onChange={handleDateRangeChange}
             />
@@ -250,6 +251,7 @@ if (filters.bookingType) {
               type="date"
               name="to"
               value={filters.dateRange.to}
+              className="text-main"
               onChange={handleDateRangeChange}
             />
           </Col>
