@@ -126,7 +126,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       ],
     ],
     ["Payment", faMoneyBill, "/payment"],
-    ["Coupons", faTicket, "/coupons"],
+    // ["Coupons", faTicket, "/coupons"],
     ["FAQ's", faQuestionCircle, "/faq"],
   ];
 
