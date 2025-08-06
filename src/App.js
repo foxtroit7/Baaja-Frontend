@@ -36,6 +36,7 @@ import Poster from './components/artists/Potser';
 import CategoryArtist from './components/artists/CategoryArtist';
 import CategoryArtistAdd from './components/artists/CategoryArtistAdd';
 import Approved from './components/artists/Approved';
+import Coupons from './components/coupons/Coupons';
 function App() {
   return (
    <>
@@ -84,7 +85,7 @@ function App() {
     <Route path='/category-artist' element={<CategoryArtist />} />
     <Route path='/category-artist-add' element={<CategoryArtistAdd />} />
     <Route path='/approved' element={<Approved/>} />
-    
+    <Route path="/coupons" element={<Coupons />} />
 </Route>
 
   </Routes>

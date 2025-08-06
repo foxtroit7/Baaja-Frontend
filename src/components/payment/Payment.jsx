@@ -154,7 +154,19 @@ const Payment = () => {
                 <td className="align-middle">₹{item.total_price}</td>
                 <td className="align-middle">₹{item.advance_price}</td>
                 <td className="align-middle">₹{item.pending_price}</td>
-                <td className="fw-bold text-main">{new Date(item.createdAt).toLocaleString()}</td>
+        <div>
+  {new Date(item.createdAt).toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true, // optional: change to false for 24-hour format
+  })}
+</div>
+
                 <td className="align-middle">{item.booking_id}</td>
                 <td className="align-middle">      <Link to={`/user-profile/${item.booking_id}`}>
                               <Button  className="me-2 text-light bg-main">

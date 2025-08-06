@@ -123,7 +123,7 @@ const CategoryTable = () => {
                 <tr>
                   <th className="text-center align-middle">Category Name</th>
                   <th className="text-center align-middle">Category Image</th>
-                  <th className="text-center align-middle">Actions</th>
+                  <th className="text-center align-middle">Action</th>
                 </tr>
               </thead>
               <tbody>

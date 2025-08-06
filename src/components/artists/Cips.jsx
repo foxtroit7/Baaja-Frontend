@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Row, Button, Col, Card, Modal, Form, Alert } from 'react-bootstrap';
+import { Row, Button, Col, Card, Modal, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';

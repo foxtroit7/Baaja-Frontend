@@ -253,7 +253,15 @@ const changeStatus = async () => {
               <FontAwesomeIcon icon={faTruck} style={iconStyle} />
               <Card.Title>Booking Date</Card.Title>
               <Card.Text>
-                {new Date(booking.booking_date).toLocaleDateString()} {new Date(booking.booking_date).toLocaleTimeString()}
+               {new Date(booking.createdAt).toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true, 
+  })}
               </Card.Text>
             </Card.Body>
           </Card>
@@ -264,10 +272,27 @@ const changeStatus = async () => {
               <FontAwesomeIcon icon={faMoneyBill} style={iconStyle} />
               <Card.Title>Schedule Date</Card.Title>
               <Card.Text>
-                {new Date(booking.schedule_date_start).toLocaleDateString()}{" "}
-                to{" "}
-                {new Date(booking.schedule_date_end).toLocaleDateString()}
-              </Card.Text>
+  {new Date(booking.schedule_date_start).toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  })}{" "}
+  to{" "}
+  {new Date(booking.schedule_date_end).toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  })}
+</Card.Text>
+
             </Card.Body>
           </Card>
         </Col>
@@ -297,9 +322,9 @@ const changeStatus = async () => {
               <h5 className="text-center">Required Services</h5>
               <hr />
               <ul className="list-unstyled">
-                {booking.required_services?.map((service, index) => (
+                {booking.required_items?.map((service, index) => (
                   <li key={index}>
-                    <FontAwesomeIcon icon={faTools} style={iconStyle} />{" "}
+                
                     {service}
                   </li>
                 ))}

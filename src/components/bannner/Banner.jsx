@@ -14,7 +14,7 @@ const Banner = () => {
         
       <Row>
         <Col className="d-flex justify-content-end">
-          <Button onClick={handleButtonClick}>Add New Banner</Button>
+          <Button onClick={handleButtonClick} className='bg-main'>Add New Banner</Button>
         </Col>
       </Row>
     </Container>

@@ -7,7 +7,7 @@ const Potser = () => {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState({}); // store selected files per artist
+  const [selectedFiles, setSelectedFiles] = useState({});
 
   const fetchArtists = async () => {
     try {

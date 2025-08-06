@@ -132,7 +132,7 @@ const VideoForm = () => {
           )}
         </div>
 
-        <button type="submit" className="btn btn-primary" disabled={loading}>
+        <button type="submit" className="btn bg-main mt-4" disabled={loading}>
           {loading ? "loading....." : video_id ? 'Update Video' : 'Add Video'}
         </button>
       </form>

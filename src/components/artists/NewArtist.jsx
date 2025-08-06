@@ -86,7 +86,7 @@ useEffect(() => {
                   className="mb-3 p-3 rounded"
                   style={{ border: "1px solid #dee2e6", backgroundColor: "#ffffff" }}
                 >
-                  <h5 className="fw-bold text-dark">{item.title}</h5>
+
                   <p className="text-muted" style={{ fontWeight: 400, fontSize: "1rem", lineHeight: 1.6 }}>
                     {isExpanded ? item.desc : previewText}
                   </p>

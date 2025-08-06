@@ -147,14 +147,19 @@ const AdminArtistUpdates = () => {
         <p style={{ color: '#b30000', fontWeight: 'bold' }}>Remarks: {update.admin_remarks}</p>
       )}
 
-      <div>
-        <strong>Date: </strong>
-        {new Date(update.createdAt).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}
-      </div>
+<div>
+  <strong>Date & Time: </strong>
+  {new Date(update.createdAt).toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true, 
+  })}
+</div>
+
 
       {activeTab === 'pending' && (
         <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>

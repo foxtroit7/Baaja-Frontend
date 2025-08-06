@@ -139,13 +139,18 @@ if (filters.bookingType) {
             {item.status}
           </span>
         </td>
-        <td style={{ padding: "15px" }}>
-          {new Date(item.createdAt).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </td>
+       <td style={{ padding: "15px" }}>
+  {new Date(item.createdAt).toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}
+</td>
+
    <td style={{ padding: "15px" }}>
   {(!item.booking_type || item.booking_type === "Online Booking") ? (
     <span className="badge bg-success">Online Booking</span>

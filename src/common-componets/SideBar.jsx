@@ -18,6 +18,7 @@ import {
   faChevronRight,
   faSignOutAlt,
   faMusic,
+  faTicket
 } from "@fortawesome/free-solid-svg-icons";
 
 import "../css/sidebar.css";
@@ -125,6 +126,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       ],
     ],
     ["Payment", faMoneyBill, "/payment"],
+    ["Coupons", faTicket, "/coupons"],
     ["FAQ's", faQuestionCircle, "/faq"],
   ];
 
