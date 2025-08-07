@@ -185,9 +185,9 @@ const Artist = () => {
 
             <Modal show={showModal} onHide={() => setShowModal(false)} centered>
     <Modal.Header closeButton>
-        <Modal.Title>{selectedArtist?.top_baaja ? "Remove from Baaja List" : "Approve as Top Baaja"}</Modal.Title>
+        <Modal.Title className='text-dark'>{selectedArtist?.top_baaja ? "Remove from Baaja List" : "Approve as Top Baaja"}</Modal.Title>
     </Modal.Header>
-    <Modal.Body>
+     <Modal.Body className='text-dark'>
         {selectedArtist?.top_baaja ? (
             "Are you sure you want to remove this artist from the Baaja list?"
         ) : (

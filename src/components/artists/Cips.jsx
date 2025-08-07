@@ -124,9 +124,9 @@ const Cips = ({ user_id }) => {
       {selectedClip && (
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Edit or Delete Clip</Modal.Title>
+            <Modal.Title className='text-dark'>Edit or Delete Clip</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+           <Modal.Body className='text-dark'>
             <div className="ratio ratio-16x9 mb-3">
               <video
                 src={selectedClip.video}

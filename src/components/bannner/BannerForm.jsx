@@ -118,20 +118,42 @@ const BannerForm = () => {
 
             <Form.Group className="mb-3">
               <Form.Label className="text-main">Banner Link</Form.Label>
-              <Form.Control className="text-main text-decoration-none text" value={formData.link} onChange={handleChange} />
+              <Form.Control className="bg-main"  name="link"  value={formData.link} onChange={handleChange} />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label className="text-main">Upload Banner Photo</Form.Label>
-              <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
-              {existingPhoto && !newPhoto && (
-                <img
-                  src={`http://35.154.161.226:5000/${existingPhoto}`}
-                  alt="banner"
-                  style={{ width: "100%", marginTop: "10px" }}
-                />
-              )}
-            </Form.Group>
+           <Form.Group className="mb-3" controlId="formBannerImage">
+  <Form.Label style={{ fontWeight: 500 }}>Banner Image</Form.Label>
+  <Form.Control
+    type="file"
+    name="photo"
+    accept="image/*"
+   onChange={handleFileChange}
+    required={!banner_id} // Required only for new banners
+    style={{
+      fontWeight: 400,
+      fontSize: '1rem',
+      borderRadius: '0.375rem',
+    }}
+  />
+
+  {/* Image Preview (new or existing) */}
+  {newPhoto ? (
+    <img
+      src={URL.createObjectURL(newPhoto)}
+      alt="preview"
+      style={{ width: "100%", marginTop: "10px", borderRadius: "8px" }}
+    />
+  ) : (
+    existingPhoto && (
+      <img
+        src={`http://35.154.161.226:5000/${existingPhoto}`}
+        alt="banner"
+        style={{ width: "100%", marginTop: "10px", borderRadius: "8px" }}
+      />
+    )
+  )}
+</Form.Group>
+
 
             <Form.Group className="mb-3">
               <Form.Label>Connection</Form.Label>

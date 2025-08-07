@@ -221,7 +221,7 @@ const AdminArtistUpdates = () => {
               margin: '0 0.5rem',
               cursor: 'pointer',
               borderBottom: activeTab === status ? '3px solid #007bff' : '3px solid transparent',
-              color: activeTab === status ? '#007bff' : '#555',
+              color: activeTab === status ? '#007bff' : '#ffffff',
               fontWeight: activeTab === status ? 'bold' : 'normal',
             }}
           >
@@ -268,7 +268,7 @@ const AdminArtistUpdates = () => {
         <Button
           onClick={handleResetFilters}
           disabled={loading}
-          variant='secondary'
+          variant='warning'
         >
           Reset
         </Button>

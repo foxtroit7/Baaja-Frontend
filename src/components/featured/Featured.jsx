@@ -250,7 +250,7 @@ const Featured = () => {
         <Modal.Header closeButton>
           <Modal.Title className='text-dark'>Add Artist to Featured</Modal.Title>
         </Modal.Header>
-       <Modal.Body>
+        <Modal.Body className='text-dark'>
 
   {/* Artist Dropdown */}
  <Form.Group className="mb-3">
@@ -280,7 +280,7 @@ const Featured = () => {
 
   {/* Rank Input */}
   <Form.Group>
-    <Form.Label className='text-dark'>Enter Rank</Form.Label>
+    <Form.Label className='text-dark bg-main'>Enter Rank</Form.Label>
     <Form.Control
       type="number"
       placeholder="Enter featured rank"

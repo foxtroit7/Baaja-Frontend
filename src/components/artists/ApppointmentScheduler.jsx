@@ -184,7 +184,7 @@ const AppointmentScheduler = ({ artist_id }) => {
       {/* Booking Details Modal */}
   <Modal show={showModal} onHide={() => setShowModal(false)} centered size="lg">
   <Modal.Header closeButton className="bg-main text-white">
-    <Modal.Title>📅 Booking Details - {new Date(selectedDate).toLocaleDateString()}</Modal.Title>
+    <Modal.Title className='text-dark'>📅 Booking Details - {new Date(selectedDate).toLocaleDateString()}</Modal.Title>
   </Modal.Header>
 
   <Modal.Body className="bg-light">

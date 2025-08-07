@@ -177,7 +177,7 @@ const [editedServices, setEditedServices] = useState([]);
         <Modal.Header closeButton>
           <Modal.Title className='text-dark'>Edit Artist Info</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+         <Modal.Body className='text-dark'>
           <Form.Group className="mb-3">
             <Form.Label  className='text-dark'>Owner Name</Form.Label>
             <Form.Control
@@ -302,7 +302,7 @@ const [editedServices, setEditedServices] = useState([]);
         <Modal.Header closeButton>
           <Modal.Title  className='text-dark'>Edit Booking Charges</Modal.Title>
         </Modal.Header>
-      <Modal.Body>
+       <Modal.Body className='text-dark'>
   {message && <Alert variant={variant}>{message}</Alert>}
   <Row className='text-dark'>
     {["first", "second", "third", "fourth", "fifth", "sixth", "seventh"].map((day, index) => (
@@ -332,7 +332,7 @@ const [editedServices, setEditedServices] = useState([]);
   <Modal.Header closeButton>
     <Modal.Title  className='text-dark'>Edit Required Services</Modal.Title>
   </Modal.Header>
-  <Modal.Body>
+   <Modal.Body className='text-dark'>
     {editedServices.map((service, index) => (
       <Form.Group className="mb-2" key={index}>
         <Form.Control

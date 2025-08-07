@@ -124,7 +124,7 @@ const Purpose = () => {
         <Modal.Header closeButton>
           <Modal.Title className='text-dark'>{isEditMode ? 'Edit Purpose' : 'Add Purpose'}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+         <Modal.Body className='text-dark'>
           <Form.Group>
             <Form.Label className='text-dark'>Title</Form.Label>
             <Form.Control
@@ -150,9 +150,9 @@ const Purpose = () => {
       {/* Modal for Delete Confirmation */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Delete</Modal.Title>
+          <Modal.Title className='text-dark'>Confirm Delete</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+         <Modal.Body className='text-dark'>
           Are you sure you want to delete <strong>{selectedPurpose?.purpose}</strong>?
         </Modal.Body>
         <Modal.Footer>

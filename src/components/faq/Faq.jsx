@@ -112,7 +112,7 @@ const Faq = () => {
         <Modal.Header closeButton>
           <Modal.Title className="text-dark">{editId ? "Edit FAQ" : "Add FAQ"}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+         <Modal.Body className='text-dark'>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label className="text-dark">Question</Form.Label>
@@ -144,9 +144,9 @@ const Faq = () => {
       {/* Delete Confirmation Modal */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Deletion</Modal.Title>
+          <Modal.Title className='text-dark'>Confirm Deletion</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+         <Modal.Body className='text-dark'>
           Are you sure you want to delete this FAQ? This action cannot be undone.
         </Modal.Body>
         <Modal.Footer>

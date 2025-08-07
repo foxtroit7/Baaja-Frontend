@@ -174,7 +174,7 @@ const Reviews = ({ user_id }) => {
         <Modal.Header closeButton>
           <Modal.Title className="text-dark">Edit/Delete Review</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+         <Modal.Body className='text-dark'>
           {currentReview && (
             <>
               <Form.Group className="mb-3">
@@ -199,7 +199,7 @@ const Reviews = ({ user_id }) => {
         <Modal.Header closeButton>
           <Modal.Title className="text-dark">Add New Review</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+         <Modal.Body className='text-dark'>
           <Form.Group className="mb-3">
             <Form.Label className="text-dark">Name</Form.Label>
             <Form.Control

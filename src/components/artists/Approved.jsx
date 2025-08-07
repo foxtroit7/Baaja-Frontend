@@ -97,9 +97,9 @@ const Approved = () => {
       {/* Modal for approval confirmation */}
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Approval</Modal.Title>
+          <Modal.Title className='text-dark'>Confirm Approval</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+         <Modal.Body className='text-dark'>
           Are you sure you want to approve this artist?
         </Modal.Body>
         <Modal.Footer>

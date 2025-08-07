@@ -100,9 +100,9 @@ const Help = () => {
       {/* Modal for adding/editing Help */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>{editId ? "Edit Help" : "Add Help"}</Modal.Title>
+          <Modal.Title className='text-dark'>{editId ? "Edit Help" : "Add Help"}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+         <Modal.Body className='text-dark'>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Question</Form.Label>

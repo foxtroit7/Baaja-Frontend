@@ -22,8 +22,8 @@ const BannerRow = ({ item, onDeleteClick }) => {
     <tr>
       <td className="text-center align-middle">{item.section}</td>
       <td className="text-center align-middle">{item.page}</td>
-      <td className="text-center align-middle">
-        <a href={item.link} target="_blank" rel="noopener noreferrer">
+      <td className="text-center align-middle ">
+        <a href={item.link} target="_blank" className='text-main text-decoration-none' rel="noopener noreferrer">
           {item.link}
         </a>
       </td>
@@ -184,9 +184,9 @@ const BannerList = () => {
       {/* Delete Confirmation Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Deletion</Modal.Title>
+          <Modal.Title className='text-dark'>Confirm Deletion</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className='text-dark'>
           Are you sure you want to delete this banner? This action cannot be undone.
         </Modal.Body>
         <Modal.Footer>

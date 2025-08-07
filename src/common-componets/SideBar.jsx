@@ -131,7 +131,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
   ];
 
   return (
-    <nav                      /* no position-fixed */
+    <nav                    
       className={`bg-main sidebar p-3 shadow-lg overflow-auto ${
         collapsed ? "sidebar--collapsed" : ""
       }`}
