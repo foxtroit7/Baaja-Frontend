@@ -175,7 +175,7 @@ const Featured = () => {
                   <th>Owner Name</th>
                   <th>Poster</th>
                   <th>Profile Name</th>
-                  <th>Category ID</th>
+                  <th>Category Type</th>
                   <th>Featured Rank</th>
                   <th>Featured</th>
                   <th>Change Rank</th>
@@ -202,7 +202,7 @@ const Featured = () => {
                       />
                     </td>
                     <td className="text-center align-middle">{item.profile_name}</td>
-                    <td className="text-center align-middle">{item.category_id}</td>
+                    <td className="text-center align-middle">{item.category_type}</td>
                     <td className="text-center align-middle fw-bold text-main" >{item.featured_rank}</td>
                     <td className="text-center align-middle">
                       {item.featured ? (

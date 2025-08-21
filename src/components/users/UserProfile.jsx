@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, Container, Row, Col, Image, Button, Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruck, faMoneyBill, faTruckRampBox, faTools, faUser, faBagShopping } from '@fortawesome/free-solid-svg-icons';
+import { faTruck, faMoneyBill, faTruckRampBox, faUser, faBagShopping } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from 'react-bootstrap';
 import axios from "axios";
+ import { DateTime } from "luxon";
 const UserProfile = () => {
   const { booking_id } = useParams();
   const [loading, setLoading] = useState(true); 
@@ -115,7 +116,6 @@ const changeStatus = async () => {
   const headerStyle = {
     fontFamily: 'Roboto, sans-serif',
     fontWeight: 700,
-    color: '#333',
   };
 
   const iconStyle = {
@@ -245,6 +245,16 @@ const changeStatus = async () => {
         </Col>
       </Row>
 
+<div className="d-flex justify-content-center align-items-center">
+  {booking.status === "rejected" && (
+    <div className="bg-main text-main card p-2 mb-3" style={cardStyle}>
+      <span className='fw-bold'>
+        Rejection Purpose: <span className="text-danger fw-bold">{booking.cancellation_message}</span>
+      </span>
+    </div>
+  )}
+</div>
+
       <Row className="g-4">
         {/* Existing Cards */}
         <Col md={3}>
@@ -271,27 +281,18 @@ const changeStatus = async () => {
             <Card.Body>
               <FontAwesomeIcon icon={faMoneyBill} style={iconStyle} />
               <Card.Title>Schedule Date</Card.Title>
-              <Card.Text>
-  {new Date(booking.schedule_date_start).toLocaleString('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  })}{" "}
+
+<Card.Text>
+  {DateTime.fromISO(booking.schedule_date_start)
+    .setZone("Asia/Kolkata")
+    .toFormat("dd MMM yyyy, hh:mm a")}{" "}
   to{" "}
-  {new Date(booking.schedule_date_end).toLocaleString('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  })}
+  {DateTime.fromISO(booking.schedule_date_end)
+    .setZone("Asia/Kolkata")
+    .toFormat("dd MMM yyyy, hh:mm a")}
 </Card.Text>
+
+
 
             </Card.Body>
           </Card>
@@ -300,8 +301,8 @@ const changeStatus = async () => {
           <Card className="text-center shadow" style={cardStyle}>
             <Card.Body>
               <FontAwesomeIcon icon={faMoneyBill} style={iconStyle} />
-              <Card.Title>Booking Purpose</Card.Title>
-              <Card.Text>{booking.purpose}</Card.Text>
+              <Card.Title>Booking Id</Card.Title>
+              <Card.Text className='fw-bold'>{booking.booking_id}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -309,8 +310,16 @@ const changeStatus = async () => {
           <Card className="text-center shadow" style={cardStyle}>
             <Card.Body>
               <FontAwesomeIcon icon={faTruckRampBox} style={iconStyle} />
-              <Card.Title>Shift</Card.Title>
-              <Card.Text>{booking.shift}</Card.Text>
+              <Card.Title>Booking Type</Card.Title>
+          <Card.Text>
+ <div> {booking.booking_type}</div>
+  {booking.booking_type === "Offline Booking" && (
+    <span>
+      {" "}Payment Status: {booking.paid ? "Paid" : "Not Paid"}
+    </span>
+  )}
+</Card.Text>
+
             </Card.Body>
           </Card>
         </Col>
@@ -347,6 +356,71 @@ const changeStatus = async () => {
           </Col>
         </Row>
       </Row>
+      <Row className="mt-4">
+  <Col md={12}>
+    <Card className="shadow p-4 bg-main">
+      <Card.Title className="mb-3 text-center" style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+        All Booking Details
+      </Card.Title>
+      <hr />
+      <Row className="g-3">
+        {/* Booking fields */}
+        {Object.entries(booking)
+          .filter(([key, value]) => {
+            // Exclude boolean, null, arrays of booleans, system fields
+            if (typeof value === "boolean" || value === null) return false;
+            if (Array.isArray(value) && value.every(v => typeof v === "boolean")) return false;
+            if (["_id", "__v", "artist_details", "notifications", "payments", "success"].includes(key)) return false;
+            return true;
+          })
+          .map(([key, value], index) => (
+            <Col md={4} key={index}>
+              <div
+                className="p-3 rounded shadow-sm"
+                style={{
+                  height: "100%",
+                }}
+              >
+                <strong className="" style={{ textTransform: "capitalize" }}>
+                  {key.replace(/_/g, " ")}:
+                </strong>
+                <div className="mt-2">
+                  {Array.isArray(value) ? value.join(", ") : String(value)}
+                </div>
+              </div>
+            </Col>
+          ))}
+
+        {/* Artist Details */}
+        {booking.artist_details &&
+          Object.entries(booking.artist_details)
+            .filter(([key, value]) => {
+              if (typeof value === "boolean" || value === null) return false;
+              if (["_id", "__v", "notifications"].includes(key)) return false;
+              return true;
+            })
+            .map(([key, value], index) => (
+              <Col md={4} key={`artist-${index}`}>
+                <div
+                  className="p-3 rounded shadow-sm"
+                  style={{
+                    height: "100%",
+                  }}
+                >
+                  <strong className="" style={{ textTransform: "capitalize" }}>
+                    Artist {key.replace(/_/g, " ")}:
+                  </strong>
+                  <div className="mt-2">
+                    {Array.isArray(value) ? value.join(", ") : String(value)}
+                  </div>
+                </div>
+              </Col>
+            ))}
+      </Row>
+    </Card>
+  </Col>
+</Row>
+
     </Container>
     {/* Modal for confirmation */}
 <Modal show={showModal} onHide={() => setShowModal(false)} centered>

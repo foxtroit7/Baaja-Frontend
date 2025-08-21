@@ -166,9 +166,7 @@ const Booking = ({ artist_id }) => {
                 <tr className="text-center">
                   <th>Scheduled Date Start</th>
                   <th>Scheduled Date End</th>
-                  <th>Shift</th>
                   <th>Purpose</th>
-                  <th>Scheduled Time</th>
                   <th>Booking Date</th>
                   <th>Price</th>
                   <th>Artist Name</th>
@@ -194,9 +192,7 @@ const Booking = ({ artist_id }) => {
                     >
                       <td>{new Date(booking.schedule_date_start).toLocaleDateString()}</td>
                       <td>{new Date(booking.schedule_date_end).toLocaleDateString()}</td>
-                      <td>{booking.shift}</td>
                       <td>{booking.purpose}</td>
-                      <td>{booking.scheduled_time}</td>
                       <td>
                         {new Date(booking.createdAt).toLocaleDateString('en-US', {
                           year: 'numeric',

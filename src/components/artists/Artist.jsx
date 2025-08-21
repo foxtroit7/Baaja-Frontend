@@ -85,7 +85,7 @@ const Artist = () => {
     // Filter by search and category
     const filteredData = data.filter(item => {
         const matchSearch =
-            item.owner_name?.toLowerCase().includes(search.toLowerCase()) ||
+            item.profile_name?.toLowerCase().includes(search.toLowerCase()) ||
             item.category_type?.toLowerCase().includes(search.toLowerCase()) ||
             item.location?.toLowerCase().includes(search.toLowerCase());
 
@@ -122,9 +122,9 @@ const Artist = () => {
         onChange={(e) => setSearch(e.target.value)}
         className='custom-placeholder mb-1'
       />
-      <InputGroup.Text>
-        <FontAwesomeIcon icon={faSearch} className=" search" />
-      </InputGroup.Text>
+      {/* <InputGroup.Text className='bg-main border-0'>
+        <FontAwesomeIcon icon={faSearch} className="search text-main" />
+      </InputGroup.Text> */}
     </InputGroup>
   </Col>
 
@@ -225,11 +225,10 @@ const ArtistTable = ({ data, setSelectedArtist, setShowModal }) => (
         <thead>
             <tr>
                 <th>User ID</th>
-                <th>Name</th>
-                <th>Total Bookings</th>
+                <th>Profile Name</th>
+                <th>Completed Bookings</th>
                 <th>Location</th>
                 <th>Category Type</th>
-                <th>Rating</th>
                 <th>Top Baaja Rank</th>
                 <th>Top Baaja</th>
                 <th>Actions</th>
@@ -240,11 +239,10 @@ const ArtistTable = ({ data, setSelectedArtist, setShowModal }) => (
                 data.map(item => (
                     <tr key={item.user_id} style={{ verticalAlign: 'middle' }}>
                         <td><Link to={`/artist-profile/${item.user_id}`} className="text-decoration-none text-main fw-bold">{item.user_id}</Link></td>
-                        <td className="fw-semibold text-main">{item.owner_name}</td>
+                        <td className="fw-semibold text-main">{item.profile_name}</td>
                         <td className="fw-semibold text-main">{item.total_bookings}</td>
                         <td className="fw-semibold text-main">{item.location}</td>
                         <td className="fw-semibold text-main">{item.category_type}</td>
-                        <td className="text-warning h5">{'★'.repeat(Math.floor(item.rating))}{'☆'.repeat(5 - Math.floor(item.rating))}</td>
                        <td className="fw-semibold text-main">{item.top_baaja_rank}</td>
                         <td>
                             <Button

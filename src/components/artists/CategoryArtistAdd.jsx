@@ -34,7 +34,7 @@ const CategoryArtistAdd = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `http://35.154.161.226:5000/api/artists_details?category_id=${category_id}`,
+        `http://localhost:5000/api/artists_details?category_id=${category_id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -97,11 +97,9 @@ console.log(body)
 
   return (
     <div className="p-4 max-w-3xl mx-auto">
-      <div className="d-flex justify-content-between align-items-center mb-4">
+      <div className=" mb-4">
         <h2 className="fw-bold text-main">Add Session Rank</h2>
-        <Button onClick={() => navigate(-1)} className="btn bg-main shadow">
-          Back
-        </Button>
+        
       </div>
 
       <Form>
@@ -144,40 +142,57 @@ console.log(body)
             <Form.Group className="mb-2">
               <Form.Label>Category</Form.Label>
               <Form.Select
+              className='bg-main text-main'
                 value={item.category_id}
                 onChange={(e) => handleChange(index, 'category_id', e.target.value)}
               >
-                <option value="">-- Select Category --</option>
+                <option value="" className='bg-main text-main'>-- Select Category --</option>
                 {categories.map((cat) => (
-                  <option key={cat.category_id} value={cat.category_id}>
-                    {cat.category} ({cat.category_id})
+                  <option key={cat.category_id} value={cat.category_id} className='bg-main text-main'>
+                    {cat.category}
                   </option>
                 ))}
               </Form.Select>
             </Form.Group>
 
-           <Form.Group className="mb-2">
+           <Form.Group className="mb-2 text-main ">
   <Form.Label>Select Artist</Form.Label>
-  <Select
-    options={item.artists?.map((artist) => ({
-      value: artist.user_id,
-      label: `${artist.profile_name} (${artist.user_id})`,
-    }))}
-    value={
-      item.artist_id
-        ? {
-            value: item.artist_id,
-            label: `${item.artists?.find(a => a.user_id === item.artist_id)?.profile_name || ''} (${item.artist_id})`
-          }
-        : null
-    }
-    onChange={(selected) =>
-      handleChange(index, 'artist_id', selected ? selected.value : '')
-    }
-    isClearable
-    placeholder="Search and select artist"
-    className='custom-placeholder'
-  />
+ <Select
+  options={item.artists?.map((artist) => ({
+    value: artist.user_id,
+    label: `${artist.profile_name} (${artist.user_id})`,
+  }))}
+  value={item.artist_id
+    ? {
+        value: item.artist_id,
+        label: `${item.artists?.find(a => a.user_id === item.artist_id)?.profile_name || ''} (${item.artist_id})`
+      }
+    : null
+  }
+  onChange={(selected) =>
+    handleChange(index, 'artist_id', selected ? selected.value : '')
+  }
+  isClearable
+  placeholder="Search and select artist"
+  styles={{
+    control: (base) => ({
+      ...base,
+      backgroundColor: '#fef3c7', // replace with bg-main
+      color: '#1f2937', // replace with text-dark
+      borderRadius: '0.5rem',
+      borderColor: '#d1d5db',
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: '#1f2937', 
+    }),
+    menu: (base) => ({
+      ...base,
+      backgroundColor: '#fef3c7',
+      color: '#1f2937',
+    }),
+  }}
+/>
 </Form.Group>
 
 

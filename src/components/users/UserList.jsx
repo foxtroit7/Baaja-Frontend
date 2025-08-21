@@ -22,6 +22,7 @@ const UserList = () => {
     paymentStatus: "",
     bookingType: "",
     dateRange: { from: "", to: "" },
+       artistRejected: false,
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,27 +47,31 @@ const UserList = () => {
   useEffect(() => {
     if (!initialized) return;
 
-const fetchBookings = async (customFilters = filters) => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) return;
+    const fetchBookings = async (customFilters = filters) => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
 
-    const response = await axios.get("http://35.154.161.226:5000/api/all-bookings", {
-      headers: { Authorization: `Bearer ${token}` },
-      params: {
-        status: customFilters.status,
-        paymentStatus: customFilters.paymentStatus,
-        search: customFilters.search,
-        from: customFilters.dateRange.from,
-        to: customFilters.dateRange.to,
-      },
-    });
+        const response = await axios.get(
+          "http://localhost:5000/api/all-bookings",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            params: {
+              status: customFilters.status,
+              paymentStatus: customFilters.paymentStatus,
+              search: customFilters.search,
+              from: customFilters.dateRange.from,
+              to: customFilters.dateRange.to,
+              artistRejected: customFilters.artistRejected, // 👈 send to API
+            },
+          }
+        );
 
-    setBookings(response.data);
-  } catch (error) {
-    console.error("Error fetching bookings:", error);
-  }
-};
+        setBookings(response.data);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    }
 
 
     fetchBookings();
@@ -113,7 +118,21 @@ if (filters.bookingType) {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = allData.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(allData.length / itemsPerPage);
+  // 👇 new handler for rejection button
+  const handleShowRejections = () => {
+    setFilters((prev) => ({
+      ...prev,
+      artistRejected: true,
+    }));
+  };
 
+  // 👇 reset back to normal list
+  const handleShowAllBookings = () => {
+    setFilters((prev) => ({
+      ...prev,
+      artistRejected: false,
+    }));
+  };
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
   // 5. Render table
@@ -185,12 +204,23 @@ if (filters.bookingType) {
 
   return (
     <Container style={{ fontFamily: "'Roboto', sans-serif", padding: "30px" }}>
-      <h2 className="mb-4 text-center fw-bold text-main">Booking List</h2>
-
+     <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2 className="fw-bold text-main">Booking List</h2>
+        <div>
+          <Button
+            variant={filters.artistRejected ? "secondary" : "danger"}
+            onClick={
+              filters.artistRejected ? handleShowAllBookings : handleShowRejections
+            }
+          >
+            {filters.artistRejected ? "Back to Bookings" : "Artist Rejection List"}
+          </Button>
+        </div>
+      </div>
       {/* Filters */}
       <Form className="mb-4">
         <Row className="align-items-center">
-          <Col md={2} className="mb-1">
+          <Col md={3} className="mb-1">
             <InputGroup>
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} className="text-dark" />

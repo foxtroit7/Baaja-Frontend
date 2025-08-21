@@ -30,7 +30,7 @@ const Approved = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://35.154.161.226:5000/api/artist/approve/${selectedArtistId}`,
+        `http://localhost:5000/api/artist/approve/${selectedArtistId}`,
         {},
         {
           headers: {

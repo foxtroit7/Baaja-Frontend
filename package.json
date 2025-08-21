@@ -14,6 +14,7 @@
     "firebase": "^11.6.1",
     "font-awesome-icons": "^1.6.0",
     "html2pdf.js": "^0.10.3",
+    "luxon": "^3.7.1",
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.46",
     "react": "^18.3.1",

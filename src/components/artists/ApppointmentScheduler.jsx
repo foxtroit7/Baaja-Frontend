@@ -184,27 +184,26 @@ const AppointmentScheduler = ({ artist_id }) => {
       {/* Booking Details Modal */}
   <Modal show={showModal} onHide={() => setShowModal(false)} centered size="lg">
   <Modal.Header closeButton className="bg-main text-white">
-    <Modal.Title className='text-dark'>📅 Booking Details - {new Date(selectedDate).toLocaleDateString()}</Modal.Title>
+    <Modal.Title className='text-light'>Booking Details</Modal.Title>
   </Modal.Header>
 
-  <Modal.Body className="bg-light">
+  <Modal.Body className="bg-light text-dark">
     {selectedBookings.length > 0 ? (
       selectedBookings.map((booking, index) => (
         <div key={index} className="mb-4 p-4 bg-white rounded shadow-sm border border-secondary">
           {/* Booking Header */}
           <div className="mb-3 pb-2 border-bottom d-flex justify-content-between align-items-center">
-            <h5 className="text-dark mb-0">🔖 Booking ID: <span className="text-main">{booking.booking_id}</span></h5>
+            <h5 className="text-dark mb-0">Booking ID: <span className="text-main">{booking.booking_id}</span></h5>
             <span className={`badge ${booking.status === 'accepted' ? 'bg-success' : 'bg-warning'} text-uppercase`}>
               {booking.status}
             </span>
           </div>
 
           {/* Personal Info */}
-          <h6 className="text-muted">👤 Personal Info</h6>
+          <h6 className="text-muted">Personal Info</h6>
           <div className="row">
             <div className="col-md-6"><p><strong>Name:</strong> {booking.full_name}</p></div>
             <div className="col-md-6"><p><strong>Phone:</strong> {booking.phone_number}</p></div>
-            <div className="col-md-6"><p><strong>Alt. Phone:</strong> {booking.alternate_number}</p></div>
             <div className="col-md-6"><p><strong>Adhaar No:</strong> {booking.adhaar_number}</p></div>
             <div className="col-md-6"><p><strong>Organization:</strong> {booking.organization}</p></div>
             <div className="col-md-6"><p><strong>Purpose:</strong> {booking.purpose}</p></div>
@@ -213,25 +212,23 @@ const AppointmentScheduler = ({ artist_id }) => {
 
           {/* Address Info */}
           <hr />
-          <h6 className="text-muted">📍 Address</h6>
+          <h6 className="text-muted">Address</h6>
           <div className="row">
             <div className="col-md-6"><p><strong>Address:</strong> {booking.address}</p></div>
-            <div className="col-md-6"><p><strong>Landmark:</strong> {booking.landmark}</p></div>
+          <div className="col-md-6"><p><strong>State</strong> {booking.state}</p></div>
             <div className="col-md-6"><p><strong>District:</strong> {booking.district}</p></div>
-            <div className="col-md-6"><p><strong>State & Pincode:</strong> {booking.state} - {booking.pincode}</p></div>
+            <div className="col-md-6"><p><strong>Pincode:</strong>{booking.pincode}</p></div>
           </div>
-
           {/* Schedule Info */}
           <hr />
-          <h6 className="text-muted">📅 Schedule</h6>
+          <h6 className="text-muted">Schedule</h6>
           <div className="row">
             <div className="col-md-6"><p><strong>Booking Date:</strong> {new Date(booking.booking_date).toLocaleDateString()}</p></div>
-            <div className="col-md-6"><p><strong>Booking Time:</strong> {booking.booking_time}</p></div>
+          
             <div className="col-md-6"><p><strong>Schedule Start:</strong> {new Date(booking.schedule_date_start).toLocaleDateString()}</p></div>
             {booking.schedule_date_end && (
               <div className="col-md-6"><p><strong>Schedule End:</strong> {new Date(booking.schedule_date_end).toLocaleDateString()}</p></div>
             )}
-            <div className="col-md-6"><p><strong>Scheduled Time:</strong> {booking.scheduled_time}</p></div>
             <div className="col-md-6"><p><strong>Shift:</strong> {booking.shift}</p></div>
           </div>
 

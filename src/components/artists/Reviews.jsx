@@ -1,165 +1,141 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Modal, Col, Card, Row, Button, Form } from "react-bootstrap";
-import { faPencil, faTrash, faSave } from "@fortawesome/free-solid-svg-icons";
+import { Col, Card, Row } from "react-bootstrap";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const Reviews = ({ user_id }) => {
-  const [showModals, setShowModals] = useState(false);
-  const [showAddReviewModal, setShowAddReviewModal] = useState(false);
-  const [currentReview, setCurrentReview] = useState(null);
-  const [editedReview, setEditedReview] = useState("");
-  const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState("");
-  const [newName, setNewName] = useState("");
-  const [newRating, setNewRating] = useState("");
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-
-  const fetchReviews = () => {
-    if (user_id) {
-      fetch(`http://35.154.161.226:5000/api/artist/reviews/${user_id}`)
-        .then((res) => res.json())
-        .then((data) => {
-      
-          setReviews(data);
-        })
-        .catch((error) => console.error("Error fetching reviews:", error));
-    }
-  };
-    // Fetch reviews when the component mounts
-    useEffect(() => {
-      if (user_id) {
-        fetchReviews();
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`http://localhost:5000/api/reviews/${user_id}`);
+        if (!res.ok) throw new Error("Failed to fetch reviews");
+        const result = await res.json();
+        setData(result);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    }, [user_id]);
+    };
 
-  const handleCardClick = (review) => {
-    setCurrentReview(review);
-    setEditedReview(review.review);
-    setShowModals(true);
-  };
+    if (user_id) fetchReviews();
+  }, [user_id]);
 
-  const handleEditChange = (e) => setEditedReview(e.target.value);
-
-  const saveEdit = async () => {
-    if (!currentReview) return;
-    try {
-      const response = await fetch(
-        `http://35.154.161.226:5000/api/artist/reviews/${user_id}/${currentReview._id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ review: editedReview }),
-        }
-      );
-      if (response.ok) {
-        setReviews((prev) =>
-          prev.map((r) =>
-            r._id === currentReview._id ? { ...r, review: editedReview } : r
-          )
-        );
-      }
-    } catch (error) {
-      console.error("Error updating review:", error);
-    }
-    setShowModals(false);
-  };
-
-  const deleteReview = async () => {
-    if (!currentReview) return;
-    try {
-      const response = await fetch(
-        `http://35.154.161.226:5000/api/artist/reviews/${user_id}/${currentReview._id}`,
-        { method: "DELETE" }
-      );
-      if (response.ok) {
-        setReviews((prev) => prev.filter((r) => r._id !== currentReview._id));
-      }
-    } catch (error) {
-      console.error("Error deleting review:", error);
-    }
-    setShowModals(false);
-  };
-
-  // Add new review API call
-  const addReview = async () => {
-    if (!newReview || !newName || !newRating) return;
-
-    const newReviewData = { review: newReview, name: newName, rating: newRating };
-
-    try {
-      const response = await fetch(
-        `http://35.154.161.226:5000/api/artist/reviews/${user_id}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newReviewData),
-        }
-      );
-      if (response.ok) {
-        const addedReview = await response.json();
-        // console.log("Added review:", addedReview); // Log the added review
-
-        // Force a re-fetch to ensure reviews are updated
-        fetchReviews();
-
-        setNewReview("");
-        setNewName("");
-        setNewRating("");
-        setShowAddReviewModal(false);
-      }
-    } catch (error) {
-      console.error("Error adding review:", error);
-    }
-  };
+  if (loading) return <p className="text-center">Loading reviews...</p>;
+  if (error) return <p className="text-center text-danger">{error}</p>;
+  if (!data) return <p className="text-center">No reviews found.</p>;
 
   return (
-    <div style={{ fontFamily: "'Roboto', sans-serif", padding: "30px"}}>
-      <h2 className="mb-4" style={{ fontWeight: "bold", textAlign: "center" }}>
-        User Reviews
+    <div style={{ fontFamily: "'Roboto', sans-serif", padding: "30px" }}>
+      <h2 className="mb-4 text-center" style={{ fontWeight: "bold" }}>
+        Artist Reviews
       </h2>
 
-      {/* Add Review Button */}
-      <div className="d-flex justify-content-end mb-3">
-        <Button
-          onClick={() => setShowAddReviewModal(true)}
-          style={{
-            border: "none",
-            borderRadius: "4px",
-          }}
-         className="bg-main"
-        >
-          Add Review
-        </Button>
+      {/* Rating Summary */}
+      <div className="mb-4 text-center">
+        <h4>
+          Average Rating: <span style={{ color: "#f39c12" }}>{data.avg_rating}</span> / 5
+        </h4>
+        <p>Total Reviews: {data.total_review}</p>
+        <div className="d-flex justify-content-center gap-4 flex-wrap">
+          <p>⭐ 5 Stars: {data.avg_five_star_rating}</p>
+          <p>⭐ 4 Stars: {data.avg_four_star_rating}</p>
+          <p>⭐ 3 Stars: {data.avg_three_star_rating}</p>
+          <p>⭐ 2 Stars: {data.avg_two_star_rating}</p>
+          <p>⭐ 1 Star: {data.avg_one_star_rating}</p>
+        </div>
       </div>
 
       {/* Reviews Grid */}
       <Row>
-        {reviews.length > 0 ? (
-          reviews.map((review, index) => (
+        {data.reviews && data.reviews.length > 0 ? (
+          data.reviews.map((review, index) => (
             <Col key={index} md={6} lg={3} className="mb-4">
               <Card
-                className="h-100 shadow-lg"
-                style={{ borderRadius: "15px", transition: "transform 0.3s, box-shadow 0.3s" }}
+                className="p-3 shadow-lg bg-main"
+                style={{
+                  borderRadius: "15px",
+                  transition: "transform 0.3s, box-shadow 0.3s",
+                }}
                 onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-                onClick={() => handleCardClick(review)}
               >
                 <Card.Body>
-                  <div className="d-flex align-items-center mb-4">
-                    <div className="">
-                      <Card.Title style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
-                        {review.name}
-                      </Card.Title>
+                  {/* User Info */}
+                  <div className="mb-3">
+                    <Card.Title style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                      {review.user_name}
+                    </Card.Title>
+                    <div>
+                      {Array.from({ length: review.rating }, (_, i) => (
+                        <FontAwesomeIcon
+                          key={i}
+                          icon={faStar}
+                          style={{ color: "#f39c12", marginRight: "3px" }}
+                        />
+                      ))}
                     </div>
                   </div>
-                  <Card.Text
-                    style={{
-                      fontSize: "1rem",
-                      fontStyle: "italic",
-                    }}
-                  >
+
+                  {/* Review Text */}
+                  <Card.Text style={{ fontSize: "1rem", fontStyle: "italic" }}>
                     "{review.review}"
                   </Card.Text>
+  {/* User Info */}
+                  <div className="mb-2">
+                    <Card.Title style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                      {review.user_name} ({review.user_id})
+                    </Card.Title>
+                    <div>
+                      {Array.from({ length: Math.floor(review.rating) }, (_, i) => (
+                        <FontAwesomeIcon
+                          key={i}
+                          icon={faStar}
+                          style={{ color: "#f39c12", marginRight: "3px" }}
+                        />
+                      ))}
+                      <span style={{ marginLeft: "5px" }}>{review.rating}</span>
+                    </div>
+                  </div>
+
+                  {/* Booking & Artist Info */}
+                  <div>
+                    <p>Artist ID: {review.artist_id}</p>
+                    <p>Booking ID: {review.booking_id}</p>
+                  </div>
+                  {/* Review Images */}
+                  {review.file && review.file.length > 0 && (
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "5px",
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        marginTop: "10px",
+                        
+                      }}
+                    >
+                      {review.file.map((img, i) => (
+                        <img
+                          key={i}
+                          src={`http://35.154.161.226:5000/${img}`}
+                          alt="review"
+                          style={{
+                            maxWidth: "200px",
+                            height: "auto",
+                            borderRadius: "10px",
+                            objectFit: "cover",
+                            flex: "1 1 45%",
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </Card.Body>
               </Card>
             </Col>
@@ -168,79 +144,6 @@ const Reviews = ({ user_id }) => {
           <p className="text-center w-100">No reviews available.</p>
         )}
       </Row>
-
-      {/* Modal for Edit/Delete */}
-      <Modal show={showModals} onHide={() => setShowModals(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title className="text-dark">Edit/Delete Review</Modal.Title>
-        </Modal.Header>
-         <Modal.Body className='text-dark'>
-          {currentReview && (
-            <>
-              <Form.Group className="mb-3">
-                <Form.Label className="text-dark">Edit Review</Form.Label>
-                <Form.Control as="textarea" rows={3} value={editedReview} onChange={handleEditChange} />
-              </Form.Group>
-              <div className="text-center text-light">
-                <Button variant="warning" onClick={saveEdit} className="me-2">
-                  <FontAwesomeIcon icon={faPencil} />
-                </Button>
-                <Button variant="danger" onClick={deleteReview}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </Button>
-              </div>
-            </>
-          )}
-        </Modal.Body>
-      </Modal>
-
-      {/* Modal for Adding Review */}
-      <Modal show={showAddReviewModal} onHide={() => setShowAddReviewModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title className="text-dark">Add New Review</Modal.Title>
-        </Modal.Header>
-         <Modal.Body className='text-dark'>
-          <Form.Group className="mb-3">
-            <Form.Label className="text-dark">Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter your name"
-              value={newName}
-              className="custom-placeholder"
-              onChange={(e) => setNewName(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label className="text-dark">Review</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              placeholder="Enter your review"
-              value={newReview}
-               className="custom-placeholder"
-              onChange={(e) => setNewReview(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label className="text-dark">Rating</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter your rating"
-               className="custom-placeholder"
-              value={newRating}
-              onChange={(e) => setNewRating(e.target.value)}
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowAddReviewModal(false)}>
-            Close
-          </Button>
-          <Button className="bg-main" onClick={addReview}>
-            <FontAwesomeIcon icon={faSave} /> Save
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };

@@ -189,11 +189,10 @@ const Customer = () => {
             <tr>
               <th>Scheduled Start</th>
               <th>Scheduled End</th>
-              <th>Shift</th>
               <th>Purpose</th>
-              <th>Time</th>
-              <th>Booking Date</th>
+              <th>Booking Time</th>
               <th>Price</th>
+              <th>Payment Status</th>
               <th>Artist</th>
               <th>Booking ID</th>
               <th>Status</th>
@@ -216,24 +215,53 @@ const Customer = () => {
                       index % 2 === 0 ? '#ffffff' : '#f1f3f5')
                   }
                 >
-                  <td>{new Date(booking.schedule_date_start).toLocaleDateString()}</td>
-                  <td>{new Date(booking.schedule_date_end).toLocaleDateString()}</td>
-                  <td>{booking.shift}</td>
+                 <td>{new Date(booking.schedule_date_start).toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}</td>
+                  <td>{new Date(booking.schedule_date_end).toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}</td>
+                
                   <td>{booking.purpose}</td>
-                  <td>{booking.scheduled_time}</td>
+               
                   <td>
-                    {new Date(booking.createdAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
+                     {new Date(booking.createdAt).toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}
                   </td>
                   <td>
-                    {booking.add_on && booking.add_on.length > 0
-                      ? booking.add_on[0].is_legal_price
-                      : 'N/A'}
+                    {booking.total_price}
                   </td>
-                  <td>{booking.full_name}</td>
+                  <td><span
+                      className={`badge ${
+                        booking.payment_status === 'completed'
+                          ? 'bg-success'
+                          : booking.payment_status === 'partial'
+                          ? 'bg-warning'
+                          : booking.payment_status === 'pending'
+                          ? 'bg-danger'
+                          : 'bg-info'
+                      }`}
+                    >{booking.payment_status}</span></td>
+                  <td>{booking.artist_details?.profile_name}</td>
                   <td>{booking.booking_id}</td>
                   <td>
                     <span

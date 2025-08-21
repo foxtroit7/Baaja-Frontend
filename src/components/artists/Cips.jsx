@@ -14,7 +14,7 @@ const Cips = ({ user_id }) => {
 
   // Fetch token from localStorage
   const token = localStorage.getItem("token");
-
+  const BASE_URL = "http://35.154.161.226:5000/";
   useEffect(() => {
     const fetchClips = async () => {
       if (!token) {
@@ -129,7 +129,7 @@ const Cips = ({ user_id }) => {
            <Modal.Body className='text-dark'>
             <div className="ratio ratio-16x9 mb-3">
               <video
-                src={selectedClip.video}
+                src={`${BASE_URL}${selectedClip.video}`}
                 controls
                 style={{ borderRadius: "12px", width: "100%" }}
               ></video>

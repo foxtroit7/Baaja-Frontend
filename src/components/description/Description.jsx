@@ -128,19 +128,35 @@ const AdminArtistUpdates = () => {
           </div>
         ))
       ) : (
-        update.fields_changed.map((field) => (
-          <div key={field}>
-            <p>
-              <strong>Old {field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}
-              {update.original_data?.[field] ??
-                'No old data is available because first time artist has added data.'}
-            </p>
-            <p>
-              <strong>New {field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}
-              {update.updated_data?.[field] ?? 'N/A'}
-            </p>
-          </div>
-        ))
+     update.fields_changed.map((field) => {
+  const formatValue = (val) => {
+    if (!val) return 'N/A';
+    if (Array.isArray(val)) return val.join(', ');
+    if (typeof val === 'string' && update.update_type === 'details') {
+      return val.split(',').map(s => s.trim()).join(', ');
+    }
+    return val;
+  };
+
+  return (
+    <div key={field}>
+      <p>
+        <strong>Old {field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}
+        {update.update_type === 'details'
+          ? formatValue(update.original_data?.[field])
+          : update.original_data?.[field] ??
+            'No old data is available because first time artist has added data.'}
+      </p>
+      <p>
+        <strong>New {field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{' '}
+        {update.update_type === 'details'
+          ? formatValue(update.updated_data?.[field])
+          : update.updated_data?.[field] ?? 'N/A'}
+      </p>
+    </div>
+  );
+})
+
       )}
 
       {update.admin_remarks && (
@@ -221,7 +237,7 @@ const AdminArtistUpdates = () => {
               margin: '0 0.5rem',
               cursor: 'pointer',
               borderBottom: activeTab === status ? '3px solid #007bff' : '3px solid transparent',
-              color: activeTab === status ? '#007bff' : '#ffffff',
+              color: activeTab === status ? 'orange' : 'green',
               fontWeight: activeTab === status ? 'bold' : 'normal',
             }}
           >

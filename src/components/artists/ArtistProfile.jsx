@@ -6,9 +6,9 @@ import { faTruck, faMoneyBill, faPen, faEdit } from '@fortawesome/free-solid-svg
 import { toast, ToastContainer } from 'react-toastify';
 import ApppointmentScheduler from './ApppointmentScheduler';
 import Clips from './Cips';
-import Reviews from './Reviews';
 import Booking from './Booking';
 import 'react-toastify/dist/ReactToastify.css';
+import Reviews from './Reviews';
 
 const ArtistProfile = () => {
   const [showServiceModal, setShowServiceModal] = useState(false);
@@ -164,9 +164,6 @@ const [editedServices, setEditedServices] = useState([]);
         <h3 className="text-main fw-bold">Profile Name: {artist.profile_name}</h3>
         <h5 className="text-main">Category: {artist.category_type}</h5>
         <h6 className="text-main">{artist.location}</h6>
-        <h5 className='text-main'>
-          Rating: {Array.from({ length: 5 }, (_, i) => (i < artist.rating ? '⭐' : '☆')).join('')}
-        </h5>
         <h5 className="text-main">Experience: {artist.experience}</h5>
         <h5 className="text-main fw-bold">About:</h5>
         <p className="text-main">{artist.description}</p>
@@ -402,7 +399,7 @@ const [editedServices, setEditedServices] = useState([]);
       <ApppointmentScheduler artist_id={user_id} />
       <Clips user_id={user_id} />
       <Booking artist_id={user_id} />
-      <Reviews user_id={user_id} />
+<Reviews user_id={user_id}/>
     </Container>
   );
 };

@@ -17,48 +17,49 @@ const [newRank, setNewRank] = useState('');
     fetchSessionNames();
   }, []);
  
-  const handleUpdateArtistRank = async () => {
-    if (!newRank) return alert("Please enter a new rank.");
-    if (!selectedArtist) return;
-  
-    try {
-      const res = await axios.put(
-        `http://35.154.161.226:5000/api/update-artist-rank/${selectedArtist.sessionName}/${selectedArtist.artistId}`,
-        { artist_rank: newRank }
-      );
-      console.log("Updated:", res.data);
-  
-      // 🔄 Update artist rank in local state
-      setSessionData((prevData) => {
-        const updatedArtists = prevData[selectedArtist.sessionName].categoryRankModel.map((artist) => {
-          if (artist.artist_id === selectedArtist.artistId) {
-            return {
-              ...artist,
-              artist_rank: newRank  // ← Update the rank locally
-            };
-          }
-          return artist;
-        });
-  
-        return {
-          ...prevData,
-          [selectedArtist.sessionName]: {
-            ...prevData[selectedArtist.sessionName],
-            categoryRankModel: updatedArtists,
-          }
-        };
+const handleUpdateArtistRank = async () => {
+  if (!newRank) return alert("Please enter a new rank.");
+  if (!selectedArtist) return;
+
+  try {
+    const res = await axios.put(
+      `http://35.154.161.226:5000/api/update-artist-rank/${selectedArtist.sessionName}/${selectedArtist.artistId}`,
+      { artist_rank: newRank }
+    );
+    console.log("Updated:", res.data);
+
+    // 🔄 Update artist rank in local state
+    setSessionData((prevData) => {
+      const updatedArtists = prevData[selectedArtist.sessionName].categoryRankModel.map((artist) => {
+        if (artist.artist_id === selectedArtist.artistId) {
+          return {
+            ...artist,
+            artist_rank: newRank  // ← Update the rank locally
+          };
+        }
+        return artist;
       });
-  
-      // 🔒 Reset modal and state
-      setShowRankModal(false);
-      setNewRank('');
-      setSelectedArtist(null);
-  
-    } catch (err) {
-      console.error("Failed to update:", err);
-      alert("Update failed.");
-    }
-  };
+
+      return {
+        ...prevData,
+        [selectedArtist.sessionName]: {
+          ...prevData[selectedArtist.sessionName],
+          categoryRankModel: updatedArtists,
+        }
+      };
+    });
+
+    // 🔒 Reset modal and state
+    setShowRankModal(false);
+    setNewRank('');
+    setSelectedArtist(null);
+
+  } catch (err) {
+    const backendMessage = err?.response?.data?.message || "Update failed due to an unknown error.";
+    console.error("Backend error:", backendMessage);
+    alert(backendMessage);
+  }
+};
   
   const openRankModal = (sessionName, artistId) => {
     setSelectedArtist({ sessionName, artistId });
@@ -209,8 +210,6 @@ const [newRank, setNewRank] = useState('');
             <th className="text-center align-middle">Artist ID</th>
             <th className="text-center align-middle">Artist Rank</th>
             <th className="text-center align-middle">Artist Name</th>
-            <th className="text-center align-middle">Category</th>
-            <th className="text-center align-middle">Category ID</th>
             <th className="text-center align-middle">Poster</th>
             <th className="text-center align-middle">Profile Name</th>
             <th className="text-center align-middle">Actions</th>
@@ -228,8 +227,6 @@ const [newRank, setNewRank] = useState('');
       <td className="text-center align-middle">{artist.artist_id}</td>
       <td className="text-center align-middle fw-bold text-main">{artist.artist_rank}</td>
       <td className="text-center align-middle">{artist.artistDetails?.owner_name}</td>
-      <td className="text-center align-middle">{artist.artistDetails?.category_type}</td>
-      <td className="text-center align-middle">{artist.category_id}</td>
       <td className="text-center align-middle">
         {artist.artistDetails?.poster ? (
           <Image
@@ -251,7 +248,7 @@ const [newRank, setNewRank] = useState('');
       <Button
   variant="warning"
   size="sm"
-  className="mb-2"
+  className="me-2"
   onClick={() => openRankModal(sessionName, artist.artist_id)}
 >
   Update Artist Rank
