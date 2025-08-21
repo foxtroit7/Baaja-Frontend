@@ -12,7 +12,7 @@ const Reviews = ({ user_id }) => {
     const fetchReviews = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5000/api/reviews/${user_id}`);
+        const res = await fetch(`http://35.154.161.226:5000/api/reviews/${user_id}`);
         if (!res.ok) throw new Error("Failed to fetch reviews");
         const result = await res.json();
         setData(result);

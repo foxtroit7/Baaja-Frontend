@@ -34,7 +34,7 @@ const CategoryArtistAdd = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `http://localhost:5000/api/artists_details?category_id=${category_id}`,
+        `http://35.154.161.226:5000/api/artists_details?category_id=${category_id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

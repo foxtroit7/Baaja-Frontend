@@ -176,15 +176,6 @@ const [editedServices, setEditedServices] = useState([]);
         </Modal.Header>
          <Modal.Body className='text-dark'>
           <Form.Group className="mb-3">
-            <Form.Label  className='text-dark'>Owner Name</Form.Label>
-            <Form.Control
-              type="text"
-              value={formData.owner_name}
-            
-              onChange={(e) => setFormData({ ...formData, owner_name: e.target.value })}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
             <Form.Label className='text-dark'>Experience</Form.Label>
             <Form.Control
               type="text"
