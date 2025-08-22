@@ -284,13 +284,14 @@ const changeStatus = async () => {
 
 <Card.Text>
   {DateTime.fromISO(booking.schedule_date_start)
-    .setZone("Asia/Kolkata")
+    .toUTC()
     .toFormat("dd MMM yyyy, hh:mm a")}{" "}
   to{" "}
   {DateTime.fromISO(booking.schedule_date_end)
-    .setZone("Asia/Kolkata")
+    .toUTC()
     .toFormat("dd MMM yyyy, hh:mm a")}
 </Card.Text>
+
 
 
 

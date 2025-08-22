@@ -66,21 +66,7 @@ const Reviews = ({ user_id }) => {
                 onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
               >
                 <Card.Body>
-                  {/* User Info */}
-                  <div className="mb-3">
-                    <Card.Title style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
-                      {review.user_name}
-                    </Card.Title>
-                    <div>
-                      {Array.from({ length: review.rating }, (_, i) => (
-                        <FontAwesomeIcon
-                          key={i}
-                          icon={faStar}
-                          style={{ color: "#f39c12", marginRight: "3px" }}
-                        />
-                      ))}
-                    </div>
-                  </div>
+          
 
                   {/* Review Text */}
                   <Card.Text style={{ fontSize: "1rem", fontStyle: "italic" }}>
@@ -89,7 +75,8 @@ const Reviews = ({ user_id }) => {
   {/* User Info */}
                   <div className="mb-2">
                     <Card.Title style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
-                      {review.user_name} ({review.user_id})
+                     {review.user_name} 
+                     ({review.user_id})
                     </Card.Title>
                     <div>
                       {Array.from({ length: Math.floor(review.rating) }, (_, i) => (

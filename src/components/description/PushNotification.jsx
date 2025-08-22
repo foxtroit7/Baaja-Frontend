@@ -114,7 +114,7 @@ const PushNotification = () => {
                   )}
                   <ul className="list-group list-group-flush bg-main">
                     <li className="list-group-item bg-main">
-                      <strong>ID:</strong> <span className="text-main">{note._id}</span>
+                      <strong>ID:</strong> <span>{note._id}</span>
                     </li>
                     <li className="list-group-item bg-main">
                       <strong>To:</strong>{" "}
@@ -132,7 +132,7 @@ const PushNotification = () => {
                     </li>
                     <li className="list-group-item bg-main">
                       <strong>Sent To:</strong>{" "}
-                      <span className="text-main fw-bold">{note.sentTo}</span>
+                      <span className="fw-bold">{note.sentTo}</span>
                     </li>
                     <li className="list-group-item bg-main">
                       <strong>Sent At:</strong>{" "}

@@ -151,7 +151,6 @@ const Artist = () => {
       <Dropdown.Menu>
         <Dropdown.Item onClick={() => handleSortChange('default')}>Default</Dropdown.Item>
         <Dropdown.Item onClick={() => handleSortChange('bookings')}>Higher to Lower Bookings</Dropdown.Item>
-        <Dropdown.Item onClick={() => handleSortChange('alphabetical')}>Alphabetically A-Z</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   </Col>

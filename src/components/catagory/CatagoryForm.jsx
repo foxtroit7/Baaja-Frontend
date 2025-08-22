@@ -106,7 +106,8 @@ const CategoryForm = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formCategoryImage">
-              <Form.Label style={{ fontWeight: 500 }}>Category Image</Form.Label>
+              <Form.Label style={{ fontWeight: 500 }}>Category Image&nbsp;</Form.Label>
+              <small>(Make sure that icon size should be 512 * 512)</small>
               <Form.Control
                 type="file"
                 onChange={(e) => setPhoto(e.target.files[0])} // Update photo state with the selected file

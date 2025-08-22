@@ -107,6 +107,7 @@ const Potser = () => {
                       )}
                     </td>
                      <td className="text-center align-middle">
+                      <small>Make sure that Image size should be 1060*1480 </small>
                       <Form.Control
                         type="file"
                         onChange={(e) => handleFileChange(e, artist.user_id)}

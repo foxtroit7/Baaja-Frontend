@@ -142,13 +142,13 @@ console.log(body)
             <Form.Group className="mb-2">
               <Form.Label>Category</Form.Label>
               <Form.Select
-              className='bg-main text-main'
+              className='bg-main'
                 value={item.category_id}
                 onChange={(e) => handleChange(index, 'category_id', e.target.value)}
               >
-                <option value="" className='bg-main text-main'>-- Select Category --</option>
+                <option value="" className='bg-main'>-- Select Category --</option>
                 {categories.map((cat) => (
-                  <option key={cat.category_id} value={cat.category_id} className='bg-main text-main'>
+                  <option key={cat.category_id} value={cat.category_id} className='bg-main'>
                     {cat.category}
                   </option>
                 ))}

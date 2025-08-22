@@ -122,7 +122,19 @@ const BannerForm = () => {
             </Form.Group>
 
            <Form.Group className="mb-3" controlId="formBannerImage">
+
   <Form.Label style={{ fontWeight: 500 }}>Banner Image</Form.Label>
+    {/* Conditional message based on section */}
+  {formData.section === "top" && (
+    <div style={{ color: "orange", marginBottom: "5px" }}>
+      This top section banner size will be 1100 * 500
+    </div>
+  )}
+  {formData.section === "bottom" && (
+    <div style={{ color: "orange", marginBottom: "5px" }}>
+         This bottom section banner size will be 690 * 265
+    </div>
+  )}
   <Form.Control
     type="file"
     name="photo"
