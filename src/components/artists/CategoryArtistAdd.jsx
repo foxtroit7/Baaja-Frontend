@@ -12,14 +12,25 @@ const CategoryArtistAdd = () => {
   const [categoryRankModel, setCategoryRankModel] = useState([
     { category_id: '', artist_id: '', artist_rank: '', artists: [] },
   ]);
-
+const [allArtists, setAllArtists] = useState([]);
   // Fetch categories on component mount
-  useEffect(() => {
-    axios
-      .get('http://35.154.161.226:5000/api/category')
-      .then((res) => setCategories(res.data || []))
-      .catch((err) => console.error('Failed to fetch categories', err));
-  }, []);
+useEffect(() => {
+  // Fetch categories
+  axios
+    .get('http://35.154.161.226:5000/api/category')
+    .then((res) => setCategories(res.data || []))
+    .catch((err) => console.error('Failed to fetch categories', err));
+
+  // Fetch all artists once
+  const token = localStorage.getItem("token");
+  axios
+    .get("http://35.154.161.226:5000/api/artists_details", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => setAllArtists(res.data || []))
+    .catch((err) => console.error("Failed to fetch artists", err));
+}, []);
+
 
   const handleAddField = () => {
     setCategoryRankModel([
@@ -30,37 +41,49 @@ const CategoryArtistAdd = () => {
   
 
   // Fetch artists by category ID and update state
-  const fetchArtistsByCategory = async (category_id, index) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(
-        `http://35.154.161.226:5000/api/artists_details?category_id=${category_id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+  // const fetchArtistsByCategory = async (category_id, index) => {
+  //   try {
+  //     const token = localStorage.getItem('token');
+  //     const response = await axios.get(
+  //       `http://35.154.161.226:5000/api/artists_details?category_id=${category_id}`,
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     );
 
-      const updated = [...categoryRankModel];
-      updated[index].artists = response.data || [];
-      setCategoryRankModel(updated);
-    } catch (error) {
-      console.error('Failed to fetch artists by category', error);
-    }
-  };
+  //     const updated = [...categoryRankModel];
+  //     updated[index].artists = response.data || [];
+  //     setCategoryRankModel(updated);
+  //   } catch (error) {
+  //     console.error('Failed to fetch artists by category', error);
+  //   }
+  // };
+  // Filter artists by category from already fetched list
+const fetchArtistsByCategory = (category_id, index) => {
+  const updated = [...categoryRankModel];
 
-  // Handle input changes for category rank model
-  const handleChange = async (index, field, value) => {
-    const updated = [...categoryRankModel];
-    updated[index][field] = value;
+  updated[index].artists = allArtists.filter(
+    (artist) => artist.category_id === category_id
+  );
 
-    if (field === 'category_id') {
-      updated[index]['artist_id'] = ''; // Clear artist selection when category changes
-      setCategoryRankModel(updated); // Trigger re-render
-      await fetchArtistsByCategory(value, index); // Fetch artists for the selected category
-    } else {
-      setCategoryRankModel(updated);
-    }
-  };
+  setCategoryRankModel(updated);
+};
+
+
+
+  const handleChange = (index, field, value) => {
+  const updated = [...categoryRankModel];
+  updated[index][field] = value;
+
+  if (field === "category_id") {
+    updated[index]["artist_id"] = ""; // reset artist selection
+    fetchArtistsByCategory(value, index); // ✅ call helper instead of duplicating logic
+  }
+
+  setCategoryRankModel(updated);
+};
+
+
 
   // Remove category rank model field
   const handleRemoveField = (index) => {
@@ -98,8 +121,7 @@ console.log(body)
   return (
     <div className="p-4 max-w-3xl mx-auto">
       <div className=" mb-4">
-        <h2 className="fw-bold text-main">Add Session Rank</h2>
-        
+        <h2 className="fw-bold text-main">Add Session Rank</h2>  
       </div>
 
       <Form>

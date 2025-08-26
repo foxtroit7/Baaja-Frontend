@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faBroom } from '@fortawesome/free-solid-svg-icons';
+import { faBroom } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 const Artist = () => {
@@ -29,7 +29,7 @@ const Artist = () => {
             const token = localStorage.getItem("token");
             if (!token) throw new Error("Authentication token is missing");
 
-            const response = await axios.get("http://35.154.161.226:5000/api/artists_details", {
+            const response = await axios.get("http://localhost:5000/api/artists_details", {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setData(response.data);
